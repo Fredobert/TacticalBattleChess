@@ -20,11 +20,13 @@ public class Tile : MonoBehaviour {
     public Material visit;
     public Material cloas;
 
+    public Material prevMat;
 
 	// Use this for initialization
 
 	void Start () {
 		GameObject field = GameObject.Find("World");
+        prevMat = unmarked;
         sm = field.GetComponent<SelectManager>();
         pid = 0;
     }
@@ -54,11 +56,13 @@ public class Tile : MonoBehaviour {
     public void visited()
     {
        GetComponent<MeshRenderer>().material = visit;
+        prevMat = visit;
     }
 
     public void closed()
     {
         GetComponent<MeshRenderer>().material = cloas;
+        prevMat = cloas;
     }
 
     public void mark()
@@ -67,6 +71,11 @@ public class Tile : MonoBehaviour {
     }
     public void unmark()
     {
+        GetComponent<MeshRenderer>().material = prevMat;
+    }
+    public void reset()
+    {
         GetComponent<MeshRenderer>().material = unmarked;
+        prevMat = unmarked;
     }
 }

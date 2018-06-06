@@ -27,7 +27,7 @@ public class Character : MonoBehaviour {
     private SelectManager sm;
     public int x;
     public int y;
-
+    public GameObject standingOn;
     // Use this for initialization
     void Start () {
         GameObject field = GameObject.Find("World");

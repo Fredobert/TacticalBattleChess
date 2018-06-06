@@ -60,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Character.cs" />
-    <Compile Include="Assets\Scripts\GetField.cs" />
+    <Compile Include="Assets\Scripts\PFelement.cs" />
     <Compile Include="Assets\Scripts\Tile.cs" />
     <Compile Include="Assets\Scripts\World\Field.cs" />
     <Compile Include="Assets\Scripts\World\Pathfinder.cs" />

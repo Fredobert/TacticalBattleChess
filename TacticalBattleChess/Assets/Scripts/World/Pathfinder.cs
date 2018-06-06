@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class Pathfinder : MonoBehaviour {
     //if target is not rechable this freezes
-    public Tile[,] field;
+   // public Tile[,] field;
     public int pid = 0;
-    public int sx;
-    public int sy;
+    public PFelement start;
   
 	// Use this for initialization
 	void Start () {
@@ -20,21 +19,26 @@ public class Pathfinder : MonoBehaviour {
 	}
 
     //version 1.0 Dijkstara because we want all multiple ways and only all possible outcomes within a certain raneg
-    List<Tile> pq;
+    List<PFelement> pq;
+    //beta
+    List<PFelement> inRange;
+
     int dz = 0;
-    public void generatePath(int x, int y, int maxweight)
+    int maxweight;
+    public void generatePath(PFelement start, int maxweight = 500)
     {
-        sx = x;
-        sy = y;
-        pq = new List<Tile>();
-        pq.Add(field[x, y]);
-        field[x, y].g = 0;
+        this.start = start;
+        this.maxweight = maxweight;
+        pq = new List<PFelement>();
+        inRange = new List<PFelement>();
+        pq.Add(start);
+        start.g = 0;
         pid++;
     }
 
 
     //lazy verison with List.sort better PRiorityQueue
-    private Tile curTile;
+    private PFelement curElement;
     public bool next()
     {
         if (pq.Count == 0)
@@ -42,21 +46,22 @@ public class Pathfinder : MonoBehaviour {
             return true;
         }
 
-        curTile = poll();
-        //curTile.g = 1;
-        curTile.pid = pid;
-        if (curTile.g <=2)
+        curElement = poll();
+        //curElement.g = 1;
+        curElement.pid = pid;
+        //beta
+        if (curElement.g <=maxweight)
         {
-            curTile.closed();
+            inRange.Add(curElement);
         }
          
 
-        List<Tile> neigh = GetNeighbors(curTile.x , curTile.y);
-        Tile n;
+        List<PFelement> neigh = curElement.neighboors;
+        PFelement n;
         for (int i = 0; i < neigh.Count; i++)
         {
             n = neigh[i];
-            if (n.pid != pid)
+            if (n.pid != pid&&n.walkable)
             {
                 n.g =1;
                 n.pid = pid;
@@ -64,17 +69,17 @@ public class Pathfinder : MonoBehaviour {
                 {
 
                     //+1 maybe wrong in certain cases
-                    n.g = curTile.g +1;
-                    n.from = curTile;
+                    n.g = curElement.g +1;
+                    n.from = curElement;
                     Add(n);
                     continue;
                 }
-                if (curTile.g +1 > n.g)
+                if (curElement.g +1 > n.g)
                 {
                     continue;
                 }
-                n.from = curTile;
-                n.g = curTile.g + 1;
+                n.from = curElement;
+                n.g = curElement.g + 1;
                 //reanrange in pq poor performance
                 pq.Remove(n);
                 Add(n);
@@ -91,7 +96,7 @@ public class Pathfinder : MonoBehaviour {
         return false;
     }
     //poor performance
-    private void Add(Tile t)
+    private void Add(PFelement t)
     {
         if (pq.Count == 0)
         {
@@ -110,45 +115,22 @@ public class Pathfinder : MonoBehaviour {
             }
         }
     }
-    private Tile poll()
+    private PFelement poll()
     {
-        Tile z = pq[pq.Count - 1];
+        PFelement z = pq[pq.Count - 1];
         pq.RemoveAt(pq.Count - 1);
         return z;
     }
-
-    //only vor non diagonal
-    public List<Tile> GetNeighbors(int x, int y)
+    public List<PFelement> GetinRange()
     {
-        int[] z = { x + 1, y ,  x-1,y,  x,y+1,  x,y-1  };
-        List<Tile> n = new List<Tile>();
-
-        int zx;
-        int zy;
-
-        for (int i = 0; i < z.Length; i+=2)
-        {
-            zx = z[i];
-            zy = z[i + 1];
-            if (zx > -1 && zx < field.GetLength(0) && zy > -1 && zy < field.GetLength(1))
-            {
-                if (field[zx,zy].walkable)
-                {
-
-                    n.Add(field[zx, zy]);
-
-                 
-                }
-            }
-        }
-        return n;
+        return inRange;
     }
-    public List<Tile> GetPath(int gx,int gy)
+    public List<PFelement> GetPath(PFelement goal)
     {
-        List<Tile> path = new List<Tile>();
-        Tile zw = field[gx, gy];
+        List<PFelement> path = new List<PFelement>();
+        PFelement zw = goal;
         
-        while (!(zw.x == sx && zw.y == sy))
+        while (!(zw.id == start.id))
         {
             //zw.mark();
             if (zw.from != null && zw.pid == pid)
@@ -158,7 +140,7 @@ public class Pathfinder : MonoBehaviour {
             }
             else
             {
-                return new List<Tile>();
+                return new List<PFelement>();
             }
 
 
