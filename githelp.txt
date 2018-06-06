@@ -1,0 +1,6 @@
+on frist add 
+git remote rm origin
+
+git add .
+git commit -m 'message'
+git push -u origin master 
