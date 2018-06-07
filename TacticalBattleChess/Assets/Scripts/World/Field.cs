@@ -10,8 +10,12 @@ public class Field : MonoBehaviour
     public int ylength = 5;
     public bool created = false;
     public GameObject parent = null;
+    public bool player1 = true;
     //maybe par fields
     //fields
+    public Material team1;
+    public Material team2;
+
     GameObject prefab;
     GameObject chara;
 
@@ -60,26 +64,38 @@ public class Field : MonoBehaviour
                     gamefield[i, j].name = "Tile" + i + "-" + j;
                     gamefield[i, j].transform.SetParent(parent.transform);
                     gamefield[i, j].GetComponent<PFelement>().id = i + "-" + j;
-                    if (r.Next(10) < 2)
-                    {
+                    gamefield[i, j].GetComponent<PFelement>().walkable = true;
+    
+    
 
-                        gamefield[i, j].GetComponent<PFelement>().walkable = false;
-                        gamefield[i, j].GetComponent<Tile>().visited();
-                    }
-                    else
-                    {
-                        gamefield[i, j].GetComponent<PFelement>().walkable = true;
-                    }
-
-
-                    if ((i == 3 && j == 3) || (i == 1 && j == 1) || (i == 0 && j == 4))
+                    //team1
+                    if ((i == 2 && j == 0) || (i == 3 && j == 0) || (i == 4 && j == 0) || (i == 5 && j == 0))
                     {
                         C = Instantiate(chara, new Vector3((i + 1) * 1.1f, (j + 1) * 1.1f, -1), Quaternion.identity);
                         Character c = C.GetComponent<Character>();
+                        c.material = team1;
+                        c.team = 0;
                         c.x = i;
                         c.y = j;
                         gamefield[i, j].GetComponent<PFelement>().walkable = false;
                         c.standingOn = gamefield[i, j];
+                    } //team2
+                    else if ((i == 2 && j == 7) || (i == 3 && j == 7) || (i == 4 && j == 7) || (i == 5 && j == 7))
+                    {
+                        C = Instantiate(chara, new Vector3((i + 1) * 1.1f, (j + 1) * 1.1f, -1), Quaternion.identity);
+                        Character c = C.GetComponent<Character>();
+                        c.material = team2;
+                        c.team = 1;
+                        c.x = i;
+                        c.y = j;
+                        gamefield[i, j].GetComponent<PFelement>().walkable = false;
+                        c.standingOn = gamefield[i, j];
+                    }
+                    else if (r.Next(10) < 2)
+                    {
+
+                        gamefield[i, j].GetComponent<PFelement>().walkable = false;
+                        gamefield[i, j].GetComponent<Tile>().visited();
                     }
                 }
             }
@@ -106,9 +122,6 @@ public class Field : MonoBehaviour
                         }
                     }
                     gamefield[i, j].GetComponent<PFelement>().neighboors = n;
-                    
-
-
                 }
             }
 
@@ -123,6 +136,16 @@ public class Field : MonoBehaviour
     List<PFelement> marked = new List<PFelement>();
     void Update()
     {
+        //really dirty #delete this
+        if (sm.Csel)
+        {
+            if ((player1&& sm.selectedCharacter.GetComponent<Character>().team == 1)||(!player1 && sm.selectedCharacter.GetComponent<Character>().team == 0))
+            {
+                sm.Csel = false;
+            }
+
+        }
+
 
         if (pathav)
         {
@@ -177,14 +200,19 @@ public class Field : MonoBehaviour
                     sm.selectedTile.GetComponent<PFelement>().walkable = false;
                    // sm.selectedCharacter.transform.position = sm.selectedTile.transform.position;
                    // sm.selectedCharacter.transform.position += new Vector3(0, 0, -1);
-                    sm.selectedCharacter.GetComponent<Character>().x = sm.selectedTile.GetComponent<Tile>().x;
-                    sm.selectedCharacter.GetComponent<Character>().y = sm.selectedTile.GetComponent<Tile>().y;
+                   // sm.selectedCharacter.GetComponent<Character>().x = sm.selectedTile.GetComponent<Tile>().x;
+                   // sm.selectedCharacter.GetComponent<Character>().y = sm.selectedTile.GetComponent<Tile>().y;
                     sm.selectedCharacter.GetComponent<Character>().standingOn = sm.selectedTile;
+
+                    sm.Thover = false;
+                    for (int i = 0; i < marked.Count; i++)
+                    {
+                        marked[i].gameObject.GetComponent<Tile>().reset();
+                    }
                     for (int i = 0; i < path.Count; i++)
                     {
                         path[i].gameObject.GetComponent<Tile>().unmark();
                     }
-                    sm.Thover = false;
                     StartCoroutine(Move(sm.selectedCharacter, path, 10f));
                     //sm.Csel = true;
 
@@ -247,8 +275,9 @@ public class Field : MonoBehaviour
             yield return null;
         }
 
-        sm.Csel = true;
-        
+        sm.Csel = false;
+        player1 = !player1;
+
     }
 }
 

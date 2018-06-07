@@ -233,7 +233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
+  m_ScaleFactor: 5
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
@@ -508,13 +508,11 @@ Prefab:
       propertyPath: m_Name
       value: World
       objectReference: {fileID: 0}
-    - target: {fileID: 114770475677512760, guid: d59dad2262c07ae4290f26da0ef018e0,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: xlength
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 114770475677512760, guid: d59dad2262c07ae4290f26da0ef018e0,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: ylength
       value: 8
       objectReference: {fileID: 0}

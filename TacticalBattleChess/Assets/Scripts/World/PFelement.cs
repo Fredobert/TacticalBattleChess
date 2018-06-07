@@ -14,4 +14,12 @@ public class PFelement : MonoBehaviour {
     //maybe
     public int x;
     public int y;
+
+    //0 N     1 E     2 S      3 W ...
+    public PFelement Go(int direction)
+    {
+        int d = direction % 4;
+        return (neighboors[d].walkable) ? neighboors[d] : null;
+    }
+
 }

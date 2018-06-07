@@ -5,16 +5,6 @@ using UnityEngine;
 public class Tile : MonoBehaviour {
 
     private SelectManager sm;
-
-    public bool walkable = true;
-    public int x;
-    public int y;
-    //for pathfinding
-    public Tile from;
-    public int pid;
-    //patfinding cheat
-    public int g;
-
     public Material unmarked;
     public Material marked;
     public Material visit;
@@ -28,7 +18,6 @@ public class Tile : MonoBehaviour {
 		GameObject field = GameObject.Find("World");
         prevMat = unmarked;
         sm = field.GetComponent<SelectManager>();
-        pid = 0;
     }
 	
 	// Update is called once per frame

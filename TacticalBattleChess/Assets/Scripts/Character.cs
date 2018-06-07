@@ -27,11 +27,14 @@ public class Character : MonoBehaviour {
     private SelectManager sm;
     public int x;
     public int y;
+    public int team;
     public GameObject standingOn;
+    public Material material;
     // Use this for initialization
     void Start () {
         GameObject field = GameObject.Find("World");
         sm = field.GetComponent<SelectManager>();
+        GetComponent<MeshRenderer>().material = material;
     }
 	
 	// Update is called once per frame
