@@ -248,6 +248,7 @@ public class Field : MonoBehaviour
         }
 
         sm.Csel = true;
+        
     }
 }
 

@@ -60,11 +60,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Character.cs" />
-    <Compile Include="Assets\Scripts\PFelement.cs" />
-    <Compile Include="Assets\Scripts\Tile.cs" />
     <Compile Include="Assets\Scripts\World\Field.cs" />
     <Compile Include="Assets\Scripts\World\Pathfinder.cs" />
+    <Compile Include="Assets\Scripts\World\PFelement.cs" />
     <Compile Include="Assets\Scripts\World\SelectManager.cs" />
+    <Compile Include="Assets\Scripts\World\Tile.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/FRED/fredspace/TacticalBattleChess/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
