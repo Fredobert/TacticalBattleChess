@@ -27,12 +27,12 @@ public class Tile : MonoBehaviour {
 
     void OnMouseDown()
     {
-        sm.SelectTile(gameObject);
+        EventManager.SelectTile(gameObject);
     }
 
      void OnMouseEnter()
     {
-        sm.Hover(gameObject);
+        EventManager.HoverTile(gameObject);
     }
 
     //bainstorming

@@ -2,25 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-interface ICharacter
-{
-    GameObject Me
-    {
-        get;
-        set;
-    }
-
-    int X
-    {
-        get;
-        set;
-    }
-    int Y
-    {
-        get; set;
-    }
-}
-
 public class Character : MonoBehaviour {
 
 
@@ -28,6 +9,7 @@ public class Character : MonoBehaviour {
     public int x;
     public int y;
     public int team;
+    public int movment;
     public GameObject standingOn;
     public Material material;
     // Use this for initialization
@@ -35,6 +17,7 @@ public class Character : MonoBehaviour {
         GameObject field = GameObject.Find("World");
         sm = field.GetComponent<SelectManager>();
         GetComponent<MeshRenderer>().material = material;
+        movment = 3;
     }
 	
 	// Update is called once per frame
@@ -45,6 +28,6 @@ public class Character : MonoBehaviour {
     void OnMouseDown()
     {
         print("selected a char");
-        sm.SelectChar(gameObject);
+        EventManager.SelectCharacter(gameObject);
     }
 }

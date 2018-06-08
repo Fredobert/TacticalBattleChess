@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114847274053328770}
   - component: {fileID: 114705343713944794}
   - component: {fileID: 114858562431497524}
+  - component: {fileID: 114112454194216784}
   m_Layer: 0
   m_Name: field
   m_TagString: Untagged
@@ -99,6 +100,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114112454194216784
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1537698295966030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25491d6206c9efe4393e7557ac5de203, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114705343713944794
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -142,8 +154,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xlength: 8
   ylength: 8
-  created: 0
   parent: {fileID: 0}
-  player1: 1
+  pturn: 1
+  currentPlayer: 0
   team1: {fileID: 2100000, guid: 689f5859aef59dc458f7b50001bbcf25, type: 2}
   team2: {fileID: 2100000, guid: 9f43f1947ab90d047a83b571fbcd7611, type: 2}
+  player1: {fileID: 0}
+  player2: {fileID: 0}
