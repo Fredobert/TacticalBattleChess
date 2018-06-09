@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23241149670084332}
   - component: {fileID: 65404438964961388}
   - component: {fileID: 114816483569731698}
+  - component: {fileID: 114969985064652864}
   m_Layer: 9
   m_Name: Char
   m_TagString: Untagged
@@ -108,3 +109,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aeea4f2b14e976429bd05f5fe38f914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  x: 0
+  y: 0
+  team: 0
+  movment: 0
+  health: 0
+  standingOn: {fileID: 0}
+  material: {fileID: 0}
+  ability1: {fileID: 0}
+  ability2: {fileID: 0}
+--- !u!114 &114969985064652864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1924012324553540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cb3967df9b4088469735ad36c6a8b8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
+  speed: 0.2
+  damage: 10

@@ -4,10 +4,56 @@ using UnityEngine;
 
 public class Fireball : Ability {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+
+    public GameObject prefab;
+    public float speed = 0.2f;
+    public int damage = 10;
+
+
+
+
+    int directionOffset;
+    PFelement from;
+    public override void CastAbility(PFelement target)
+    {
+     directionOffset =   from.neighboors.IndexOf(target);
+        if (directionOffset == -1)
+        {
+            return;
+        }
+        from = from.neighboors[directionOffset];
+        GameObject g = Instantiate(prefab);
+        StartCoroutine(Animation(g));
+   
+         
+    }
+
+    public override List<PFelement> possibleCasts(PFelement from)
+    {
+        this.from = from;
+        return from.neighboors;
+    }
+ 
+
+    IEnumerator Animation(GameObject g)
+    {
+        while (from != null && from.walkable != false)
+        {
+            g.transform.position = new Vector3(from.transform.position.x, from.transform.position.y, -4);
+            from = from.neighboors[directionOffset];
+            yield return new WaitForSeconds(speed);
+        }
+        if (from.GetComponent<Tile>().character != null)
+        {
+            from.GetComponent<Tile>().character.GetComponent<Character>().DealDamage(damage);
+        }
+        Destroy(g);
+    }
+
+    // Use this for initialization
+    void Start () {
+		prefab = Resources.Load("Fireball") as GameObject;
+    }
 	
 	// Update is called once per frame
 	void Update () {

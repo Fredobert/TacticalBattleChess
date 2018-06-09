@@ -15,7 +15,6 @@ public class Player : MonoBehaviour {
     public Field field;
 
 
-
     public bool busy;
     // Use this for initialization
     void Start()
@@ -28,6 +27,7 @@ public class Player : MonoBehaviour {
             EventManager.OnHoverTile += Hover;
             EventManager.OnSelectChar += SelectChar;
             EventManager.OnSelectTile += SelectTile;
+            EventManager.OnAbility1Click += AbilitySelected;
             
         }
         
@@ -37,6 +37,7 @@ public class Player : MonoBehaviour {
     public GameObject HTile;
     public GameObject STile;
     public GameObject SCharacter;
+
     void Hover(GameObject tile)
     {
         if (field.currentPlayer == teamid && pathava && !busy)
@@ -58,17 +59,47 @@ public class Player : MonoBehaviour {
     {
         if (field.currentPlayer == teamid  && !busy && pathava)
         {
-            STile = tile;
-            Move(tile);
+            if (!AbilityModus)
+            {
+                STile = tile;
+                Move(tile);
+            }
+            else
+            {
+
+                AbilityModus = false;
+                SAbility.CastAbility(tile.GetComponent<PFelement>());
+            }
+
         }
     }
 
-    //player turn called from field update
-    public bool turn() {
-        return false;
+    //Refacotor Ability Later
+    Ability SAbility;
+    List<PFelement> markAb;
+    bool AbilityModus = false;
+   void  AbilitySelected()
+    {
+        if (field.currentPlayer == teamid && !busy && SCharacter != null)
+        {
+            SAbility = SCharacter.GetComponent<Character>().ability1;
+            markAb = SAbility.possibleCasts(SCharacter.GetComponent<Character>().standingOn.GetComponent<PFelement>());
+            AbilityModus = true;
+            Unselect();
+            for (int i = 0; i < markAb.Count; i++)
+            {
+                if (markAb[i] != null)
+                {
+                    markAb[i].GetComponent<Tile>().closed();
+                }
+               
+            }
+        }
     }
 
 
+
+   //End of Ability snipped
 
 
     public void InitCharSelect(GameObject character)
@@ -101,7 +132,9 @@ public class Player : MonoBehaviour {
             path[i].gameObject.GetComponent<Tile>().unmark();
         }
         SCharacter.GetComponent<Character>().standingOn.GetComponent<PFelement>().walkable = true;
+        SCharacter.GetComponent<Character>().standingOn.GetComponent<Tile>().character = null;
         STile.GetComponent<PFelement>().walkable = false;
+        STile.GetComponent<Tile>().character = SCharacter;
         SCharacter.GetComponent<Character>().standingOn = STile;
 
 
@@ -172,6 +205,7 @@ public class Player : MonoBehaviour {
             }
             yield return null;
         }
+        
         busy = false;
         field.FinishTurn();
     }

@@ -42,7 +42,7 @@ public class EventManager : MonoBehaviour {
     public delegate void Ability1Action();
     public static event Ability1Action OnAbility1Click;
 
-    public static void Ability1(GameObject tile)
+    public static void Ability1()
     {
         if (OnAbility1Click != null)
         {

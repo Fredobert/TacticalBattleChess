@@ -364,7 +364,7 @@ GameObject:
   - component: {fileID: 952355670}
   - component: {fileID: 952355669}
   m_Layer: 5
-  m_Name: Button
+  m_Name: FirstAbility
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -797,6 +797,11 @@ Prefab:
       propertyPath: m_LocalScale.y
       value: 7.5859466
       objectReference: {fileID: 0}
+    - target: {fileID: 114509126934807620, guid: d59dad2262c07ae4290f26da0ef018e0,
+        type: 2}
+      propertyPath: firstAbility
+      value: 
+      objectReference: {fileID: 952355669}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d59dad2262c07ae4290f26da0ef018e0, type: 2}
   m_IsPrefabParent: 0

@@ -48,8 +48,8 @@ public class Field : MonoBehaviour
         player = Resources.Load("Player") as GameObject;
         //init all tiles build field
         gamefield = new GameObject[xlength, ylength];
-      GameObject p1 =   Instantiate(player);
-      GameObject p2 =   Instantiate(player);
+        GameObject p1 =   Instantiate(player);
+        GameObject p2 =   Instantiate(player);
         p1.name = "player1";
         p2.name = "player2";
         player1 = p1.GetComponent<Player>();
@@ -91,6 +91,7 @@ public class Field : MonoBehaviour
                     c.y = j;
                     gamefield[i, j].GetComponent<PFelement>().walkable = false;
                     c.standingOn = gamefield[i, j];
+                    gamefield[i, j].GetComponent<Tile>().character = C;
                 } //team2
                 else if ((i == 2 && j == 7) || (i == 3 && j == 7) || (i == 4 && j == 7) || (i == 5 && j == 7))
                 {
@@ -102,6 +103,7 @@ public class Field : MonoBehaviour
                     c.y = j;
                     gamefield[i, j].GetComponent<PFelement>().walkable = false;
                     c.standingOn = gamefield[i, j];
+                    gamefield[i, j].GetComponent<Tile>().character = C;
                 }
                 else if (r.Next(10) < 2)
                 {
@@ -112,7 +114,6 @@ public class Field : MonoBehaviour
             }
         }
 
-        //dirty way
         pf = gameObject.GetComponent<Pathfinder>();
 
         int zx;
@@ -122,7 +123,7 @@ public class Field : MonoBehaviour
         {
             for (int j = 0; j < gamefield.GetLength(1); j++)
             {
-                int[] z = { i + 1, j, i - 1, j, i, j + 1, i, j - 1 };
+                int[] z = { i, j + 1, i + 1, j, i, j - 1,i - 1, j  };
                 List<PFelement> n = new List<PFelement>();
                 for (int k = 0; k < z.Length; k += 2)
                 {
@@ -131,6 +132,10 @@ public class Field : MonoBehaviour
                     if (zx > -1 && zx < gamefield.GetLength(0) && zy > -1 && zy < gamefield.GetLength(1))
                     {
                         n.Add(gamefield[zx, zy].GetComponent<PFelement>());
+                    }
+                    else
+                    {
+                        n.Add(null);
                     }
                 }
                 gamefield[i, j].GetComponent<PFelement>().neighboors = n;

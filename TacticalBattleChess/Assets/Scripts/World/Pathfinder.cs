@@ -61,7 +61,7 @@ public class Pathfinder : MonoBehaviour {
         for (int i = 0; i < neigh.Count; i++)
         {
             n = neigh[i];
-            if (n.pid != pid&&n.walkable)
+            if (n!= null &&n.pid != pid&&n.walkable)
             {
                 n.g =1;
                 n.pid = pid;

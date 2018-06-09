@@ -9,7 +9,7 @@ public class Tile : MonoBehaviour {
     public Material marked;
     public Material visit;
     public Material cloas;
-
+    public GameObject character;
     public Material prevMat;
 
 	// Use this for initialization
