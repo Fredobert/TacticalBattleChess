@@ -17,7 +17,7 @@ public class Field : MonoBehaviour
     public Material team2;
     public Player player1;
     public Player player2;
-
+    public List<PFelement> allPfs;
 
     GameObject prefab;
     GameObject chara;
@@ -28,7 +28,7 @@ public class Field : MonoBehaviour
     System.Random r;
 
     SelectManager sm;
-    Pathfinder pf;
+  public Pathfinder pf;
     // Use this for initialization
 
     public void Create()
@@ -41,7 +41,7 @@ public class Field : MonoBehaviour
     {
         r = new System.Random();
         sm = GetComponent<SelectManager>();
-
+        allPfs = new List<PFelement>();
         print("init grid");
         //init fields
         prefab = Resources.Load("Tile") as GameObject;
@@ -77,7 +77,7 @@ public class Field : MonoBehaviour
                 gamefield[i, j].transform.SetParent(parent.transform);
                 gamefield[i, j].GetComponent<PFelement>().id = i + "-" + j;
                 gamefield[i, j].GetComponent<PFelement>().walkable = true;
-
+                allPfs.Add(gamefield[i, j].GetComponent<PFelement>());
 
 
                 //team1

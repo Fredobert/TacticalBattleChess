@@ -39,14 +39,14 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    public delegate void Ability1Action();
-    public static event Ability1Action OnAbility1Click;
+    public delegate void AbilityAction(int id);
+    public static event AbilityAction OnAbilityClick;
 
-    public static void Ability1()
+    public static void Ability(int id)
     {
-        if (OnAbility1Click != null)
+        if (OnAbilityClick != null)
         {
-            OnAbility1Click();
+            OnAbilityClick(id);
         }
     }
 

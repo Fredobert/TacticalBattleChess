@@ -21,6 +21,7 @@ public class Character : MonoBehaviour {
     void Start () {
         GameObject field = GameObject.Find("World");
         ability1 = GetComponent<Fireball>();
+        ability2 = GetComponent<Thunder>();
         sm = field.GetComponent<SelectManager>();
         GetComponent<MeshRenderer>().material = material;
         movment = 3; 

@@ -8,7 +8,7 @@ public class Pathfinder : MonoBehaviour {
    // public Tile[,] field;
     public int pid = 0;
     public PFelement start;
-  
+    private List<PFelement> allwalkables;
 	// Use this for initialization
 	void Start () {
         
@@ -30,6 +30,7 @@ public class Pathfinder : MonoBehaviour {
         this.start = start;
         this.maxweight = maxweight;
         pq = new List<PFelement>();
+        allwalkables = new List<PFelement>();
         inRange = new List<PFelement>();
         pq.Add(start);
         start.g = 0;
@@ -118,6 +119,7 @@ public class Pathfinder : MonoBehaviour {
     private PFelement poll()
     {
         PFelement z = pq[pq.Count - 1];
+        allwalkables.Add(z);
         pq.RemoveAt(pq.Count - 1);
         return z;
     }
@@ -125,6 +127,12 @@ public class Pathfinder : MonoBehaviour {
     {
         return inRange;
     }
+
+    public List<PFelement> GetAllWalkables()
+    {
+        return allwalkables;
+    }
+
     public List<PFelement> GetPath(PFelement goal)
     {
         List<PFelement> path = new List<PFelement>();

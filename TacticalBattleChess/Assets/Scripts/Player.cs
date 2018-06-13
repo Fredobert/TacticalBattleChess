@@ -27,7 +27,7 @@ public class Player : MonoBehaviour {
             EventManager.OnHoverTile += Hover;
             EventManager.OnSelectChar += SelectChar;
             EventManager.OnSelectTile += SelectTile;
-            EventManager.OnAbility1Click += AbilitySelected;
+            EventManager.OnAbilityClick += AbilitySelected;
             
         }
         
@@ -49,10 +49,28 @@ public class Player : MonoBehaviour {
 
     void SelectChar(GameObject character)
     {
-        if (field.currentPlayer == teamid&& !busy && character.GetComponent<Character>().team == teamid)
+        if (field.currentPlayer == teamid&& !busy )
         {
-            SCharacter = character;
-            InitCharSelect(character);
+            if (!AbilityModus && character.GetComponent<Character>().team == teamid)
+            {
+                SCharacter = character;
+                InitCharSelect(character);
+            }
+            else 
+            {
+                for (int i = 0; i < markAb.Count; i++)
+                {
+                    if (markAb[i] != null)
+                    {
+                        markAb[i].GetComponent<Tile>().refresh();
+                    }
+
+                }
+                AbilityModus = false;
+                SAbility.CastAbility(character.GetComponent<Character>().standingOn.GetComponent<PFelement>());
+                SCharacter = null;
+                pathava = false;
+            }
         }
     }
     void SelectTile(GameObject tile)
@@ -66,9 +84,18 @@ public class Player : MonoBehaviour {
             }
             else
             {
+                for (int i = 0; i < markAb.Count; i++)
+                {
+                    if (markAb[i] != null)
+                    {
+                        markAb[i].GetComponent<Tile>().refresh();
+                    }
 
+                }
                 AbilityModus = false;
                 SAbility.CastAbility(tile.GetComponent<PFelement>());
+                SCharacter = null;
+                pathava = false;
             }
 
         }
@@ -78,11 +105,18 @@ public class Player : MonoBehaviour {
     Ability SAbility;
     List<PFelement> markAb;
     bool AbilityModus = false;
-   void  AbilitySelected()
+   void  AbilitySelected(int id)
     {
         if (field.currentPlayer == teamid && !busy && SCharacter != null)
         {
-            SAbility = SCharacter.GetComponent<Character>().ability1;
+            if (id == 0)
+            {
+                SAbility = SCharacter.GetComponent<Character>().ability1;
+            }
+            else
+            {
+                SAbility = SCharacter.GetComponent<Character>().ability2;
+            }
             markAb = SAbility.possibleCasts(SCharacter.GetComponent<Character>().standingOn.GetComponent<PFelement>());
             AbilityModus = true;
             Unselect();

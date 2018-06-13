@@ -61,6 +61,19 @@ public class Tile : MonoBehaviour {
     {
         GetComponent<MeshRenderer>().material = prevMat;
     }
+    public void refresh()
+    {
+        if (GetComponent<PFelement>().walkable)
+        {
+            GetComponent<MeshRenderer>().material = unmarked;
+            prevMat = unmarked;
+        }
+        else
+        {
+            GetComponent<MeshRenderer>().material = visit;
+            prevMat = visit;
+        }
+    }
     public void reset()
     {
         GetComponent<MeshRenderer>().material = unmarked;
