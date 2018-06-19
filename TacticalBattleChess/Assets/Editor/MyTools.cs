@@ -14,8 +14,8 @@ public class MyTools : MonoBehaviour
         Field f = b.GetComponent<Field>();
         b =  Instantiate(b);
         b.name = "World";
-        f.parent = b;
-        f.Create();
+       // f.parent = b;
+  
     
         // Create a custom game object
 

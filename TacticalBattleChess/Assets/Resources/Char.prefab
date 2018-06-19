@@ -131,8 +131,8 @@ MonoBehaviour:
   health: 0
   standingOn: {fileID: 0}
   material: {fileID: 0}
-  ability1: {fileID: 0}
-  ability2: {fileID: 0}
+  ability1: {fileID: 114969985064652864}
+  ability2: {fileID: 114248528799719074}
 --- !u!114 &114969985064652864
 MonoBehaviour:
   m_ObjectHideFlags: 1

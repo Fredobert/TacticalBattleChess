@@ -5,7 +5,6 @@ using UnityEngine;
 public class Character : MonoBehaviour {
 
 
-    private SelectManager sm;
     public int x;
     public int y;
     public int team;
@@ -18,19 +17,18 @@ public class Character : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         GameObject field = GameObject.Find("World");
         ability1 = GetComponent<Fireball>();
         ability2 = GetComponent<Thunder>();
-        sm = field.GetComponent<SelectManager>();
         GetComponent<MeshRenderer>().material = material;
-        movment = 3; 
+        movment = 3;
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update() {
+
+    }
 
     void OnMouseDown()
     {
@@ -41,7 +39,7 @@ public class Character : MonoBehaviour {
     public void DealDamage(int dmg)
     {
         health -= dmg;
-        if (health<0)
+        if (health < 0)
         {
             Kill();
         }
@@ -52,6 +50,9 @@ public class Character : MonoBehaviour {
         standingOn.GetComponent<Tile>().character = null;
         standingOn.GetComponent<PFelement>().walkable = true;
         Destroy(gameObject);
+    }
+    public void Init(){
+        Start();
     }
 
 }

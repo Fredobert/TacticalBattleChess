@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour {
 
-    private SelectManager sm;
     public Material unmarked;
     public Material marked;
     public Material visit;
@@ -17,7 +16,6 @@ public class Tile : MonoBehaviour {
 	void Start () {
 		GameObject field = GameObject.Find("World");
         prevMat = unmarked;
-        sm = field.GetComponent<SelectManager>();
     }
 	
 	// Update is called once per frame

@@ -8,48 +8,65 @@ public class Field : MonoBehaviour
     //parameter fields
     public int xlength = 5;
     public int ylength = 5;
-    public GameObject parent = null;
+
+    [Range(1f,3f)]
+    public float padding = 2f;
+ //   public float size = 1f;
     public bool pturn = true;
     public int currentPlayer;
+    public string parentname = "StandardGrid";
     //maybe par fields
     //fields
     public Material team1;
     public Material team2;
+
     public Player player1;
     public Player player2;
-    public List<PFelement> allPfs;
 
-    GameObject prefab;
-    GameObject chara;
-    GameObject player;
+    [HideInInspector]
+    public List<PFelement> allPfs;
+    [HideInInspector]
+    public Transform parent;
+    [HideInInspector]
+    public Pathfinder pf;
+
+    //world
+    public enum MarkType {Path, Standard };
+
+    GameObject tileprefab;
+    GameObject charprefab;
+    GameObject playerprefab;
 
     GameObject C;
     GameObject[,] gamefield;
     System.Random r;
 
-    SelectManager sm;
-  public Pathfinder pf;
-    // Use this for initialization
 
-    public void Create()
+    public void GenerateMap()
     {
-        Start();
-    }
 
+        if (parent != null)
+        {
+            DestroyImmediate(parent.gameObject);
 
-    void Start()
-    {
+        }
+        else if (GameObject.Find(parentname))
+        {
+            DestroyImmediate(GameObject.Find(parentname));
+        }
+        parent = new GameObject(parentname).transform;
         r = new System.Random();
-        sm = GetComponent<SelectManager>();
         allPfs = new List<PFelement>();
-        print("init grid");
         //init fields
-        prefab = Resources.Load("Tile") as GameObject;
-        player = Resources.Load("Player") as GameObject;
-        //init all tiles build field
-        gamefield = new GameObject[xlength, ylength];
-        GameObject p1 =   Instantiate(player);
-        GameObject p2 =   Instantiate(player);
+        tileprefab = Resources.Load("Tile") as GameObject;
+        playerprefab = Resources.Load("Player") as GameObject;
+        charprefab = Resources.Load("Char") as GameObject;
+
+        //init player
+        GameObject p1 = Instantiate(playerprefab);
+        GameObject p2 = Instantiate(playerprefab);
+        p1.transform.SetParent(parent.transform);
+        p2.transform.SetParent(parent.transform);
         p1.name = "player1";
         p2.name = "player2";
         player1 = p1.GetComponent<Player>();
@@ -59,12 +76,10 @@ public class Field : MonoBehaviour
         player1.teamid = 0;
         player2.teamid = 1;
 
-        
-        GameObject chara = Resources.Load("Char") as GameObject;
-        if (parent == null)
-        {
-            parent = new GameObject("StandardGrid");
-        }
+
+        //init all tiles build field
+        gamefield = new GameObject[xlength, ylength];
+
 
         //build tile grid
         for (int i = 0; i < gamefield.GetLength(0); i++)
@@ -72,7 +87,7 @@ public class Field : MonoBehaviour
             for (int j = 0; j < gamefield.GetLength(1); j++)
             {
 
-                gamefield[i, j] = Instantiate(prefab, new Vector3((i + 1) * 1.1f, (j + 1) * 1.1f, 0), Quaternion.identity);
+                gamefield[i, j] = Instantiate(tileprefab, new Vector3((i + 1) * padding, (j + 1) * padding, 0), Quaternion.identity);
                 gamefield[i, j].name = "Tile" + i + "-" + j;
                 gamefield[i, j].transform.SetParent(parent.transform);
                 gamefield[i, j].GetComponent<PFelement>().id = i + "-" + j;
@@ -83,7 +98,8 @@ public class Field : MonoBehaviour
                 //team1
                 if ((i == 2 && j == 0) || (i == 3 && j == 0) || (i == 4 && j == 0) || (i == 5 && j == 0))
                 {
-                    C = Instantiate(chara, new Vector3((i + 1) * 1.1f, (j + 1) * 1.1f, -1), Quaternion.identity);
+                    C = Instantiate(charprefab, new Vector3((i + 1) * padding, (j + 1) * padding, -1), Quaternion.identity);
+                    C.transform.SetParent(parent.transform);
                     Character c = C.GetComponent<Character>();
                     c.material = team1;
                     c.team = 0;
@@ -92,10 +108,13 @@ public class Field : MonoBehaviour
                     gamefield[i, j].GetComponent<PFelement>().walkable = false;
                     c.standingOn = gamefield[i, j];
                     gamefield[i, j].GetComponent<Tile>().character = C;
+                    c.Init();
                 } //team2
                 else if ((i == 2 && j == 7) || (i == 3 && j == 7) || (i == 4 && j == 7) || (i == 5 && j == 7))
                 {
-                    C = Instantiate(chara, new Vector3((i + 1) * 1.1f, (j + 1) * 1.1f, -1), Quaternion.identity);
+                    C = Instantiate(charprefab, new Vector3((i + 1) * padding, (j + 1) * padding, -1), Quaternion.identity);
+                    
+                    C.transform.SetParent(parent.transform);
                     Character c = C.GetComponent<Character>();
                     c.material = team2;
                     c.team = 1;
@@ -104,16 +123,17 @@ public class Field : MonoBehaviour
                     gamefield[i, j].GetComponent<PFelement>().walkable = false;
                     c.standingOn = gamefield[i, j];
                     gamefield[i, j].GetComponent<Tile>().character = C;
+                    c.Init();
                 }
                 else if (r.Next(10) < 2)
                 {
 
-                    gamefield[i, j].GetComponent<PFelement>().walkable = false;
-                    gamefield[i, j].GetComponent<Tile>().visited();
+                    // gamefield[i, j].GetComponent<PFelement>().walkable = false;
+                    // gamefield[i, j].GetComponent<Tile>().visited();
                 }
+
             }
         }
-
         pf = gameObject.GetComponent<Pathfinder>();
 
         int zx;
@@ -123,7 +143,7 @@ public class Field : MonoBehaviour
         {
             for (int j = 0; j < gamefield.GetLength(1); j++)
             {
-                int[] z = { i, j + 1, i + 1, j, i, j - 1,i - 1, j  };
+                int[] z = { i, j + 1, i + 1, j, i, j - 1, i - 1, j };
                 List<PFelement> n = new List<PFelement>();
                 for (int k = 0; k < z.Length; k += 2)
                 {
@@ -142,6 +162,147 @@ public class Field : MonoBehaviour
             }
         }
     }
+
+
+
+    void Start()
+    {
+    
+    }
+
+
+   
+
+
+    //GAMESECTION
+
+    public void CastAbility(Character character, Ability ability, int direction)
+    {
+
+    }
+
+    public void MarkTile(PFelement pfe, MarkType mt)
+    {
+
+    }
+    //not functional at the moment
+    private bool busy;
+
+
+
+    private Character selectedChar;
+
+    public void SelectCharacter(Character character)
+    {
+        selectedChar = character;
+        pf.generatePath(character.standingOn.GetComponent<PFelement>(), character.movment);
+        StartCoroutine(GenPath());
+    }
+
+
+
+    public void Move(GameObject tile, Character character)
+    {
+        if (character == selectedChar)
+        {
+            busy = true;
+            character.standingOn.GetComponent<PFelement>().walkable = true;
+            character.standingOn.GetComponent<Tile>().character = null;
+            tile.GetComponent<PFelement>().walkable = false;
+            tile.GetComponent<Tile>().character = character.gameObject;
+            tile.GetComponent<Character>().standingOn = tile;
+            //not finshed need to generae path bevor
+            StartCoroutine(Move(character.gameObject, pf.GetPath(tile.GetComponent<PFelement>()), 20f));
+        }
+    }
+
+ 
+
+
+
+
+
+
+
+
+
+    //Cououtines
+
+    //Coroutine for pathgenerating
+    public int maxpathzyclen = 10;
+    IEnumerator GenPath()
+    {
+        bool computing = true;
+        while (computing)
+        {
+            for (int i = 0; i < maxpathzyclen; i++)
+            {
+                if (pf.next())
+                {
+                    computing = false;
+                    break;
+                }
+            }
+            yield return null;
+        }
+        busy = false;
+    }
+
+    //follow a path needs testing 
+    int currentPath = 0;
+    Vector3 currentPos;
+    IEnumerator Move(GameObject cha, List<PFelement> path, float speed)
+    {
+        currentPath = path.Count - 1;
+        currentPos = new Vector3(path[currentPath].transform.position.x, path[currentPath].transform.position.y, -1f);
+        while (currentPath > -1)
+        {
+
+            cha.transform.position = Vector3.MoveTowards(cha.transform.position, currentPos, speed * Time.deltaTime);
+            if (cha.transform.position == currentPos)
+            {
+
+                if (currentPath-- > 0)
+                {
+                    currentPos = new Vector3(path[currentPath].transform.position.x, path[currentPath].transform.position.y, -1f);
+                }
+            }
+            yield return null;
+        }
+        busy = false;
+    }
+
+    //END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
