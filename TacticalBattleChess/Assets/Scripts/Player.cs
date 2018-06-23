@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour {
     public List<Character> units;
     public int teamid;
-    public int ap;
+    public int ap = 3;
 
 
     List<PFelement> path = new List<PFelement>();
@@ -28,12 +28,13 @@ public class Player : MonoBehaviour {
             EventManager.OnSelectChar += SelectChar;
             EventManager.OnSelectTile += SelectTile;
             EventManager.OnAbilityClick += AbilitySelected;
-            
+            ap = 3;
+            pathava = false;
         }
         
     }
 
-    bool pathava = false;
+    bool pathava;
     public GameObject HTile;
     public GameObject STile;
     public GameObject SCharacter;
@@ -54,7 +55,18 @@ public class Player : MonoBehaviour {
             if (!AbilityModus && character.GetComponent<Character>().team == teamid)
             {
                 SCharacter = character;
-                InitCharSelect(character);
+
+                for (int i = 0; i < marked.Count; i++)
+                {
+                    if (marked[i] != null)
+                    {
+                        marked[i].GetComponent<Tile>().refresh();
+                    }
+
+                }
+                pathava = false;
+                field.SelectCharacter(character.GetComponent<Character>(),true);
+                //InitCharSelect(character);
             }
             else 
             {
@@ -75,12 +87,12 @@ public class Player : MonoBehaviour {
     }
     void SelectTile(GameObject tile)
     {
-        if (field.currentPlayer == teamid  && !busy && pathava)
+        if (field.currentPlayer == teamid  && !busy )
         {
             if (!AbilityModus)
             {
                 STile = tile;
-                Move(tile);
+                field.Move(tile,SCharacter.GetComponent<Character>());
             }
             else
             {
@@ -103,9 +115,9 @@ public class Player : MonoBehaviour {
 
     //Refacotor Ability Later
     Ability SAbility;
-    List<PFelement> markAb;
+    List<PFelement> markAb = new List<PFelement>();
     bool AbilityModus = false;
-   void  AbilitySelected(int id)
+    void  AbilitySelected(int id)
     {
         if (field.currentPlayer == teamid && !busy && SCharacter != null)
         {
@@ -131,22 +143,35 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void FinishSelecting(List<PFelement> inRange)
+    {
+        marked = inRange;
+        for (int i = 0; i < inRange.Count; i++)
+        {
+            field.MarkTile(inRange[i],Field.MarkType.Marked);
+        }
+        pathava = true;
+    }
 
+    public void FinishedMoving()
+    {
+        for (int i = 0; i < marked.Count; i++)
+        {
+            if (marked[i] != null)
+            {
+                marked[i].GetComponent<Tile>().refresh();
+            }
+        }
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            path[i].GetComponent<Tile>().refresh();
+        }
+        pathava = false;
+        doAction();
+    }
 
    //End of Ability snipped
-
-
-    public void InitCharSelect(GameObject character)
-    {
-        if(SCharacter != null)
-        {
-            Unselect();
-        }
-        busy = true;
-        Character c = character.GetComponent<Character>();
-        pf.generatePath(c.standingOn.GetComponent<PFelement>(), c.movment);
-        StartCoroutine(GenPath());
-    }
 
     public void Unselect()
     {
@@ -156,32 +181,13 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void Move(GameObject tile)
-    {
-        Unselect();
-        busy = true;
-        pathava = false;
-        for (int i = 0; i < path.Count; i++)
-        {
-            path[i].gameObject.GetComponent<Tile>().unmark();
-        }
-        SCharacter.GetComponent<Character>().standingOn.GetComponent<PFelement>().walkable = true;
-        SCharacter.GetComponent<Character>().standingOn.GetComponent<Tile>().character = null;
-        STile.GetComponent<PFelement>().walkable = false;
-        STile.GetComponent<Tile>().character = SCharacter;
-        SCharacter.GetComponent<Character>().standingOn = STile;
-
-
-        StartCoroutine(Move(SCharacter, path, 20f));
-    }
-
     public void MarkPath(GameObject target)
     {
         for (int i = 0; i < path.Count; i++)
         {
             path[i].gameObject.GetComponent<Tile>().unmark();
         }
-        path = pf.GetPath(target.GetComponent<PFelement>());
+        path = field.GetPath(target.GetComponent<PFelement>());
         for (int i = 0; i < path.Count; i++)
         {
             if (path[i].walkable)
@@ -191,57 +197,13 @@ public class Player : MonoBehaviour {
         }
     }
 
-    //Coroutine for pathgenerating
-    public int maxpathzyclen = 10;
-    IEnumerator GenPath()
+
+    public void doAction()
     {
-        bool computing = true;
-        while (computing)
+        if (--ap < 0)
         {
-            for (int i = 0; i < maxpathzyclen; i++)
-            {
-                if (pf.next())
-                {
-                    computing = false;
-                    break;
-                }
-            }
-            yield return null;
+            field.FinishTurn();
         }
-        marked = pf.GetinRange();
-        for (int j = 0; j < marked.Count; j++)
-        {
-            marked[j].gameObject.GetComponent<Tile>().closed();
-        }
-        busy = false;
-        pathava = true;
-    }
-
-    //follow a path needs testing 
-    int currentPath = 0;
-    Vector3 currentPos;
-    IEnumerator Move(GameObject cha, List<PFelement> path, float speed)
-    {
-        
-        currentPath = path.Count - 1;
-        currentPos = new Vector3(path[currentPath].transform.position.x, path[currentPath].transform.position.y, -1f);
-        while (currentPath > -1)
-        {
-
-            cha.transform.position = Vector3.MoveTowards(cha.transform.position, currentPos, speed * Time.deltaTime);
-            if (cha.transform.position == currentPos)
-            {
-
-                if (currentPath-- > 0)
-                {
-                    currentPos = new Vector3(path[currentPath].transform.position.x, path[currentPath].transform.position.y, -1f);
-                }
-            }
-            yield return null;
-        }
-        
-        busy = false;
-        field.FinishTurn();
     }
 
 }

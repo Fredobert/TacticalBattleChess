@@ -12,7 +12,6 @@ public class Field : MonoBehaviour
     [Range(1f,3f)]
     public float padding = 2f;
  //   public float size = 1f;
-    public bool pturn = true;
     public int currentPlayer;
     public string parentname = "StandardGrid";
     //maybe par fields
@@ -20,7 +19,9 @@ public class Field : MonoBehaviour
     public Material team1;
     public Material team2;
 
+   
     public Player player1;
+
     public Player player2;
 
     [HideInInspector]
@@ -31,7 +32,7 @@ public class Field : MonoBehaviour
     public Pathfinder pf;
 
     //world
-    public enum MarkType {Path, Standard };
+    public enum MarkType {Path, Standard, Marked };
 
     GameObject tileprefab;
     GameObject charprefab;
@@ -167,7 +168,10 @@ public class Field : MonoBehaviour
 
     void Start()
     {
-    
+        //Quick and Dirty solution  Problem Gameobject/Script variables get cleared on Play
+        player1 = GameObject.Find("player1").GetComponent<Player>();
+        player2 = GameObject.Find("player2").GetComponent<Player>();
+
     }
 
 
@@ -180,10 +184,24 @@ public class Field : MonoBehaviour
     {
 
     }
-
+    List<Tile> marked = new List<Tile>();
     public void MarkTile(PFelement pfe, MarkType mt)
     {
-
+        Tile t = pfe.GetComponent<Tile>();
+        switch (mt)
+        {
+            case (MarkType.Marked):
+                t.closed();
+                break;
+            case (MarkType.Path):
+                t.mark();
+                break;
+            case (MarkType.Standard):
+                t.refresh();
+                break;
+            default:
+                break;
+        }
     }
     //not functional at the moment
     private bool busy;
@@ -192,7 +210,7 @@ public class Field : MonoBehaviour
 
     private Character selectedChar;
 
-    public void SelectCharacter(Character character)
+    public void SelectCharacter(Character character, bool mark)
     {
         selectedChar = character;
         pf.generatePath(character.standingOn.GetComponent<PFelement>(), character.movment);
@@ -210,14 +228,17 @@ public class Field : MonoBehaviour
             character.standingOn.GetComponent<Tile>().character = null;
             tile.GetComponent<PFelement>().walkable = false;
             tile.GetComponent<Tile>().character = character.gameObject;
-            tile.GetComponent<Character>().standingOn = tile;
+            character.standingOn = tile;
             //not finshed need to generae path bevor
             StartCoroutine(Move(character.gameObject, pf.GetPath(tile.GetComponent<PFelement>()), 20f));
         }
     }
 
  
-
+    public List<PFelement> GetPath(PFelement pfe)
+    {
+      return pf.GetPath(pfe);
+    }
 
 
 
@@ -245,6 +266,8 @@ public class Field : MonoBehaviour
             }
             yield return null;
         }
+        Player z = getCurrentPlayer();
+        getCurrentPlayer().FinishSelecting(pf.GetinRange());
         busy = false;
     }
 
@@ -270,35 +293,20 @@ public class Field : MonoBehaviour
             yield return null;
         }
         busy = false;
+        getCurrentPlayer().FinishedMoving();
     }
 
     //END
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public Player getCurrentPlayer()
+    {
+        if (currentPlayer == 0)
+        {
+            return player1;
+        }
+        return player2;
+    }
 
 
 
@@ -310,6 +318,7 @@ public class Field : MonoBehaviour
     {
         currentPlayer = (currentPlayer+1)%2;
     }
+
     void Update()
     {
    
