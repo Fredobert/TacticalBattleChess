@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Ability : MonoBehaviour {
-
+   
 
     public abstract List<PFelement> possibleCasts(PFelement pfe);
 

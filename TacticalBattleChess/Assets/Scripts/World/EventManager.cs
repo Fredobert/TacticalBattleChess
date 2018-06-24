@@ -52,4 +52,31 @@ public class EventManager : MonoBehaviour {
 
 
 
+    public delegate void TurnEndAction(int id);
+    public static event TurnEndAction OnTurnEnd;
+
+    public static void TurnEnd(int id)
+    {
+        if (OnTurnEnd != null)
+        {
+            OnTurnEnd(id);
+        }
+    }
+
+    public delegate void TurnStartAction(int id);
+    public static event TurnStartAction OnTurnStart;
+
+    public static void TurnStart(int id)
+    {
+        if (OnTurnStart != null)
+        {
+            OnTurnStart(id);
+        }
+    }
+
+
+
+
+
+
 }

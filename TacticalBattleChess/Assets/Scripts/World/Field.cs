@@ -93,6 +93,7 @@ public class Field : MonoBehaviour
                 gamefield[i, j].transform.SetParent(parent.transform);
                 gamefield[i, j].GetComponent<PFelement>().id = i + "-" + j;
                 gamefield[i, j].GetComponent<PFelement>().walkable = true;
+                gamefield[i, j].GetComponent<Tile>().gras = true;
                 allPfs.Add(gamefield[i, j].GetComponent<PFelement>());
 
 
@@ -129,8 +130,9 @@ public class Field : MonoBehaviour
                 else if (r.Next(10) < 2)
                 {
 
-                    // gamefield[i, j].GetComponent<PFelement>().walkable = false;
-                    // gamefield[i, j].GetComponent<Tile>().visited();
+                     gamefield[i, j].GetComponent<PFelement>().walkable = false;
+                     gamefield[i, j].GetComponent<Tile>().visited();
+                     gamefield[i, j].GetComponent<Tile>().gras = false;
                 }
 
             }
@@ -180,8 +182,10 @@ public class Field : MonoBehaviour
 
     //GAMESECTION
 
-    public void CastAbility(Character character, Ability ability, int direction)
+    public void CastAbility(Character character, Ability ability,PFelement target )
     {
+
+        ability.CastAbility(target);
 
     }
     List<Tile> marked = new List<Tile>();
@@ -316,7 +320,9 @@ public class Field : MonoBehaviour
 
     public void FinishTurn()
     {
+        EventManager.TurnEnd(currentPlayer);
         currentPlayer = (currentPlayer+1)%2;
+        EventManager.TurnStart(currentPlayer);
     }
 
     void Update()

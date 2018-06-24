@@ -9,7 +9,7 @@ public class Character : MonoBehaviour {
     public int y;
     public int team;
     public int movment;
-    public int health;
+    public int health = 10;
     public GameObject standingOn;
     public Material material;
     public Ability ability1;
@@ -44,7 +44,7 @@ public class Character : MonoBehaviour {
             Kill();
         }
     }
-
+    //buggy null exception
     public void Kill()
     {
         standingOn.GetComponent<Tile>().character = null;

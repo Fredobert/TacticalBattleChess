@@ -7,7 +7,7 @@ public class Player : MonoBehaviour {
     public int teamid;
     public int ap = 3;
 
-
+    
     List<PFelement> path = new List<PFelement>();
     List<PFelement> marked = new List<PFelement>();
     public Pathfinder pf;
@@ -79,7 +79,7 @@ public class Player : MonoBehaviour {
 
                 }
                 AbilityModus = false;
-                SAbility.CastAbility(character.GetComponent<Character>().standingOn.GetComponent<PFelement>());
+                field.CastAbility(SCharacter.GetComponent<Character>(), SAbility, character.GetComponent<Character>().standingOn.GetComponent<PFelement>());
                 SCharacter = null;
                 pathava = false;
             }
@@ -105,7 +105,7 @@ public class Player : MonoBehaviour {
 
                 }
                 AbilityModus = false;
-                SAbility.CastAbility(tile.GetComponent<PFelement>());
+                field.CastAbility(SCharacter.GetComponent<Character>(), SAbility, tile.GetComponent<PFelement>());
                 SCharacter = null;
                 pathava = false;
             }

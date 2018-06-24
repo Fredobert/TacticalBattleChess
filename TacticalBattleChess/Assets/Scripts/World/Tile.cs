@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour {
 
+    //quick solution
+    public bool gras = true;
+
     public Material unmarked;
     public Material marked;
-    public Material visit;
-    public Material cloas;
+    public Material rock;
+    public Material rangeIndicator;
     public GameObject character;
     public Material prevMat;
 
@@ -15,7 +18,16 @@ public class Tile : MonoBehaviour {
 
 	void Start () {
 		GameObject field = GameObject.Find("World");
-        prevMat = unmarked;
+        if (gras)
+        {
+            prevMat = unmarked;
+        }
+        else
+        {
+            prevMat = rock;
+            visited();
+        }
+        
     }
 	
 	// Update is called once per frame
@@ -41,14 +53,14 @@ public class Tile : MonoBehaviour {
 
     public void visited()
     {
-       GetComponent<MeshRenderer>().material = visit;
-        prevMat = visit;
+       GetComponent<MeshRenderer>().material = rock;
+        prevMat = rock;
     }
 
     public void closed()
     {
-        GetComponent<MeshRenderer>().material = cloas;
-        prevMat = cloas;
+        GetComponent<MeshRenderer>().material = rangeIndicator;
+        prevMat = rangeIndicator;
     }
 
     public void mark()
@@ -68,8 +80,8 @@ public class Tile : MonoBehaviour {
         }
         else
         {
-            GetComponent<MeshRenderer>().material = visit;
-            prevMat = visit;
+            GetComponent<MeshRenderer>().material = rock;
+            prevMat = rock;
         }
     }
     public void reset()

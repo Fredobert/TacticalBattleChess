@@ -128,13 +128,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da7c6643a3d2eaf4db47da21d35253c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkable: 1
-  x: 0
-  y: 0
-  from: {fileID: 0}
-  pid: 0
-  g: 0
+  gras: 1
   unmarked: {fileID: 2100000, guid: 264498dad1e94444c8ef17d16ee95df5, type: 2}
   marked: {fileID: 2100000, guid: 93f4c32f225410a4a9c593b29dd9b9e4, type: 2}
-  visit: {fileID: 2100000, guid: e796ec717cdb1de4bb20324f6d045a78, type: 2}
-  cloas: {fileID: 2100000, guid: 6b3998169fc2d2a4c900a5f44f4b17ac, type: 2}
+  rock: {fileID: 2100000, guid: e796ec717cdb1de4bb20324f6d045a78, type: 2}
+  rangeIndicator: {fileID: 2100000, guid: 6b3998169fc2d2a4c900a5f44f4b17ac, type: 2}
+  character: {fileID: 0}
+  prevMat: {fileID: 0}
