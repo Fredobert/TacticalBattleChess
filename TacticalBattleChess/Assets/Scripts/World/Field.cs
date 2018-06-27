@@ -34,14 +34,16 @@ public class Field : MonoBehaviour
     //world
     public enum MarkType {Path, Standard, Marked };
 
-    GameObject tileprefab;
-    GameObject charprefab;
-    GameObject playerprefab;
-
+   public GameObject tileprefab;
+   public GameObject charprefab;
+   public  GameObject playerprefab;
+   public GameObject charuiprefab;
     GameObject C;
     GameObject[,] gamefield;
     System.Random r;
 
+    //test
+    
 
     public void GenerateMap()
     {
@@ -58,10 +60,6 @@ public class Field : MonoBehaviour
         parent = new GameObject(parentname).transform;
         r = new System.Random();
         allPfs = new List<PFelement>();
-        //init fields
-        tileprefab = Resources.Load("Tile") as GameObject;
-        playerprefab = Resources.Load("Player") as GameObject;
-        charprefab = Resources.Load("Char") as GameObject;
 
         //init player
         GameObject p1 = Instantiate(playerprefab);
@@ -80,8 +78,7 @@ public class Field : MonoBehaviour
 
         //init all tiles build field
         gamefield = new GameObject[xlength, ylength];
-
-
+        GameObject canvas = GameObject.Find("Canvas");
         //build tile grid
         for (int i = 0; i < gamefield.GetLength(0); i++)
         {
@@ -95,7 +92,7 @@ public class Field : MonoBehaviour
                 gamefield[i, j].GetComponent<PFelement>().walkable = true;
                 gamefield[i, j].GetComponent<Tile>().gras = true;
                 allPfs.Add(gamefield[i, j].GetComponent<PFelement>());
-
+               
 
                 //team1
                 if ((i == 2 && j == 0) || (i == 3 && j == 0) || (i == 4 && j == 0) || (i == 5 && j == 0))
@@ -105,12 +102,14 @@ public class Field : MonoBehaviour
                     Character c = C.GetComponent<Character>();
                     c.material = team1;
                     c.team = 0;
-                    c.x = i;
-                    c.y = j;
                     gamefield[i, j].GetComponent<PFelement>().walkable = false;
                     c.standingOn = gamefield[i, j];
                     gamefield[i, j].GetComponent<Tile>().character = C;
                     c.Init();
+                    CharUIElement cue= Instantiate(charuiprefab).GetComponent<CharUIElement>();
+                    cue.character = c;
+                    cue.transform.parent = canvas.transform;
+                    GetComponent<UiHandler>().AddUI(cue);
                 } //team2
                 else if ((i == 2 && j == 7) || (i == 3 && j == 7) || (i == 4 && j == 7) || (i == 5 && j == 7))
                 {
@@ -120,12 +119,14 @@ public class Field : MonoBehaviour
                     Character c = C.GetComponent<Character>();
                     c.material = team2;
                     c.team = 1;
-                    c.x = i;
-                    c.y = j;
                     gamefield[i, j].GetComponent<PFelement>().walkable = false;
                     c.standingOn = gamefield[i, j];
                     gamefield[i, j].GetComponent<Tile>().character = C;
                     c.Init();
+                    CharUIElement cue = Instantiate(charuiprefab).GetComponent<CharUIElement>();
+                    cue.character = c;
+                    cue.transform.parent = canvas.transform;
+                    GetComponent<UiHandler>().AddUI(cue);
                 }
                 else if (r.Next(10) < 2)
                 {

@@ -53,6 +53,7 @@ public class Fireball : Ability {
     // Use this for initialization
     void Start () {
 		prefab = Resources.Load("Fireball") as GameObject;
+        icon = Resources.Load("Textures/Fireball") as Sprite;
     }
 	
 	// Update is called once per frame

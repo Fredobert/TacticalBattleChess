@@ -7,11 +7,11 @@ public class Player : MonoBehaviour {
     public int teamid;
     public int ap = 3;
 
-    
+
     List<PFelement> path = new List<PFelement>();
     List<PFelement> marked = new List<PFelement>();
     public Pathfinder pf;
-   
+
     public Field field;
 
 
@@ -31,7 +31,7 @@ public class Player : MonoBehaviour {
             ap = 3;
             pathava = false;
         }
-        
+
     }
 
     bool pathava;
@@ -50,7 +50,7 @@ public class Player : MonoBehaviour {
 
     void SelectChar(GameObject character)
     {
-        if (field.currentPlayer == teamid&& !busy )
+        if (field.currentPlayer == teamid && !busy)
         {
             if (!AbilityModus && character.GetComponent<Character>().team == teamid)
             {
@@ -65,10 +65,10 @@ public class Player : MonoBehaviour {
 
                 }
                 pathava = false;
-                field.SelectCharacter(character.GetComponent<Character>(),true);
+                field.SelectCharacter(character.GetComponent<Character>(), true);
                 //InitCharSelect(character);
             }
-            else 
+            else
             {
                 for (int i = 0; i < markAb.Count; i++)
                 {
@@ -87,12 +87,12 @@ public class Player : MonoBehaviour {
     }
     void SelectTile(GameObject tile)
     {
-        if (field.currentPlayer == teamid  && !busy )
+        if (field.currentPlayer == teamid && !busy)
         {
             if (!AbilityModus)
             {
                 STile = tile;
-                field.Move(tile,SCharacter.GetComponent<Character>());
+                field.Move(tile, SCharacter.GetComponent<Character>());
             }
             else
             {
@@ -117,29 +117,36 @@ public class Player : MonoBehaviour {
     Ability SAbility;
     List<PFelement> markAb = new List<PFelement>();
     bool AbilityModus = false;
-    void  AbilitySelected(int id)
+    bool CharInit = false;
+    void AbilitySelected(Ability ability, Character character)
     {
-        if (field.currentPlayer == teamid && !busy && SCharacter != null)
+        if (field.currentPlayer == teamid && !busy)
         {
-            if (id == 0)
+            SAbility = ability;
+     
+            if (character != SCharacter || SCharacter == null)
             {
-                SAbility = SCharacter.GetComponent<Character>().ability1;
+                CharInit = true;
+                SelectChar(character.gameObject);
+                
             }
             else
             {
-                SAbility = SCharacter.GetComponent<Character>().ability2;
-            }
-            markAb = SAbility.possibleCasts(SCharacter.GetComponent<Character>().standingOn.GetComponent<PFelement>());
-            AbilityModus = true;
-            Unselect();
-            for (int i = 0; i < markAb.Count; i++)
+                MarkCastPossibilitys();
+            }        
+        }
+    }
+    public void MarkCastPossibilitys(){
+        markAb = SAbility.possibleCasts(SCharacter.GetComponent<Character>().standingOn.GetComponent<PFelement>());
+        AbilityModus = true;
+        Unselect();
+        for (int i = 0; i < markAb.Count; i++)
+        {
+            if (markAb[i] != null)
             {
-                if (markAb[i] != null)
-                {
-                    markAb[i].GetComponent<Tile>().closed();
-                }
-               
+                markAb[i].GetComponent<Tile>().closed();
             }
+
         }
     }
 
@@ -151,6 +158,12 @@ public class Player : MonoBehaviour {
             field.MarkTile(inRange[i],Field.MarkType.Marked);
         }
         pathava = true;
+
+        if (CharInit)
+        {
+            CharInit = false;
+            MarkCastPossibilitys();
+        }
     }
 
     public void FinishedMoving()

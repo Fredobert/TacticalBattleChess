@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Character : MonoBehaviour {
 
-
-    public int x;
-    public int y;
     public int team;
-    public int movment;
+    public int maxhealth = 10;
     public int health = 10;
+
+
+     public int movment;
+    //Unity preset
     public GameObject standingOn;
     public Material material;
     public Ability ability1;
@@ -22,7 +23,6 @@ public class Character : MonoBehaviour {
         ability1 = GetComponent<Fireball>();
         ability2 = GetComponent<Thunder>();
         GetComponent<MeshRenderer>().material = material;
-        movment = 3;
     }
 
     // Update is called once per frame
@@ -39,13 +39,17 @@ public class Character : MonoBehaviour {
     public void DealDamage(int dmg)
     {
         health -= dmg;
+        DamageTaken(dmg);
         if (health < 0)
         {
             Kill();
         }
+   
     }
-    //buggy null exception
-    public void Kill()
+
+
+        //buggy null exception
+        public void Kill()
     {
         standingOn.GetComponent<Tile>().character = null;
         standingOn.GetComponent<PFelement>().walkable = true;
@@ -53,6 +57,18 @@ public class Character : MonoBehaviour {
     }
     public void Init(){
         Start();
+    }
+
+    //EVENTS
+    public delegate void DamageTakenAction(int dmg);
+    public event DamageTakenAction OnDamageTaken;
+
+    public void DamageTaken(int dmg)
+    {
+        if (OnDamageTaken != null)
+        {
+            OnDamageTaken(dmg);
+        }
     }
 
 }

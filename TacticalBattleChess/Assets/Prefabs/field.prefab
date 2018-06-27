@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstAbility: {fileID: 0}
+  secondAbility: {fileID: 0}
 --- !u!114 &114705343713944794
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -167,10 +168,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xlength: 8
   ylength: 8
-  parent: {fileID: 0}
-  pturn: 1
+  padding: 2
   currentPlayer: 0
+  parentname: StandardGrid
   team1: {fileID: 2100000, guid: 689f5859aef59dc458f7b50001bbcf25, type: 2}
   team2: {fileID: 2100000, guid: 9f43f1947ab90d047a83b571fbcd7611, type: 2}
   player1: {fileID: 0}
   player2: {fileID: 0}
+  allPfs: []
+  parent: {fileID: 0}
+  pf: {fileID: 0}
+  maxpathzyclen: 10

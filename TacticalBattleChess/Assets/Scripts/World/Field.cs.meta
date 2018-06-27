@@ -3,7 +3,19 @@ guid: fdd46b4ec4db198479206d1687d39229
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - team1: {instanceID: 0}
+  - team2: {instanceID: 0}
+  - player1: {instanceID: 0}
+  - player2: {instanceID: 0}
+  - parent: {instanceID: 0}
+  - pf: {instanceID: 0}
+  - tileprefab: {fileID: 1042700014968378, guid: 44c2b84eb36d2a6409af062cd6b324d2,
+      type: 2}
+  - charprefab: {fileID: 1924012324553540, guid: 8fbc7fb38156ad84aa380fc7b91eccc9,
+      type: 2}
+  - playerprefab: {fileID: 1031095874426430, guid: 3df68b0fd07e46b49ad22aaec8eb91d1,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

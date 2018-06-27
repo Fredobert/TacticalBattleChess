@@ -5,23 +5,24 @@ using UnityEngine.UI;
 
 public class UiHandler : MonoBehaviour {
 
-   public Button firstAbility;
-    public Button secondAbility;
+
+    List<CharUIElement> charUIs = new List<CharUIElement>();
+
+
+
+    public void AddUI(CharUIElement cue)
+    {
+        charUIs.Add(cue);
+    }
+
+
 
     // Use this for initialization
     void Start () {
-        firstAbility.onClick.AddListener(FirstAbilityOnClick);
-        secondAbility.onClick.AddListener(SecondAbilityOnClick);
+
+        
 	}
 	
-    void FirstAbilityOnClick()
-    {
-        EventManager.Ability(0);
-    }
 
-    void SecondAbilityOnClick()
-    {
-        EventManager.Ability(1);
-    }
 
 }
