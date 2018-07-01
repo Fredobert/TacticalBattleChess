@@ -28,11 +28,11 @@ public class CharUIElement : MonoBehaviour {
         {
             ability1.onClick.AddListener(Ability1Click);
             ability2.onClick.AddListener(Ability2Click);
-            ability1.image.sprite = character.ability1.icon;
+            ability1.image.sprite = character.abilitys[0].icon;
             healthText.text = character.maxhealth + "/" + character.health;
-            ability2.image.sprite = character.ability2.icon;
+            ability2.image.sprite = character.abilitys[1].icon;
             character.OnDamageTaken += RefreshHealthBar;
-
+            character.OnHeal += RefreshHealthBar;
         }
         else
         {
@@ -51,12 +51,12 @@ public class CharUIElement : MonoBehaviour {
 
     void Ability1Click()
     {
-        EventManager.Ability(character.ability1,character);
+        EventManager.Ability(character.abilitys[0],character);
     }
 
     void Ability2Click()
     {
-        EventManager.Ability(character.ability2, character);
+        EventManager.Ability(character.abilitys[1], character);
     }
 
 

@@ -4,31 +4,35 @@ using UnityEditor;
 
 [CustomEditor (typeof (Field))]
 public class GenerateMap : Editor {
-    public int oldx;
-    public int oldy;
-    public float oldpad;
-    public bool init = false;
+
 
 
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
-        Field f = target as Field;
-        if (!init)
+  
+
+        DrawDefaultInspector();
+        Field f = target as Field; 
+        
+        EditorGUILayout.HelpBox("Editor Section", MessageType.Info);
+        if(GUILayout.Button("Create Characters"))
         {
-            oldx = f.xlength;
-            oldy = f.ylength;
-            oldpad = f.padding;
-            init = true;
+            string[] options = new string[f.characterPrefabs.Count];
+            int selected = 0;
+            for (int i = 0; i < f.characterPrefabs.Count; i++)
+            {
+                options[i] = f.characterPrefabs[i].name;
+            }
+            selected =  EditorGUILayout.Popup("Label", selected,options);
         }
-        if (oldpad != f.padding || oldx != f.xlength || oldy != f.ylength)
+
+
+
+        if (GUILayout.Button("Rebuild Map"))
         {
             f.GenerateMap();
-            oldx = f.xlength;
-            oldy = f.ylength;
-            oldpad = f.padding;
+            EditorUtility.SetDirty(f);
         }
-  
     }
 
 }

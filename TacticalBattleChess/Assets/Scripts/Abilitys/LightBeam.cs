@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Thunder : Ability
+public class LightBeam : Ability
 {
     private Field field;
     private PFelement target;

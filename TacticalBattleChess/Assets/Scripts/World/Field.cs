@@ -1,45 +1,55 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
+
 public class Field : MonoBehaviour
 {
+
+
     //parameter fields
     public int xlength = 5;
     public int ylength = 5;
 
     [Range(1f,3f)]
     public float padding = 2f;
- //   public float size = 1f;
-    public int currentPlayer;
+    //   public float size = 1f;
+
     public string parentname = "StandardGrid";
     //maybe par fields
     //fields
     public Material team1;
     public Material team2;
 
-   
     public Player player1;
-
     public Player player2;
 
     [HideInInspector]
+    public int currentPlayer;
     public List<PFelement> allPfs;
     [HideInInspector]
     public Transform parent;
     [HideInInspector]
     public Pathfinder pf;
 
-    //world
+    public GameObject[,] gamefield;
+    [HideInInspector]
     public enum MarkType {Path, Standard, Marked };
 
+    //prefab section
    public GameObject tileprefab;
    public GameObject charprefab;
-   public  GameObject playerprefab;
+   public GameObject playerprefab;
    public GameObject charuiprefab;
+
+    public List<GameObject> characterPrefabs = new List<GameObject>();
+    public List<GameObject> chars = new List<GameObject>();
+
     GameObject C;
-    GameObject[,] gamefield;
+
+
     System.Random r;
 
     //test
@@ -78,7 +88,7 @@ public class Field : MonoBehaviour
 
         //init all tiles build field
         gamefield = new GameObject[xlength, ylength];
-        GameObject canvas = GameObject.Find("Canvas");
+         GameObject canvas = GameObject.Find("Canvas");
         //build tile grid
         for (int i = 0; i < gamefield.GetLength(0); i++)
         {
@@ -92,50 +102,6 @@ public class Field : MonoBehaviour
                 gamefield[i, j].GetComponent<PFelement>().walkable = true;
                 gamefield[i, j].GetComponent<Tile>().gras = true;
                 allPfs.Add(gamefield[i, j].GetComponent<PFelement>());
-               
-
-                //team1
-                if ((i == 2 && j == 0) || (i == 3 && j == 0) || (i == 4 && j == 0) || (i == 5 && j == 0))
-                {
-                    C = Instantiate(charprefab, new Vector3((i + 1) * padding, (j + 1) * padding, -1), Quaternion.identity);
-                    C.transform.SetParent(parent.transform);
-                    Character c = C.GetComponent<Character>();
-                    c.material = team1;
-                    c.team = 0;
-                    gamefield[i, j].GetComponent<PFelement>().walkable = false;
-                    c.standingOn = gamefield[i, j];
-                    gamefield[i, j].GetComponent<Tile>().character = C;
-                    c.Init();
-                    CharUIElement cue= Instantiate(charuiprefab).GetComponent<CharUIElement>();
-                    cue.character = c;
-                    cue.transform.parent = canvas.transform;
-                    GetComponent<UiHandler>().AddUI(cue);
-                } //team2
-                else if ((i == 2 && j == 7) || (i == 3 && j == 7) || (i == 4 && j == 7) || (i == 5 && j == 7))
-                {
-                    C = Instantiate(charprefab, new Vector3((i + 1) * padding, (j + 1) * padding, -1), Quaternion.identity);
-                    
-                    C.transform.SetParent(parent.transform);
-                    Character c = C.GetComponent<Character>();
-                    c.material = team2;
-                    c.team = 1;
-                    gamefield[i, j].GetComponent<PFelement>().walkable = false;
-                    c.standingOn = gamefield[i, j];
-                    gamefield[i, j].GetComponent<Tile>().character = C;
-                    c.Init();
-                    CharUIElement cue = Instantiate(charuiprefab).GetComponent<CharUIElement>();
-                    cue.character = c;
-                    cue.transform.parent = canvas.transform;
-                    GetComponent<UiHandler>().AddUI(cue);
-                }
-                else if (r.Next(10) < 2)
-                {
-
-                     gamefield[i, j].GetComponent<PFelement>().walkable = false;
-                     gamefield[i, j].GetComponent<Tile>().visited();
-                     gamefield[i, j].GetComponent<Tile>().gras = false;
-                }
-
             }
         }
         pf = gameObject.GetComponent<Pathfinder>();
@@ -177,17 +143,11 @@ public class Field : MonoBehaviour
 
     }
 
-
-   
-
-
     //GAMESECTION
 
     public void CastAbility(Character character, Ability ability,PFelement target )
     {
-
-        ability.CastAbility(target);
-
+        ability.CastAbility(character,target);
     }
     List<Tile> marked = new List<Tile>();
     public void MarkTile(PFelement pfe, MarkType mt)
@@ -246,7 +206,28 @@ public class Field : MonoBehaviour
     }
 
 
-
+    //Create
+    public void AddCharPrefab(GameObject instantiatedChar,Tile tile,int team)
+    {
+        chars.Add(instantiatedChar);
+        GameObject canvas = GameObject.Find("Canvas");
+        parent = GameObject.Find(parentname).transform;
+        Vector3 tilePos = tile.transform.position;
+        tilePos.z = -1;
+        instantiatedChar.transform.position = tilePos;
+        instantiatedChar.transform.SetParent(parent.transform);
+        Character c = instantiatedChar.GetComponent<Character>();
+        c.material = (team == 0)? team1:team2;
+        c.team = 0;
+        tile.GetComponent<PFelement>().walkable = false;
+        c.standingOn =tile.gameObject;
+        tile.character = instantiatedChar;
+        c.Init();
+        CharUIElement cue = Instantiate(charuiprefab).GetComponent<CharUIElement>();
+        cue.character = c;
+        cue.transform.SetParent(canvas.transform);
+        GetComponent<UiHandler>().AddUI(cue);
+    }
 
 
 

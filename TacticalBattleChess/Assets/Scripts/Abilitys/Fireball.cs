@@ -14,7 +14,7 @@ public class Fireball : Ability {
 
     int directionOffset;
     PFelement from;
-    public override void CastAbility(PFelement target)
+    public override void CastAbility(Character character, PFelement target)
     {
      directionOffset =   from.neighboors.IndexOf(target);
         if (directionOffset == -1)
@@ -28,7 +28,7 @@ public class Fireball : Ability {
          
     }
 
-    public override List<PFelement> possibleCasts(PFelement from)
+    public override List<PFelement> possibleCasts(Character character, PFelement from)
     {
         this.from = from;
         return from.neighboors;
@@ -52,12 +52,6 @@ public class Fireball : Ability {
 
     // Use this for initialization
     void Start () {
-		prefab = Resources.Load("Fireball") as GameObject;
-        icon = Resources.Load("Textures/Fireball") as Sprite;
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

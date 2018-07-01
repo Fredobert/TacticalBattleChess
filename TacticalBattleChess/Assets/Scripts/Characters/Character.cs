@@ -2,39 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour {
-
+public abstract class Character : MonoBehaviour
+{
     public int team;
     public int maxhealth = 10;
     public int health = 10;
-
-
-     public int movment;
+    public int movment;
+    public List<Ability> abilitys = new List<Ability>();
     //Unity preset
+
     public GameObject standingOn;
     public Material material;
-    public Ability ability1;
-    public Ability ability2;
 
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
         GameObject field = GameObject.Find("World");
-        ability1 = GetComponent<Fireball>();
-        ability2 = GetComponent<Thunder>();
         GetComponent<MeshRenderer>().material = material;
     }
 
-    // Update is called once per frame
-    void Update() {
-
-    }
-
-    void OnMouseDown()
+    public void Init()
     {
-        print("selected a char");
-        EventManager.SelectCharacter(gameObject);
+        Start();
+        AbInit();
     }
+
+    protected abstract void AbInit();
+ 
 
     public void DealDamage(int dmg)
     {
@@ -44,22 +39,35 @@ public class Character : MonoBehaviour {
         {
             Kill();
         }
-   
+    }
+    public void Heal(int heal)
+    {
+        health += heal;
+
+        if (health > maxhealth)
+        {
+            heal =heal- health - maxhealth;
+            health = maxhealth;
+        }
+        OnHeal(heal);
     }
 
 
-        //buggy null exception
-        public void Kill()
+    //buggy null exception
+    public void Kill()
     {
         standingOn.GetComponent<Tile>().character = null;
         standingOn.GetComponent<PFelement>().walkable = true;
         Destroy(gameObject);
     }
-    public void Init(){
-        Start();
-    }
+
 
     //EVENTS
+    void OnMouseDown()
+    {
+        EventManager.SelectCharacter(gameObject);
+    }
+
     public delegate void DamageTakenAction(int dmg);
     public event DamageTakenAction OnDamageTaken;
 
@@ -68,6 +76,17 @@ public class Character : MonoBehaviour {
         if (OnDamageTaken != null)
         {
             OnDamageTaken(dmg);
+        }
+    }
+
+    public delegate void HealAction(int dmg);
+    public event HealAction OnHeal;
+
+    public void HealChar(int heal)
+    {
+        if (OnDamageTaken != null)
+        {
+            OnHeal(heal);
         }
     }
 

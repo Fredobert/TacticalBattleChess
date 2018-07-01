@@ -137,7 +137,7 @@ public class Player : MonoBehaviour {
         }
     }
     public void MarkCastPossibilitys(){
-        markAb = SAbility.possibleCasts(SCharacter.GetComponent<Character>().standingOn.GetComponent<PFelement>());
+        markAb = SAbility.possibleCasts(SCharacter.GetComponent<Character>(),SCharacter.GetComponent<Character>().standingOn.GetComponent<PFelement>());
         AbilityModus = true;
         Unselect();
         for (int i = 0; i < markAb.Count; i++)
