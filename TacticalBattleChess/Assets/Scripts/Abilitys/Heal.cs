@@ -9,20 +9,20 @@ public class Heal : Ability
     Field field;
 
 
-    public override void CastAbility(Character character, PFelement pfe)
+    public override void CastAbility(Character character, Tile tile)
     {
-        Character healchar = pfe.GetComponent<Tile>().character.GetComponent<Character>();
+        Character healchar = tile.GetCharacter();
         healchar.Heal(hpgain);
     }
 
-    public override List<PFelement> possibleCasts(Character character, PFelement pfe)
+    public override List<Tile> possibleCasts(Character character, Tile tile)
     {
-        List<PFelement> possible = new List<PFelement>();
-        for (int i = 0; i < field.allPfs.Count; i++)
+        List<Tile> possible = new List<Tile>();
+        for (int i = 0; i < field.allTiles.Count; i++)
         {
-            if (field.allPfs[i] != null && field.allPfs[i].GetComponent<Tile>().character != null)
+            if (field.allTiles[i] != null && field.allTiles[i].GetCharacter() != null)
             {
-                possible.Add(field.allPfs[i]);
+                possible.Add(field.allTiles[i]);
             }
 
         }

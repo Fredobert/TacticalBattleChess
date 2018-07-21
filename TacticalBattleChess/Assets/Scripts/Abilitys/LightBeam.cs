@@ -5,7 +5,7 @@ using UnityEngine;
 public class LightBeam : Ability
 {
     private Field field;
-    private PFelement target;
+    private Tile target;
     public float speed = 0.9f;
     public int damage = 5;
     public GameObject prefab;
@@ -17,7 +17,7 @@ public class LightBeam : Ability
     }
 
 
-    public override void CastAbility(Character character, PFelement target)
+    public override void CastAbility(Character character, Tile target)
     {
 
         this.target = target;
@@ -25,23 +25,22 @@ public class LightBeam : Ability
         StartCoroutine(Animation(g));
     }
 
-    public override List<PFelement> possibleCasts(Character character, PFelement from)
+    public override List<Tile> possibleCasts(Character character, Tile from)
     {
-        return field.allPfs;
+        return field.allTiles;
     }
 
 
     IEnumerator Animation(GameObject g)
     {
         g.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, -4);
-        target.GetComponent<PFelement>().walkable = true;
-        target.GetComponent<Tile>().refresh();
+        target.reset();
         yield return new WaitForSeconds(speed);
 
 
-        if (target.GetComponent<Tile>().character != null)
+        if (target.GetCharacter() != null)
         {
-            target.GetComponent<Tile>().character.GetComponent<Character>().DealDamage(damage);
+            target.GetCharacter().DealDamage(damage);
         }
         Destroy(g);
     }

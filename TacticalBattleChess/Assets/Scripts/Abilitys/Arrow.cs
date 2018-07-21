@@ -14,20 +14,20 @@ public class Arrow : Ability { //NOT WORKING
 
 
     int directionOffset;
-    PFelement from;
-    public override void CastAbility(Character character, PFelement target)
+    Tile from;
+    public override void CastAbility(Character character, Tile target)
     {
         GameObject g = Instantiate(prefab);
         StartCoroutine(Animation(g,target));
     }
 
-    public override List<PFelement> possibleCasts(Character character, PFelement from)
+    public override List<Tile> possibleCasts(Character character, Tile from)
     {
-        return field.allPfs;
+        return field.allTiles;
     }
 
 
-    IEnumerator Animation(GameObject g,PFelement target)
+    IEnumerator Animation(GameObject g,Tile target)
     {
         Vector3 vec;
         while (target.transform.position != g.transform.position) {
@@ -36,9 +36,9 @@ public class Arrow : Ability { //NOT WORKING
             g.transform.position = vec;
             yield return null;
         }
-        if (target.GetComponent<Tile>().character != null)
+        if (target.GetComponent<Tile>().GetCharacter() != null)
         {
-            target.GetComponent<Tile>().character.GetComponent<Character>().DealDamage(damage);
+            target.GetComponent<Tile>().GetCharacter().DealDamage(damage);
         }
         Destroy(g);
     }

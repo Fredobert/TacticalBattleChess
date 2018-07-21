@@ -8,16 +8,16 @@ public class DefenceStance : Ability {
     public int maxhpgain = 6;
 
 
-    public override void CastAbility(Character character, PFelement pfe)
+    public override void CastAbility(Character character, Tile tile)
     {
         character.maxhealth += maxhpgain;
         character.Heal(hpgain);
        
     }
 
-    public override List<PFelement> possibleCasts(Character character, PFelement pfe)
+    public override List<Tile> possibleCasts(Character character, Tile tile)
     {
-        return new List<PFelement> { pfe };
+        return new List<Tile> { tile };
     }
 
 

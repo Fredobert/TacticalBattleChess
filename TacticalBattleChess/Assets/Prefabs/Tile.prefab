@@ -9,57 +9,108 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1042700014968378}
+  m_RootGameObject: {fileID: 1976979655792624}
   m_IsPrefabParent: 1
---- !u!1 &1042700014968378
+--- !u!1 &1976979655792624
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4655182269357924}
-  - component: {fileID: 33570919585119348}
-  - component: {fileID: 23613675397821856}
-  - component: {fileID: 65339394048085922}
-  - component: {fileID: 114891579633366476}
-  - component: {fileID: 114447505024220496}
-  m_Layer: 8
+  - component: {fileID: 4454937985473354}
+  - component: {fileID: 212553274807196354}
+  - component: {fileID: 60670635182207122}
+  - component: {fileID: 114019456513332668}
+  m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4655182269357924
+--- !u!4 &4454937985473354
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1042700014968378}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.43, y: 2.93, z: -0.45032534}
+  m_GameObject: {fileID: 1976979655792624}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3, y: 0, z: 0.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23613675397821856
-MeshRenderer:
+--- !u!60 &60670635182207122
+PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1042700014968378}
+  m_GameObject: {fileID: 1976979655792624}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.2, y: 2.64}
+    newSize: {x: 3.2, y: 2.64}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -1.5676003, y: 0.009031534}
+      - {x: -0.01663673, y: -0.7848017}
+      - {x: 1.5737629, y: 0.011034787}
+      - {x: 0.012639523, y: 0.7869681}
+--- !u!114 &114019456513332668
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1976979655792624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da7c6643a3d2eaf4db47da21d35253c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  from: {fileID: 0}
+  pid: 0
+  g: 1
+  neighboors:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  id: 1-:1
+  tileContent: {fileID: 0}
+  unmarked: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  marked: {fileID: 2100000, guid: 264498dad1e94444c8ef17d16ee95df5, type: 2}
+  rangeIndicator: {fileID: 2100000, guid: 59b8b29a1d8e04442aca7ad36a051585, type: 2}
+  prevMat: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+--- !u!212 &212553274807196354
+SpriteRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1976979655792624}
+  m_Enabled: 0
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 264498dad1e94444c8ef17d16ee95df5, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -71,7 +122,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -79,59 +130,13 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33570919585119348
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1042700014968378}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &65339394048085922
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1042700014968378}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114447505024220496
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1042700014968378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f3bcbcfde01d05458915c99b5205991, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  from: {fileID: 0}
-  pid: 0
-  g: 0
-  neighboors: []
-  walkable: 0
-  id: 
-  x: 0
-  y: 0
---- !u!114 &114891579633366476
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1042700014968378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da7c6643a3d2eaf4db47da21d35253c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gras: 1
-  unmarked: {fileID: 2100000, guid: 264498dad1e94444c8ef17d16ee95df5, type: 2}
-  marked: {fileID: 2100000, guid: 93f4c32f225410a4a9c593b29dd9b9e4, type: 2}
-  rock: {fileID: 2100000, guid: e796ec717cdb1de4bb20324f6d045a78, type: 2}
-  rangeIndicator: {fileID: 2100000, guid: 6b3998169fc2d2a4c900a5f44f4b17ac, type: 2}
-  character: {fileID: 0}
-  prevMat: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 89fe0996ef69a9f4bb700ea155b0304a, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 3.2, y: 2.64}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0

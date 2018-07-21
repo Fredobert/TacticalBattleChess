@@ -28,7 +28,7 @@ public class Field : MonoBehaviour
 
     [HideInInspector]
     public int currentPlayer;
-    public List<PFelement> allPfs;
+    public List<Tile> allTiles;
     [HideInInspector]
     public Transform parent;
     [HideInInspector]
@@ -40,11 +40,15 @@ public class Field : MonoBehaviour
 
     //prefab section
    public GameObject tileprefab;
+    public GameObject StandardTileContent;
    public GameObject charprefab;
    public GameObject playerprefab;
    public GameObject charuiprefab;
 
     public List<GameObject> characterPrefabs = new List<GameObject>();
+    public List<GameObject> tilePrefabs = new List<GameObject>();
+    public List<GameObject> contentPrefabs = new List<GameObject>();
+
     public List<GameObject> chars = new List<GameObject>();
 
     GameObject C;
@@ -53,11 +57,11 @@ public class Field : MonoBehaviour
     System.Random r;
 
     //test
-    
-
+    float isox = 1.5f;
+    float isoy = 0.75f;
     public void GenerateMap()
     {
-
+        pf = new Pathfinder();
         if (parent != null)
         {
             DestroyImmediate(parent.gameObject);
@@ -69,7 +73,7 @@ public class Field : MonoBehaviour
         }
         parent = new GameObject(parentname).transform;
         r = new System.Random();
-        allPfs = new List<PFelement>();
+        allTiles = new List<Tile>();
 
         //init player
         GameObject p1 = Instantiate(playerprefab);
@@ -88,23 +92,25 @@ public class Field : MonoBehaviour
 
         //init all tiles build field
         gamefield = new GameObject[xlength, ylength];
-         GameObject canvas = GameObject.Find("Canvas");
         //build tile grid
         for (int i = 0; i < gamefield.GetLength(0); i++)
         {
             for (int j = 0; j < gamefield.GetLength(1); j++)
             {
 
-                gamefield[i, j] = Instantiate(tileprefab, new Vector3((i + 1) * padding, (j + 1) * padding, 0), Quaternion.identity);
+                gamefield[i, j] = Instantiate(tileprefab, new Vector3(((i+j) * isox) * padding, ((i - j) * isoy) * padding, (gamefield.GetLength(1)-j)/10f + (i )/100f), Quaternion.identity);
                 gamefield[i, j].name = "Tile" + i + "-" + j;
                 gamefield[i, j].transform.SetParent(parent.transform);
-                gamefield[i, j].GetComponent<PFelement>().id = i + "-" + j;
-                gamefield[i, j].GetComponent<PFelement>().walkable = true;
-                gamefield[i, j].GetComponent<Tile>().gras = true;
-                allPfs.Add(gamefield[i, j].GetComponent<PFelement>());
+                Tile t = gamefield[i, j].GetComponent<Tile>();
+                GameObject g = Instantiate(StandardTileContent);
+                TileContent tc = g.GetComponent<TileContent>();
+                t.tileContent = tc;
+                g.transform.SetParent(t.transform);
+                g.transform.position = t.transform.position;
+                t.Init(i + "-:" + j);
+                allTiles.Add(t);
             }
         }
-        pf = gameObject.GetComponent<Pathfinder>();
 
         int zx;
         int zy;
@@ -114,21 +120,21 @@ public class Field : MonoBehaviour
             for (int j = 0; j < gamefield.GetLength(1); j++)
             {
                 int[] z = { i, j + 1, i + 1, j, i, j - 1, i - 1, j };
-                List<PFelement> n = new List<PFelement>();
+                List<Tile> n = new List<Tile>();
                 for (int k = 0; k < z.Length; k += 2)
                 {
                     zx = z[k];
                     zy = z[k + 1];
                     if (zx > -1 && zx < gamefield.GetLength(0) && zy > -1 && zy < gamefield.GetLength(1))
                     {
-                        n.Add(gamefield[zx, zy].GetComponent<PFelement>());
+                        n.Add(gamefield[zx, zy].GetComponent<Tile>());
                     }
                     else
                     {
                         n.Add(null);
                     }
                 }
-                gamefield[i, j].GetComponent<PFelement>().neighboors = n;
+                gamefield[i, j].GetComponent<Tile>().neighboors = n;
             }
         }
     }
@@ -143,26 +149,85 @@ public class Field : MonoBehaviour
 
     }
 
+    //Create
+    public void AddCharPrefab(GameObject instantiatedChar, Tile tile, int team)
+    {
+        chars.Add(instantiatedChar);
+        GameObject canvas = GameObject.Find("Canvas");
+        parent = GameObject.Find(parentname).transform;
+        Vector3 tilePos = tile.transform.position;
+        tilePos.z = -1;
+        instantiatedChar.transform.position = tilePos;
+        instantiatedChar.transform.SetParent(parent.transform);
+        Character c = instantiatedChar.GetComponent<Character>();
+        // c.material = (team == 0)? team1:team2;
+        c.team = 0;
+        c.standingOn = tile;
+        tile.tileContent.character = c;
+        c.Init();
+        CharUIElement cue = Instantiate(charuiprefab).GetComponent<CharUIElement>();
+        cue.character = c;
+        cue.transform.SetParent(canvas.transform);
+        GetComponent<UiHandler>().AddUI(cue);
+    }
+
+    public void AddTileContent(GameObject instantiatedTileContent,Tile tile)
+    {
+        if (Application.isEditor)
+        {
+            DestroyImmediate(tile.tileContent.gameObject);
+        }
+        else
+        {
+            Destroy(tile.tileContent.gameObject);
+        }
+        tile.tileContent = instantiatedTileContent.GetComponent<TileContent>();
+        instantiatedTileContent.transform.position = tile.transform.position;
+        instantiatedTileContent.transform.parent = tile.transform;
+    }
+
+    public void AddContent(GameObject instantiatedContent, Tile tile)
+    {
+        if (tile.tileContent != null )
+        {
+            if (tile.tileContent.content != null)
+            {
+                if (Application.isEditor)
+                {
+                    DestroyImmediate(tile.tileContent.content.gameObject);
+                }
+                else
+                {
+                    Destroy(tile.tileContent.content.gameObject);
+                }
+            }
+            tile.tileContent.content = instantiatedContent.GetComponent<Content>();
+            Vector3 vec = tile.transform.position;
+            vec.z = -0.5f;
+            instantiatedContent.transform.position = vec;
+            instantiatedContent.transform.parent = tile.transform;
+        }
+
+    }
+
     //GAMESECTION
 
-    public void CastAbility(Character character, Ability ability,PFelement target )
+    public void CastAbility(Character character, Ability ability,Tile target )
     {
         ability.CastAbility(character,target);
     }
-    List<Tile> marked = new List<Tile>();
-    public void MarkTile(PFelement pfe, MarkType mt)
+    public void MarkTile(Tile tile, MarkType mt)
     {
-        Tile t = pfe.GetComponent<Tile>();
         switch (mt)
         {
             case (MarkType.Marked):
-                t.closed();
+                tile.range();
                 break;
             case (MarkType.Path):
-                t.mark();
+                tile.mark();
                 break;
             case (MarkType.Standard):
-                t.refresh();
+                tile.reset();
                 break;
             default:
                 break;
@@ -178,56 +243,31 @@ public class Field : MonoBehaviour
     public void SelectCharacter(Character character, bool mark)
     {
         selectedChar = character;
-        pf.generatePath(character.standingOn.GetComponent<PFelement>(), character.movment);
+        pf.generatePath(character.standingOn, character.movment);
         StartCoroutine(GenPath());
     }
 
 
 
-    public void Move(GameObject tile, Character character)
+    public void Move(Tile tile, Character character)
     {
         if (character == selectedChar)
         {
             busy = true;
-            character.standingOn.GetComponent<PFelement>().walkable = true;
-            character.standingOn.GetComponent<Tile>().character = null;
-            tile.GetComponent<PFelement>().walkable = false;
-            tile.GetComponent<Tile>().character = character.gameObject;
+            character.standingOn.tileContent.character = null;
+            tile.tileContent.character = character;
             character.standingOn = tile;
             //not finshed need to generae path bevor
-            StartCoroutine(Move(character.gameObject, pf.GetPath(tile.GetComponent<PFelement>()), 20f));
+            StartCoroutine(Move(character.gameObject, GetPath(tile,character.movment), 20f));
         }
     }
 
  
-    public List<PFelement> GetPath(PFelement pfe)
+    public List<Tile> GetPath(Tile tile,int range)
     {
-      return pf.GetPath(pfe);
+      return pf.GetPath(tile,range);
     }
 
-
-    //Create
-    public void AddCharPrefab(GameObject instantiatedChar,Tile tile,int team)
-    {
-        chars.Add(instantiatedChar);
-        GameObject canvas = GameObject.Find("Canvas");
-        parent = GameObject.Find(parentname).transform;
-        Vector3 tilePos = tile.transform.position;
-        tilePos.z = -1;
-        instantiatedChar.transform.position = tilePos;
-        instantiatedChar.transform.SetParent(parent.transform);
-        Character c = instantiatedChar.GetComponent<Character>();
-        c.material = (team == 0)? team1:team2;
-        c.team = 0;
-        tile.GetComponent<PFelement>().walkable = false;
-        c.standingOn =tile.gameObject;
-        tile.character = instantiatedChar;
-        c.Init();
-        CharUIElement cue = Instantiate(charuiprefab).GetComponent<CharUIElement>();
-        cue.character = c;
-        cue.transform.SetParent(canvas.transform);
-        GetComponent<UiHandler>().AddUI(cue);
-    }
 
 
 
@@ -260,7 +300,7 @@ public class Field : MonoBehaviour
     //follow a path needs testing 
     int currentPath = 0;
     Vector3 currentPos;
-    IEnumerator Move(GameObject cha, List<PFelement> path, float speed)
+    IEnumerator Move(GameObject cha, List<Tile> path, float speed)
     {
         currentPath = path.Count - 1;
         currentPos = new Vector3(path[currentPath].transform.position.x, path[currentPath].transform.position.y, -1f);

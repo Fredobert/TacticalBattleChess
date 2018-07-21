@@ -11,15 +11,15 @@ public abstract class Character : MonoBehaviour
     public List<Ability> abilitys = new List<Ability>();
     //Unity preset
 
-    public GameObject standingOn;
+    public Tile standingOn;
     public Material material;
 
 
     // Use this for initialization
     void Start()
     {
-        GameObject field = GameObject.Find("World");
-        GetComponent<MeshRenderer>().material = material;
+       // GameObject field = GameObject.Find("World");
+       // GetComponent<Renderer>().material = material;
     }
 
     public void Init()
@@ -56,8 +56,7 @@ public abstract class Character : MonoBehaviour
     //buggy null exception
     public void Kill()
     {
-        standingOn.GetComponent<Tile>().character = null;
-        standingOn.GetComponent<PFelement>().walkable = true;
+        standingOn.tileContent.character = null;
         Destroy(gameObject);
     }
 
@@ -65,7 +64,7 @@ public abstract class Character : MonoBehaviour
     //EVENTS
     void OnMouseDown()
     {
-        EventManager.SelectCharacter(gameObject);
+        EventManager.SelectCharacter(this,gameObject);
     }
 
     public delegate void DamageTakenAction(int dmg);

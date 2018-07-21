@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 33071142069602460}
   - component: {fileID: 23927057432812442}
   - component: {fileID: 65510029877704830}
-  - component: {fileID: 114977391566597562}
   - component: {fileID: 114308768917631864}
   - component: {fileID: 114388019667952238}
   - component: {fileID: 114465093234238702}
@@ -120,74 +119,14 @@ MonoBehaviour:
   player1: {fileID: 0}
   player2: {fileID: 0}
   currentPlayer: 0
-  allPfs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  allTiles: []
   parent: {fileID: 0}
-  pf: {fileID: 114977391566597562}
-  tileprefab: {fileID: 1042700014968378, guid: 44c2b84eb36d2a6409af062cd6b324d2, type: 2}
+  pf:
+    pid: 0
+    start: {fileID: 0}
+  tileprefab: {fileID: 1976979655792624, guid: 24a2e1e0e01594047911cb98f497f645, type: 2}
+  StandardTileContent: {fileID: 1890594636013006, guid: 804a1b829dd27b6489bc3a88f9c70438,
+    type: 2}
   charprefab: {fileID: 1924012324553540, guid: 8fbc7fb38156ad84aa380fc7b91eccc9, type: 2}
   playerprefab: {fileID: 1031095874426430, guid: 3df68b0fd07e46b49ad22aaec8eb91d1,
     type: 2}
@@ -198,6 +137,7 @@ MonoBehaviour:
   - {fileID: 1068106022645994, guid: 45adaa3a0f175794abb7fa1e07cdf394, type: 2}
   - {fileID: 1820701341316996, guid: 59fb2b8a775affe42b3970dcff21ae8c, type: 2}
   - {fileID: 1358999823115300, guid: ec0b5bac36cb4c547a7290598d336094, type: 2}
+  tilePrefabs: []
   chars: []
   maxpathzyclen: 10
 --- !u!114 &114388019667952238
@@ -222,16 +162,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 344aa528892b8904f920884444f0cc04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114977391566597562
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1088307377134634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bd541d5a32db434e8f100d5cef90906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pid: 0
-  start: {fileID: 0}

@@ -7,10 +7,10 @@ public abstract class Ability : MonoBehaviour {
 
     public Sprite icon;
 
-    public abstract List<PFelement> possibleCasts(Character character, PFelement pfe);
+    public abstract List<Tile> possibleCasts(Character character, Tile tile);
 
 
-    public abstract void CastAbility(Character character,PFelement pfe);
+    public abstract void CastAbility(Character character,Tile tile);
 
 
 	// Use this for initialization

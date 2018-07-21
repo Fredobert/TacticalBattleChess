@@ -3,35 +3,29 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class Pathfinder : MonoBehaviour {
+[System.Serializable]
+public class Pathfinder  {
     //if target is not rechable this freezes
    // public Tile[,] field;
     public int pid = 0;
-    public PFelement start;
-    private List<PFelement> allwalkables;
-	// Use this for initialization
-	void Start () {
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	}
+    public Tile start;
+    private List<Tile> allwalkables;
+
 
     //version 1.0 Dijkstara because we want all multiple ways and only all possible outcomes within a certain raneg
-    List<PFelement> pq;
+    List<Tile> pq;
     //beta
-    List<PFelement> inRange;
+    List<Tile> inRange;
 
     int dz = 0;
     int maxweight;
-    public void generatePath(PFelement start, int maxweight = 500)
+    public void generatePath(Tile start, int maxweight = 500)
     {
         this.start = start;
         this.maxweight = maxweight;
-        pq = new List<PFelement>();
-        allwalkables = new List<PFelement>();
-        inRange = new List<PFelement>();
+        pq = new List<Tile>();
+        allwalkables = new List<Tile>();
+        inRange = new List<Tile>();
         pq.Add(start);
         start.g = 0;
         pid++;
@@ -39,7 +33,7 @@ public class Pathfinder : MonoBehaviour {
 
 
     //lazy verison with List.sort better PRiorityQueue
-    private PFelement curElement;
+    private Tile curElement;
     public bool next()
     {
         if (pq.Count == 0)
@@ -57,12 +51,12 @@ public class Pathfinder : MonoBehaviour {
         }
          
 
-        List<PFelement> neigh = curElement.neighboors;
-        PFelement n;
+        List<Tile> neigh = curElement.neighboors;
+        Tile n;
         for (int i = 0; i < neigh.Count; i++)
         {
             n = neigh[i];
-            if (n!= null &&n.pid != pid&&n.walkable)
+            if (n!= null &&n.pid != pid&&n.Walkable())
             {
                 n.g =1;
                 n.pid = pid;
@@ -88,16 +82,16 @@ public class Pathfinder : MonoBehaviour {
             }
         }
 
-        if (dz > 1000)
+        if (dz > 10000)
         {
-            print("error");
+            //ERROR
             return true;
         }
         //could be buggy tetsing 
         return false;
     }
     //poor performance
-    private void Add(PFelement t)
+    private void Add(Tile t)
     {
         if (pq.Count == 0)
         {
@@ -116,43 +110,41 @@ public class Pathfinder : MonoBehaviour {
             }
         }
     }
-    private PFelement poll()
+    private Tile poll()
     {
-        PFelement z = pq[pq.Count - 1];
+        Tile z = pq[pq.Count - 1];
         allwalkables.Add(z);
         pq.RemoveAt(pq.Count - 1);
         return z;
     }
-    public List<PFelement> GetinRange()
+    public List<Tile> GetinRange()
     {
         return inRange;
     }
 
-    public List<PFelement> GetAllWalkables()
+    public List<Tile> GetAllWalkables()
     {
         return allwalkables;
     }
 
-    public List<PFelement> GetPath(PFelement goal)
+    public List<Tile> GetPath(Tile goal, int range)
     {
-        List<PFelement> path = new List<PFelement>();
-        PFelement zw = goal;
-        
+        List<Tile> path = new List<Tile>();
+        Tile zw = goal;
+        int z = 0;
         while (!(zw.id == start.id))
-        {
+        {                                               
             //zw.mark();
-            if (zw.from != null && zw.pid == pid)
+            if (zw.from != null && zw.pid == pid && z < range)
             {
                 path.Add(zw);
                 zw = zw.from;
+                z++;
             }
             else
             {
-                return new List<PFelement>();
+                return new List<Tile>();
             }
-
-
-    
         }
         return path;
     }

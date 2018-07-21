@@ -22,8 +22,6 @@ GameObject:
   - component: {fileID: 33751297818507234}
   - component: {fileID: 23569065214580168}
   - component: {fileID: 65057559351018574}
-  - component: {fileID: 114847274053328770}
-  - component: {fileID: 114705343713944794}
   - component: {fileID: 114858562431497524}
   - component: {fileID: 114112454194216784}
   - component: {fileID: 114509126934807620}
@@ -123,38 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 344aa528892b8904f920884444f0cc04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstAbility: {fileID: 0}
-  secondAbility: {fileID: 0}
---- !u!114 &114705343713944794
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1537698295966030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bd541d5a32db434e8f100d5cef90906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pid: 0
-  start: {fileID: 0}
---- !u!114 &114847274053328770
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1537698295966030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9bcbe4be2c422749b1204dcbb0be95d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectedTile: {fileID: 0}
-  selectedCharacter: {fileID: 0}
-  Tsel: 0
-  Csel: 0
-  Thover: 0
-  hover: {fileID: 0}
 --- !u!114 &114858562431497524
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -169,13 +135,21 @@ MonoBehaviour:
   xlength: 8
   ylength: 8
   padding: 2
-  currentPlayer: 0
   parentname: StandardGrid
   team1: {fileID: 2100000, guid: 689f5859aef59dc458f7b50001bbcf25, type: 2}
   team2: {fileID: 2100000, guid: 9f43f1947ab90d047a83b571fbcd7611, type: 2}
   player1: {fileID: 0}
   player2: {fileID: 0}
-  allPfs: []
+  currentPlayer: 0
+  allTiles: []
   parent: {fileID: 0}
-  pf: {fileID: 0}
+  pf:
+    pid: 0
+    start: {fileID: 0}
+  tileprefab: {fileID: 0}
+  charprefab: {fileID: 0}
+  playerprefab: {fileID: 0}
+  charuiprefab: {fileID: 0}
+  characterPrefabs: []
+  chars: []
   maxpathzyclen: 10

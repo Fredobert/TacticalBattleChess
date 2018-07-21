@@ -13,8 +13,8 @@ public class Fireball : Ability {
 
 
     int directionOffset;
-    PFelement from;
-    public override void CastAbility(Character character, PFelement target)
+    Tile from;
+    public override void CastAbility(Character character, Tile target)
     {
      directionOffset =   from.neighboors.IndexOf(target);
         if (directionOffset == -1)
@@ -28,7 +28,7 @@ public class Fireball : Ability {
          
     }
 
-    public override List<PFelement> possibleCasts(Character character, PFelement from)
+    public override List<Tile> possibleCasts(Character character, Tile from)
     {
         this.from = from;
         return from.neighboors;
@@ -37,15 +37,15 @@ public class Fireball : Ability {
 
     IEnumerator Animation(GameObject g)
     {
-        while (from != null && from.walkable != false)
+        while (from != null && from.Walkable() != false)
         {
             g.transform.position = new Vector3(from.transform.position.x, from.transform.position.y, -4);
             from = from.neighboors[directionOffset];
             yield return new WaitForSeconds(speed);
         }
-        if (from.GetComponent<Tile>().character != null)
+        if (from.GetComponent<Tile>().GetCharacter() != null)
         {
-            from.GetComponent<Tile>().character.GetComponent<Character>().DealDamage(damage);
+            from.GetComponent<Tile>().GetCharacter().DealDamage(damage);
         }
         Destroy(g);
     }

@@ -5,37 +5,37 @@ using UnityEngine;
 public class EventManager : MonoBehaviour {
 
 
-    public delegate void SelectCharAction(GameObject character);
+    public delegate void SelectCharAction(Character character,GameObject obj);
     public static event SelectCharAction OnSelectChar;
 
-    public static void SelectCharacter(GameObject character)
+    public static void SelectCharacter(Character character, GameObject obj)
     {
         if (OnSelectChar != null)
         {
-            OnSelectChar(character);
+            OnSelectChar(character,obj);
         }
     }
 
 
-    public delegate void SelectTileAction(GameObject tile);
+    public delegate void SelectTileAction(Tile tile, GameObject obj);
     public static event SelectTileAction OnSelectTile;
 
-    public static void SelectTile(GameObject tile)
+    public static void SelectTile( Tile tile, GameObject obj)
     {
         if (OnSelectTile != null)
         {
-            OnSelectTile(tile);
+            OnSelectTile(tile,obj);
         }
     }
 
-    public delegate void HoverTileAction(GameObject tile);
+    public delegate void HoverTileAction( Tile tile, GameObject obj);
     public static event HoverTileAction OnHoverTile;
 
-    public static void HoverTile(GameObject tile)
+    public static void HoverTile( Tile tile, GameObject obj)
     {
         if (OnHoverTile != null)
         {
-            OnHoverTile(tile);
+            OnHoverTile( tile, obj);
         }
     }
 

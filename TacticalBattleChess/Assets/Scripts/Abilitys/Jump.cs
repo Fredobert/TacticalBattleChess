@@ -14,26 +14,24 @@ public class Jump : Ability
 
 
     int directionOffset;
-    PFelement from;
-    public override void CastAbility(Character character, PFelement target)
+    Tile from;
+    public override void CastAbility(Character character, Tile target)
     {
         StartCoroutine(Animation(character.gameObject, target));
 
-        character.standingOn.GetComponent<PFelement>().walkable = true;
-        character.standingOn.GetComponent<Tile>().character = null;
-        target.GetComponent<PFelement>().walkable = false;
-        target.GetComponent<Tile>().character = character.gameObject;
-        character.standingOn = target.gameObject;
+        character.standingOn.tileContent.character = null;
+        target.tileContent.character = character;
+        character.standingOn = target;
     }
 
-    public override List<PFelement> possibleCasts(Character character, PFelement from)
+    public override List<Tile> possibleCasts(Character character, Tile from)
     {
-        List<PFelement> possible = new List<PFelement>();
-        for (int i = 0; i < field.allPfs.Count; i++)
+        List<Tile> possible = new List<Tile>();
+        for (int i = 0; i < field.allTiles.Count; i++)
         {
-            if (field.allPfs[i] != null && field.allPfs[i].walkable)
+            if (field.allTiles[i] != null && field.allTiles[i].Walkable())
             {
-                possible.Add(field.allPfs[i]);
+                possible.Add(field.allTiles[i]);
             }
             
         }
@@ -41,7 +39,7 @@ public class Jump : Ability
     }
 
 
-    IEnumerator Animation(GameObject g, PFelement target)
+    IEnumerator Animation(GameObject g, Tile target)
     {
         Vector3 goal = new Vector3(target.transform.position.x, target.transform.position.y, g.transform.position.z);
         Vector3 vec;
