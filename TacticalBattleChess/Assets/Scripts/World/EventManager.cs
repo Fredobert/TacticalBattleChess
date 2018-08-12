@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour {
 
-
+    /*
     public delegate void SelectCharAction(Character character,GameObject obj);
     public static event SelectCharAction OnSelectChar;
 
@@ -15,7 +15,7 @@ public class EventManager : MonoBehaviour {
             OnSelectChar(character,obj);
         }
     }
-
+    */
 
     public delegate void SelectTileAction(Tile tile, GameObject obj);
     public static event SelectTileAction OnSelectTile;

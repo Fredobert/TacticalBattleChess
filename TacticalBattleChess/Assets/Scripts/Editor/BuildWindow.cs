@@ -105,10 +105,17 @@ public class BuildWindow : EditorWindow {
         {
             GenerateContent(f.contentPrefabs, 2, style, ref rect);
         }
-
+        rect = EditorGUILayout.GetControlRect();
+        rect = EditorGUI.IndentedRect(rect);
+ 
         // tiles
-        // GenerateContent(f.tilePrefabs, 1, style,ref rect);
+        if (GUI.Button(rect, "Mark Scene Dirty", EditorStyles.miniButton))
+        {
+            EditorSceneManager.MarkAllScenesDirty();
+        }
         EditorGUILayout.EndScrollView();
+
+
     }
 
     void OnSelectionChange()

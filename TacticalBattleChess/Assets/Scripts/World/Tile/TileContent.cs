@@ -12,10 +12,12 @@ public abstract class TileContent : MonoBehaviour {
     public Content content;
     // protected Field field;
     // Use this for initialization
-    public Material standardMat;
-    public Material markMat;
-    public Material rangedMat;
+    public Material mat;
 
+    private void Start()
+    {
+        mat = GetComponent<Renderer>().material;
+    }
 
     public virtual void Damage(int damage)
     {
@@ -39,6 +41,10 @@ public abstract class TileContent : MonoBehaviour {
         {
             return content.Walkable();
         }
+        if (character != null)
+        {
+            return false;
+        }
         return walkable;
     }
     public virtual Character GetCharacter()
@@ -46,7 +52,12 @@ public abstract class TileContent : MonoBehaviour {
         return character;
     }
 
+    //useless at the moment may be removed
     protected abstract void Init();
+    public void AInit()
+    {
+        Init();
+    }
     public void BaseInit(Tile tile, Field field)
     {
         this.field = field;

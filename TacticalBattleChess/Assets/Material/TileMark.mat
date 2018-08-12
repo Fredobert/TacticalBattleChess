@@ -68,7 +68,9 @@ Material:
     - _MinTexFade: 0.45
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _OffSet: 0.05
+    - _OffSet: 0.008
+    - _OffSetX: 0
+    - _OffSetY: 0.008
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 0

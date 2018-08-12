@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -33,7 +34,7 @@ public class Field : MonoBehaviour
     public Transform parent;
     [HideInInspector]
     public Pathfinder pf;
-
+    //fix gamefield is null on play
     public GameObject[,] gamefield;
     [HideInInspector]
     public enum MarkType {Path, Standard, Marked };
@@ -57,10 +58,11 @@ public class Field : MonoBehaviour
     System.Random r;
 
     //test
-    float isox = 1.5f;
-    float isoy = 0.75f;
+    public float isox = 1f;
+    public float isoy = 1f;
     public void GenerateMap()
     {
+        GetComponent<UiHandler>().RemoveUI();
         pf = new Pathfinder();
         if (parent != null)
         {
@@ -97,8 +99,10 @@ public class Field : MonoBehaviour
         {
             for (int j = 0; j < gamefield.GetLength(1); j++)
             {
+                //iso version
+                //gamefield[i, j] = Instantiate(tileprefab, new Vector3(((i+j) * isox) * padding, ((i - j) * isoy) * padding, (gamefield.GetLength(1)-j)/10f + (i )/100f), Quaternion.identity);
+                gamefield[i, j] = Instantiate(tileprefab, new Vector3(((i +j/3.3f) * isox) * padding,  j * isoy * padding, 1-((gamefield.GetLength(1) - j) / 10f + (i) / 100f)), Quaternion.identity);
 
-                gamefield[i, j] = Instantiate(tileprefab, new Vector3(((i+j) * isox) * padding, ((i - j) * isoy) * padding, (gamefield.GetLength(1)-j)/10f + (i )/100f), Quaternion.identity);
                 gamefield[i, j].name = "Tile" + i + "-" + j;
                 gamefield[i, j].transform.SetParent(parent.transform);
                 Tile t = gamefield[i, j].GetComponent<Tile>();
@@ -108,6 +112,7 @@ public class Field : MonoBehaviour
                 g.transform.SetParent(t.transform);
                 g.transform.position = t.transform.position;
                 t.Init(i + "-:" + j);
+                tc.AInit();
                 allTiles.Add(t);
             }
         }
@@ -143,31 +148,39 @@ public class Field : MonoBehaviour
 
     void Start()
     {
+
         //Quick and Dirty solution  Problem Gameobject/Script variables get cleared on Play
         player1 = GameObject.Find("player1").GetComponent<Player>();
         player2 = GameObject.Find("player2").GetComponent<Player>();
-
+        print("started");
     }
 
     //Create
     public void AddCharPrefab(GameObject instantiatedChar, Tile tile, int team)
     {
         chars.Add(instantiatedChar);
-        GameObject canvas = GameObject.Find("Canvas");
         parent = GameObject.Find(parentname).transform;
         Vector3 tilePos = tile.transform.position;
         tilePos.z = -1;
         instantiatedChar.transform.position = tilePos;
         instantiatedChar.transform.SetParent(parent.transform);
         Character c = instantiatedChar.GetComponent<Character>();
-        // c.material = (team == 0)? team1:team2;
-        c.team = 0;
+        if (team == 0)
+        {
+            c.transform.Rotate(0f, 180f, 0f);
+        }
+        c.team = team;
         c.standingOn = tile;
         tile.tileContent.character = c;
         c.Init();
         CharUIElement cue = Instantiate(charuiprefab).GetComponent<CharUIElement>();
+        if (Application.isEditor)
+        {
+            EditorUtility.SetDirty(GetComponent<UiHandler>());
+        }
+
         cue.character = c;
-        cue.transform.SetParent(canvas.transform);
+        cue.Init();
         GetComponent<UiHandler>().AddUI(cue);
     }
 
@@ -184,6 +197,7 @@ public class Field : MonoBehaviour
         tile.tileContent = instantiatedTileContent.GetComponent<TileContent>();
         instantiatedTileContent.transform.position = tile.transform.position;
         instantiatedTileContent.transform.parent = tile.transform;
+        tile.tileContent.AInit();
     }
 
     public void AddContent(GameObject instantiatedContent, Tile tile)
@@ -240,18 +254,23 @@ public class Field : MonoBehaviour
 
     private Character selectedChar;
 
-    public void SelectCharacter(Character character, bool mark)
+    public bool SelectCharacter(Character character, bool mark)
     {
+        if (busy)
+        {
+            return false;
+        }
         selectedChar = character;
         pf.generatePath(character.standingOn, character.movment);
         StartCoroutine(GenPath());
+        return true;
     }
 
 
 
-    public void Move(Tile tile, Character character)
+    public bool Move(Tile tile, Character character)
     {
-        if (character == selectedChar)
+        if (character == selectedChar && GetPath(tile, character.movment).Count >0 && !busy)
         {
             busy = true;
             character.standingOn.tileContent.character = null;
@@ -259,7 +278,9 @@ public class Field : MonoBehaviour
             character.standingOn = tile;
             //not finshed need to generae path bevor
             StartCoroutine(Move(character.gameObject, GetPath(tile,character.movment), 20f));
+            return true;
         }
+        return false;
     }
 
  
@@ -267,10 +288,6 @@ public class Field : MonoBehaviour
     {
       return pf.GetPath(tile,range);
     }
-
-
-
-
 
 
     //Cououtines

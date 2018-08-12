@@ -50,7 +50,7 @@ Shader "Custom/Sprite/SpriteRanged" {
 			fixed4 frag(v2f i) : SV_Target
 			{
 				fixed4 col = tex2D(_MainTex, i.uv);
-				col.rgb = col.rgb * _MaxTexFade + _Color.rgb * (1 - _MaxTexFade);
+
 				return col;
 			}
 		ENDCG

@@ -14,14 +14,10 @@ public class Tile : MonoBehaviour {
     public string id;
 
 
-
+    public Renderer rend;
     public TileContent tileContent;
     private Field field;
     //Mats
-    public Material unmarked;
-    public Material marked;
-    public Material rangeIndicator;
-    public Material prevMat;
 
     // Use this for initialization
 
@@ -33,7 +29,8 @@ public class Tile : MonoBehaviour {
 
     void Start () {
 		GameObject fieldO = GameObject.Find("World");
-        field = fieldO.GetComponent<Field>(); 
+        field = fieldO.GetComponent<Field>();
+        rend = GetComponent<Renderer>();
     }
 	
 	// Update is called once per frame
@@ -74,25 +71,92 @@ public class Tile : MonoBehaviour {
     {
 
     }
-
-
+    //needs redesign
     public void range()
     {
-        tileContent.GetComponent<Renderer>().material = rangeIndicator;
-        prevMat = rangeIndicator;
+        if(tileContent != null)
+        {
+            tileContent.mat.SetFloat("_RangeActive", 1.0f);
+            tileContent.mat.SetFloat("_MarkActive", 0f);
+        }
+       
     }
-
     public void mark()
     {
-        tileContent.GetComponent<Renderer>().material = marked;
+        if (tileContent != null)
+        {
+            tileContent.mat.SetFloat("_RangeActive", 0f);
+            tileContent.mat.SetFloat("_MarkActive", 1.0f);
+        }
     }
     public void unmark()
     {
-        tileContent.GetComponent<Renderer>().material = prevMat;
+
+        if (tileContent != null)
+        {
+            tileContent.mat.SetFloat("_RangeActive", 1.0f);
+            tileContent.mat.SetFloat("_MarkActive", 0f);
+        }
     }
     public void reset()
     {
-        tileContent.GetComponent<Renderer>().material = unmarked;
-        prevMat = unmarked;
+        if (tileContent != null)
+        {
+            tileContent.mat.SetFloat("_RangeActive", 0f);
+            tileContent.mat.SetFloat("_MarkActive", 0f);
+        }
     }
+
+    public void Hover()
+    {
+        if (tileContent != null)
+        {
+            tileContent.mat.SetFloat("_OutlineActive", 1f);
+            tileContent.mat.SetFloat("_Outline", 0.0284f);
+            if (tileContent.character != null)
+            {
+                tileContent.character.GetComponent<Renderer>().material.SetFloat("_OutlineActive", 1f);
+                tileContent.character.GetComponent<Renderer>().material.SetFloat("_Outline", 0.0284f);
+            }
+            else if (tileContent.content != null)
+            {
+                tileContent.content.GetComponent<Renderer>().material.SetFloat("_OutlineActive", 1f);
+                tileContent.content.GetComponent<Renderer>().material.SetFloat("_Outline", 0.0284f);
+            }
+        }
+    }
+    public void Click()
+    {
+        if (tileContent != null)
+        {
+            tileContent.mat.SetFloat("_OutlineActive", 1f);
+            tileContent.mat.SetFloat("_Outline", 0.05f);
+        }
+        if (tileContent.character != null)
+        {
+            tileContent.character.GetComponent<Renderer>().material.SetFloat("_OutlineActive", 1f);
+            tileContent.character.GetComponent<Renderer>().material.SetFloat("_Outline", 0.05f);
+        }
+        else if (tileContent.content != null)
+        {
+            tileContent.content.GetComponent<Renderer>().material.SetFloat("_OutlineActive", 1f);
+            tileContent.content.GetComponent<Renderer>().material.SetFloat("_Outline", 0.05f);
+        }
+    }
+    public void UnHover()
+    {
+        if (tileContent != null)
+        {
+            tileContent.mat.SetFloat("_OutlineActive", 0f);
+        }
+        if (tileContent.character != null)
+        {
+            tileContent.character.GetComponent<Renderer>().material.SetFloat("_OutlineActive", 0f);
+        }
+        else if (tileContent.content != null)
+        {
+            tileContent.content.GetComponent<Renderer>().material.SetFloat("_OutlineActive", 0f);
+        }
+    }
+
 }

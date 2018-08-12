@@ -26,13 +26,7 @@ public class CharUIElement : MonoBehaviour {
     void Start() {
         if (character != null)
         {
-            ability1.onClick.AddListener(Ability1Click);
-            ability2.onClick.AddListener(Ability2Click);
-            ability1.image.sprite = character.abilitys[0].icon;
-            healthText.text = character.maxhealth + "/" + character.health;
-            ability2.image.sprite = character.abilitys[1].icon;
-            character.OnDamageTaken += RefreshHealthBar;
-            character.OnHeal += RefreshHealthBar;
+            Init();
         }
         else
         {
@@ -40,8 +34,17 @@ public class CharUIElement : MonoBehaviour {
         }
         
     }
+    public void Init()
+    {
+        ability1.onClick.AddListener(Ability1Click);
+        ability2.onClick.AddListener(Ability2Click);
+        ability1.image.sprite = character.abilitys[0].icon;
+        healthText.text = character.maxhealth + "/" + character.health;
+        ability2.image.sprite = character.abilitys[1].icon;
+        character.OnDamageTaken += RefreshHealthBar;
+        character.OnHeal += RefreshHealthBar;
 
-
+    }
     void RefreshHealthBar(int dmg){
         healthText.text = character.health + "/" + character.maxhealth;
         Vector3 scaleTemp = healthBar.transform.localScale;

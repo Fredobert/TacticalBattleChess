@@ -62,11 +62,6 @@ public abstract class Character : MonoBehaviour
 
 
     //EVENTS
-    void OnMouseDown()
-    {
-        EventManager.SelectCharacter(this,gameObject);
-    }
-
     public delegate void DamageTakenAction(int dmg);
     public event DamageTakenAction OnDamageTaken;
 
