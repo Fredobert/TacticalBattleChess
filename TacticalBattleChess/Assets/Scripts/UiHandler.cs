@@ -10,9 +10,24 @@ public class UiHandler : MonoBehaviour {
     public GameObject t1anchor;
     public GameObject t0anchor;
     public GameObject marker;
+    public Text turnCounter;
+    public Text turnIndicator;
+    public Field field;
     public float offset = -5000f;
     public float markerOffset = 60f;
     public bool markActive = false;
+    private int _turnCounter = 0;
+
+    private void Start()
+    {
+        EventManager.OnTurnStart += TurnEnd;
+    }
+
+    public void TurnEnd(int id)
+    {
+        turnCounter.text = ++_turnCounter+ "";
+        turnIndicator.text = "Player " + ((_turnCounter % 2) + 1);
+    }
 
     public void AddUI(CharUIElement cue)
     {

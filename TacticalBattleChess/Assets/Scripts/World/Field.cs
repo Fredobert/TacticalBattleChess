@@ -50,8 +50,6 @@ public class Field : MonoBehaviour
     public List<GameObject> tilePrefabs = new List<GameObject>();
     public List<GameObject> contentPrefabs = new List<GameObject>();
 
-    public List<GameObject> chars = new List<GameObject>();
-
     GameObject C;
 
 
@@ -158,7 +156,6 @@ public class Field : MonoBehaviour
     //Create
     public void AddCharPrefab(GameObject instantiatedChar, Tile tile, int team)
     {
-        chars.Add(instantiatedChar);
         parent = GameObject.Find(parentname).transform;
         Vector3 tilePos = tile.transform.position;
         tilePos.z = -1;
@@ -352,9 +349,7 @@ public class Field : MonoBehaviour
     }
 
 
-
-
-
+    //Events
 
 
     public void FinishTurn()
@@ -362,6 +357,7 @@ public class Field : MonoBehaviour
         EventManager.TurnEnd(currentPlayer);
         currentPlayer = (currentPlayer+1)%2;
         EventManager.TurnStart(currentPlayer);
+        getCurrentPlayer().TurnStart();
     }
 
     void Update()

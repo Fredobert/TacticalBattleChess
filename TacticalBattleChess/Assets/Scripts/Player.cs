@@ -5,8 +5,9 @@ using UnityEngine;
 public class Player : MonoBehaviour {
     public List<Character> units;
     public int teamid;
-    public int ap = 3;
-
+    public int ap = 2;
+    public int maxap = 2;
+    public int freeMove = 1;
 
     List<Tile> path = new List<Tile>();
     List<Tile> marked = new List<Tile>();
@@ -119,6 +120,7 @@ public class Player : MonoBehaviour {
                 SCharacter.standingOn.UnHover();
                 SCharacter = null;
                 pathava = false;
+                ActionAbility();
             }
 
         }
@@ -195,7 +197,7 @@ public class Player : MonoBehaviour {
         }
         pathava = false;
         SCharacter = null;
-        doAction();
+        MoveAction();
     }
 
    //End of Ability snipped
@@ -223,11 +225,30 @@ public class Player : MonoBehaviour {
             }
         }
     }
-
-
-    public void doAction()
+    public void TurnStart()
     {
-        if (--ap < 0)
+        ap = maxap;
+        freeMove = 1;
+    }
+
+    public void MoveAction()
+    {
+        if (freeMove > 0)
+        {
+            freeMove--;
+        }
+        else
+        {
+            if (--ap <= 0)
+            {
+                field.FinishTurn();
+            }
+        }
+    }
+
+    public void ActionAbility()
+    {
+        if (--ap <= 0)
         {
             field.FinishTurn();
         }
