@@ -39,10 +39,10 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    public delegate void AbilityAction(Ability ability, Character character);
-    public static event AbilityAction OnAbilityClick;
+    public delegate void AbilityClickAction(Ability ability, Character character);
+    public static event AbilityClickAction OnAbilityClick;
 
-    public static void Ability(Ability ability, Character character)
+    public static void AbilityClick(Ability ability, Character character)
     {
         if (OnAbilityClick != null)
         {
@@ -75,8 +75,25 @@ public class EventManager : MonoBehaviour {
     }
 
 
+    public delegate void MoveAction();
+    public static event MoveAction OnMoveAction;
 
+    public static void Move()
+    {
+        if (OnMoveAction != null)
+        {
+            OnMoveAction();
+        }
+    }
 
+   public delegate void AbilityAction();
+    public static event AbilityAction OnAbilityAction;
 
-
+    public static void Ability()
+    {
+        if (OnAbilityAction != null)
+        {
+            OnAbilityAction();
+        }
+    }
 }

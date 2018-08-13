@@ -54,12 +54,12 @@ public class CharUIElement : MonoBehaviour {
 
     void Ability1Click()
     {
-        EventManager.Ability(character.abilitys[0],character);
+        EventManager.AbilityClick(character.abilitys[0],character);
     }
 
     void Ability2Click()
     {
-        EventManager.Ability(character.abilitys[1], character);
+        EventManager.AbilityClick(character.abilitys[1], character);
     }
 
 

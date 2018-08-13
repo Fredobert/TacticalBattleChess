@@ -26,7 +26,6 @@ public class Player : MonoBehaviour {
         EventManager.OnHoverTile += Hover;
         EventManager.OnSelectTile += SelectTile;
         EventManager.OnAbilityClick += AbilitySelected;
-        ap = 3;
         pathava = false;
     }
 
@@ -100,7 +99,7 @@ public class Player : MonoBehaviour {
                 }else if (SCharacter != null)
                 {
                     STile = tile;
-                    SCharacter.standingOn.unmark();
+                    SCharacter.standingOn.reset();
                     SCharacter.standingOn.UnHover();
                     field.Move(tile, SCharacter);
                 }
@@ -195,6 +194,7 @@ public class Player : MonoBehaviour {
         {
             path[i].reset();
         }
+        path = new List<Tile>();
         pathava = false;
         SCharacter = null;
         MoveAction();
@@ -241,7 +241,7 @@ public class Player : MonoBehaviour {
         {
             if (--ap <= 0)
             {
-                field.FinishTurn();
+                Finish();
             }
         }
     }
@@ -250,8 +250,23 @@ public class Player : MonoBehaviour {
     {
         if (--ap <= 0)
         {
-            field.FinishTurn();
+            Finish();
         }
+    }
+
+    public void Finish()
+    {
+        if (HTile != null)
+        {
+            HTile.UnHover();
+            HTile.reset();
+        }
+        if (SCharacter != null)
+        {
+            SCharacter.standingOn.UnHover();
+            SCharacter.standingOn.reset();
+        }
+        field.FinishTurn();
     }
 
 }

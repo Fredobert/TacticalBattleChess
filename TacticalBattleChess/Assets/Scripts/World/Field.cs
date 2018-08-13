@@ -225,6 +225,7 @@ public class Field : MonoBehaviour
 
     public void CastAbility(Character character, Ability ability,Tile target )
     {
+        EventManager.Ability();
         ability.CastAbility(character,target);
     }
     public void MarkTile(Tile tile, MarkType mt)
@@ -274,6 +275,7 @@ public class Field : MonoBehaviour
             tile.tileContent.character = character;
             character.standingOn = tile;
             //not finshed need to generae path bevor
+            EventManager.Move();
             StartCoroutine(Move(character.gameObject, GetPath(tile,character.movment), 20f));
             return true;
         }
