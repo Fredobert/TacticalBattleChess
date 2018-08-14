@@ -38,12 +38,23 @@ public class Tile : MonoBehaviour {
 		
 	}
 
+    //only for Left Click
     void OnMouseDown()
     {
         EventManager.SelectTile(this,gameObject);
     }
 
-     void OnMouseEnter()
+    //for right click
+     void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            EventManager.Deselect(this);
+        }    
+    }
+
+
+    void OnMouseEnter()
     {
         EventManager.HoverTile(this,gameObject);
     }

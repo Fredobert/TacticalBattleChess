@@ -3303,6 +3303,11 @@ Prefab:
       propertyPath: freeMoves
       value: 
       objectReference: {fileID: 1880552862}
+    - target: {fileID: 114965958606384670, guid: 607b996f807a64e47bc5b5bde832b42e,
+        type: 2}
+      propertyPath: grave
+      value: 
+      objectReference: {fileID: 542561382}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 607b996f807a64e47bc5b5bde832b42e, type: 2}
   m_IsPrefabAsset: 0
@@ -4487,6 +4492,34 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4259867482225626, guid: af4cbb1e8bef3af44b4fe08c9e6337fc,
     type: 2}
   m_PrefabInternal: {fileID: 1482149618}
+--- !u!1 &542561382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 542561383}
+  m_Layer: 0
+  m_Name: Grave
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &542561383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 542561382}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -44.3, y: -7.9, z: 2.7452745}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &559261471
 GameObject:
   m_ObjectHideFlags: 0

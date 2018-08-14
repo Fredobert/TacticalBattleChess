@@ -28,6 +28,17 @@ public class EventManager : MonoBehaviour {
         }
     }
 
+
+    public delegate void DeselectAction(Tile tile);
+    public static event DeselectAction OnDeselect;
+    public static void Deselect(Tile tile)
+    {
+        if (OnDeselect != null)
+        {
+            OnDeselect(tile);
+        }
+    }
+
     public delegate void HoverTileAction( Tile tile, GameObject obj);
     public static event HoverTileAction OnHoverTile;
 

@@ -25,6 +25,7 @@ public class UiHandler : MonoBehaviour {
         EventManager.OnTurnStart += TurnEnd;
         EventManager.OnAbilityAction += Action;
         EventManager.OnMoveAction += Action;
+        EventManager.OnTurnStart += TurnStart;
         //EventManager.OnTurnStart += Ability;
         turnIndicator.text = "Player " + ((_turnCounter % 2) + 1);
         freeMoves.text = field.getCurrentPlayer().freeMove+ "";
@@ -37,6 +38,10 @@ public class UiHandler : MonoBehaviour {
         freeMoves.text = field.getCurrentPlayer().freeMove + "";
         apCounter.text = field.getCurrentPlayer().ap + "";
      
+    }
+    public void TurnStart(int id)
+    {
+        Action();
     }
 
     public void TurnEnd(int id)

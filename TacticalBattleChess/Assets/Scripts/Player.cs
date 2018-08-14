@@ -26,6 +26,7 @@ public class Player : MonoBehaviour {
         EventManager.OnHoverTile += Hover;
         EventManager.OnSelectTile += SelectTile;
         EventManager.OnAbilityClick += AbilitySelected;
+        EventManager.OnDeselect += Deselect;
         pathava = false;
     }
 
@@ -33,6 +34,41 @@ public class Player : MonoBehaviour {
     public Tile HTile;
     public Tile STile;
     public Character SCharacter;
+    
+    void Deselect(Tile tile)
+    {
+        if (field.currentPlayer == teamid)
+        {
+            if (AbilityModus)
+            {
+                for (int i = 0; i < markAb.Count; i++)
+                {
+                    if (markAb[i] != null)
+                    {
+                        markAb[i].reset();
+                    }
+                }
+                AbilityModus = false;
+                SAbility = null;
+                pathava = false;
+                SCharacter.standingOn.Click();
+                SCharacter.standingOn.mark();
+                field.SelectCharacter(SCharacter, true);
+            }else if (SCharacter != null)
+            {
+                for (int i = 0; i < marked.Count; i++)
+                {
+                    if (marked[i] != null)
+                    {
+                        marked[i].reset();
+                    }
+                }
+                SCharacter.standingOn.UnHover();
+                SCharacter = null;
+                pathava = false;
+            }
+        }
+    }
 
     void Hover(Tile tile, GameObject obj)
     {
@@ -55,7 +91,7 @@ public class Player : MonoBehaviour {
                 field.GetComponent<UiHandler>().Mark(tile.GetCharacter());
             }
             HTile = tile;
-            if (field.currentPlayer == teamid && pathava && !busy)
+            if (field.currentPlayer == teamid && pathava && !AbilityModus&&!busy)
             {
                 MarkPath(tile);
             }
@@ -83,7 +119,6 @@ public class Player : MonoBehaviour {
             tile.Click();
             tile.mark();
             field.SelectCharacter(character, true);
-     //       InitCharSelect(character);
         }
     }
     void SelectTile(Tile tile, GameObject obj)
@@ -102,24 +137,37 @@ public class Player : MonoBehaviour {
                     SCharacter.standingOn.reset();
                     SCharacter.standingOn.UnHover();
                     field.Move(tile, SCharacter);
+                    MoveAction();
                 }
             }
             else
             {
+                bool castPossibile = false;
                 for (int i = 0; i < markAb.Count; i++)
                 {
-                    if (markAb[i] != null)
+                    if (markAb[i] == tile)
                     {
-                        markAb[i].reset();
+                        castPossibile = true;
+                        break;
                     }
                 }
-                AbilityModus = false;
-                field.CastAbility(SCharacter, SAbility, tile);
-                SCharacter.standingOn.reset();
-                SCharacter.standingOn.UnHover();
-                SCharacter = null;
-                pathava = false;
-                ActionAbility();
+                if (castPossibile)
+                {
+                    for (int i = 0; i < markAb.Count; i++)
+                    {
+                        if (markAb[i] != null)
+                        {
+                            markAb[i].reset();
+                        }
+                    }
+                    AbilityModus = false;
+                    field.CastAbility(SCharacter, SAbility, tile);
+                    SCharacter.standingOn.reset();
+                    SCharacter.standingOn.UnHover();
+                    SCharacter = null;
+                    pathava = false;
+                    ActionAbility();
+                }
             }
 
         }
@@ -148,6 +196,13 @@ public class Player : MonoBehaviour {
         }
     }
     public void MarkCastPossibilitys(){
+        for (int i = 0; i < markAb.Count; i++)
+        {
+            if (markAb[i] != null && markAb[i] != SCharacter.standingOn)
+            {
+                markAb[i].reset();
+            }
+        }
         markAb = SAbility.possibleCasts(SCharacter,SCharacter.standingOn);
         AbilityModus = true;
         Unselect();
@@ -197,7 +252,6 @@ public class Player : MonoBehaviour {
         path = new List<Tile>();
         pathava = false;
         SCharacter = null;
-        MoveAction();
     }
 
    //End of Ability snipped
@@ -256,6 +310,17 @@ public class Player : MonoBehaviour {
 
     public void Finish()
     {
+        for (int i = 0; i < path.Count; i++)
+        {
+            path[i].reset();
+        }
+        for (int i = 0; i < marked.Count; i++)
+        {
+            if (marked[i] != null)
+            {
+                marked[i].reset();
+            }
+        }
         if (HTile != null)
         {
             HTile.UnHover();
@@ -266,6 +331,16 @@ public class Player : MonoBehaviour {
             SCharacter.standingOn.UnHover();
             SCharacter.standingOn.reset();
         }
+        HTile = null;
+        SCharacter = null;
+        STile = null;
+        SAbility = null;
+        AbilityModus = false;
+        pathava = false;
+        path = new List<Tile>();
+        marked = new List<Tile>();
+        markAb = new List<Tile>();
+
         field.FinishTurn();
     }
 

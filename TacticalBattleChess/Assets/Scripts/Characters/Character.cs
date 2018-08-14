@@ -8,6 +8,7 @@ public abstract class Character : MonoBehaviour
     public int maxhealth = 10;
     public int health = 10;
     public int movment;
+    public bool alive = true;
     public List<Ability> abilitys = new List<Ability>();
     //Unity preset
 
@@ -18,8 +19,6 @@ public abstract class Character : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-       // GameObject field = GameObject.Find("World");
-       // GetComponent<Renderer>().material = material;
     }
 
     public void Init()
@@ -35,8 +34,9 @@ public abstract class Character : MonoBehaviour
     {
         health -= dmg;
         DamageTaken(dmg);
-        if (health < 0)
+        if (health <= 0)
         {
+            health = 0;
             Kill();
         }
     }
@@ -56,8 +56,7 @@ public abstract class Character : MonoBehaviour
     //buggy null exception
     public void Kill()
     {
-        standingOn.tileContent.character = null;
-        Destroy(gameObject);
+        Field.Kill(this);
     }
 
 
@@ -83,5 +82,4 @@ public abstract class Character : MonoBehaviour
             OnHeal(heal);
         }
     }
-
 }

@@ -41,7 +41,7 @@ public class Field : MonoBehaviour
 
     //prefab section
    public GameObject tileprefab;
-    public GameObject StandardTileContent;
+   public GameObject StandardTileContent;
    public GameObject charprefab;
    public GameObject playerprefab;
    public GameObject charuiprefab;
@@ -275,7 +275,7 @@ public class Field : MonoBehaviour
             tile.tileContent.character = character;
             character.standingOn = tile;
             //not finshed need to generae path bevor
-            EventManager.Move();
+
             StartCoroutine(Move(character.gameObject, GetPath(tile,character.movment), 20f));
             return true;
         }
@@ -288,6 +288,13 @@ public class Field : MonoBehaviour
       return pf.GetPath(tile,range);
     }
 
+    public static void Kill(Character character)
+    {
+        character.alive = false;
+        character.gameObject.SetActive(false);
+        character.standingOn.tileContent.character = null;
+        character.standingOn = null;
+    }
 
     //Cououtines
 
@@ -318,6 +325,7 @@ public class Field : MonoBehaviour
     Vector3 currentPos;
     IEnumerator Move(GameObject cha, List<Tile> path, float speed)
     {
+
         currentPath = path.Count - 1;
         currentPos = new Vector3(path[currentPath].transform.position.x, path[currentPath].transform.position.y, -1f);
         while (currentPath > -1)
@@ -334,6 +342,7 @@ public class Field : MonoBehaviour
             }
             yield return null;
         }
+        EventManager.Move();
         busy = false;
         getCurrentPlayer().FinishedMoving();
     }
@@ -358,8 +367,9 @@ public class Field : MonoBehaviour
     {
         EventManager.TurnEnd(currentPlayer);
         currentPlayer = (currentPlayer+1)%2;
-        EventManager.TurnStart(currentPlayer);
         getCurrentPlayer().TurnStart();
+        EventManager.TurnStart(currentPlayer);
+  
     }
 
     void Update()
