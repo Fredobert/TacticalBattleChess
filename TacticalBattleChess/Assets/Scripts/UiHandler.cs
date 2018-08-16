@@ -102,6 +102,7 @@ public class UiHandler : MonoBehaviour {
 
     public void RemoveUI()
     {
+        charUIs = new List<CharUIElement>();
         foreach (var item in charUIs)
         {
             GameObject.Destroy(item);

@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cb3967df9b4088469735ad36c6a8b8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: f7a7d81de0bdddb4abd97575d8db0539, type: 3}
+  icon: {fileID: 21300000, guid: 936709709b31b7a4aa3c7743a9be453b, type: 3}
   prefab: {fileID: 1997320040396084, guid: e7217176c33eb1f438995a2b21f5778e, type: 2}
   speed: 0.2
   damage: 10
@@ -114,6 +114,7 @@ MonoBehaviour:
   maxhealth: 10
   health: 10
   movment: 3
+  alive: 1
   abilitys: []
   standingOn: {fileID: 0}
   material: {fileID: 0}

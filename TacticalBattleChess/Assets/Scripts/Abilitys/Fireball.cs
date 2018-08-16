@@ -23,6 +23,7 @@ public class Fireball : Ability {
         }
         from = from.neighboors[directionOffset];
         GameObject g = Instantiate(prefab);
+        g.transform.Rotate(0, 0, directionOffset * -90);
         StartCoroutine(Animation(g));
    
          
@@ -43,7 +44,7 @@ public class Fireball : Ability {
             from = from.neighboors[directionOffset];
             yield return new WaitForSeconds(speed);
         }
-        if (from.GetComponent<Tile>().GetCharacter() != null)
+        if (from != null && from.GetComponent<Tile>().GetCharacter() != null)
         {
             from.GetComponent<Tile>().GetCharacter().DealDamage(damage);
         }
