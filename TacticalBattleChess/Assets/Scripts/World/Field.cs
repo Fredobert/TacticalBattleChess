@@ -158,7 +158,7 @@ public class Field : MonoBehaviour
     {
         parent = GameObject.Find(parentname).transform;
         Vector3 tilePos = tile.transform.position;
-        tilePos.z = -1 - tilePos.z;
+        tilePos.z = -1 + tilePos.z;
         instantiatedChar.transform.position = tilePos;
         instantiatedChar.transform.SetParent(parent.transform);
         Character c = instantiatedChar.GetComponent<Character>();
@@ -214,7 +214,7 @@ public class Field : MonoBehaviour
             }
             tile.tileContent.content = instantiatedContent.GetComponent<Content>();
             Vector3 vec = tile.transform.position;
-            vec.z = -1f -vec.z;
+            vec.z = -1f +vec.z;
             instantiatedContent.transform.position = vec;
             instantiatedContent.transform.parent = tile.transform;
         }
@@ -327,7 +327,7 @@ public class Field : MonoBehaviour
     {
 
         currentPath = path.Count - 1;
-        currentPos = new Vector3(path[currentPath].transform.position.x, path[currentPath].transform.position.y, -1f - path[currentPath].transform.position.z);
+        currentPos = new Vector3(path[currentPath].transform.position.x, path[currentPath].transform.position.y, -1f + path[currentPath].transform.position.z);
         while (currentPath > -1)
         {
 
@@ -337,7 +337,7 @@ public class Field : MonoBehaviour
 
                 if (currentPath-- > 0)
                 {
-                    currentPos = new Vector3(path[currentPath].transform.position.x, path[currentPath].transform.position.y, -1f -path[currentPath].transform.position.z);
+                    currentPos = new Vector3(path[currentPath].transform.position.x, path[currentPath].transform.position.y, -1f +path[currentPath].transform.position.z);
                 }
             }
             yield return null;
