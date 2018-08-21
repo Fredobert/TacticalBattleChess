@@ -43,7 +43,8 @@ public class CharUIElement : MonoBehaviour {
         ability2.image.sprite = character.abilitys[1].icon;
         character.OnDamageTaken += RefreshHealthBar;
         character.OnHeal += RefreshHealthBar;
-
+        EventManager.OnTurnStart += TurnStart;
+        character.OnAbility += Cast;
     }
     void RefreshHealthBar(int dmg){
         healthText.text = character.health + "/" + character.maxhealth;
@@ -54,7 +55,7 @@ public class CharUIElement : MonoBehaviour {
 
     void Ability1Click()
     {
-        if (character.alive)
+        if (character.alive && character.abilitys[0].currentCd == 0)
         {
             EventManager.AbilityClick(character.abilitys[0], character);
         }
@@ -63,12 +64,43 @@ public class CharUIElement : MonoBehaviour {
 
     void Ability2Click()
     {
-        if (character.alive)
+        if (character.alive && character.abilitys[1].currentCd == 0)
         {
             EventManager.AbilityClick(character.abilitys[1], character);
         }
+    }
 
+    void Cast(Ability ability)
+    {
+        if (ability == character.abilitys[0])
+        {
+            ability1.GetComponentInChildren<Text>().text = character.abilitys[0].currentCd+ "";
+        }
+        else 
+        {
+            ability2.GetComponentInChildren<Text>().text = character.abilitys[1].currentCd + "";
+        }
+    }
 
+    void TurnStart(int id)
+    {
+        if (character.abilitys[0].currentCd == 0)
+        {
+            ability1.GetComponentInChildren<Text>().text = "";
+        }
+        else
+        {
+            ability1.GetComponentInChildren<Text>().text = character.abilitys[0].currentCd + "";
+        }
+
+        if (character.abilitys[1].currentCd == 0)
+        {
+            ability2.GetComponentInChildren<Text>().text = "";
+        }
+        else
+        {
+            ability2.GetComponentInChildren<Text>().text = character.abilitys[1].currentCd + "";
+        }
     }
 
 

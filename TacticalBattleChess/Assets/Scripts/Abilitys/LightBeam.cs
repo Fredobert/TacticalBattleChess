@@ -12,6 +12,7 @@ public class LightBeam : Ability
     // Use this for initializatiosn
     void Start()
     {
+        base.Init();
         GameObject f = GameObject.Find("World");
         field = f.GetComponent<Field>();
     }

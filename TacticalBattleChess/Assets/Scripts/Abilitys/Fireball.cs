@@ -53,6 +53,7 @@ public class Fireball : Ability {
 
     // Use this for initialization
     void Start () {
+        base.Init();
     }
 	
 }

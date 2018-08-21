@@ -28,7 +28,7 @@ public abstract class Character : MonoBehaviour
     }
 
     protected abstract void AbInit();
- 
+
 
     public void DealDamage(int dmg)
     {
@@ -46,13 +46,18 @@ public abstract class Character : MonoBehaviour
 
         if (health > maxhealth)
         {
-            heal =heal- health - maxhealth;
+            heal = heal - health - maxhealth;
             health = maxhealth;
         }
         OnHeal(heal);
     }
 
-
+    public void CastAbility(Ability ability,Tile tile)
+    {
+        ability.currentCd = ability.cd; //Todo do it in Ability Cast
+        OnAbility(ability);
+        ability.CastAbility(this, tile);
+    }
     //buggy null exception
     public void Kill()
     {
@@ -82,4 +87,17 @@ public abstract class Character : MonoBehaviour
             OnHeal(heal);
         }
     }
+
+    public delegate void AbilityAction(Ability ability);
+    public event AbilityAction OnAbility;
+
+    public void Ability(Ability ability)
+    {
+        if (OnAbility != null)
+        {
+            OnAbility(ability);
+        }
+    }
+
+
 }

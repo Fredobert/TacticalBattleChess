@@ -6,6 +6,8 @@ using UnityEngine;
 public abstract class Ability : MonoBehaviour {
 
     public Sprite icon;
+    public int cd = 2;
+    public int currentCd = 0;
 
     public abstract List<Tile> possibleCasts(Character character, Tile tile);
 
@@ -14,7 +16,16 @@ public abstract class Ability : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
-		
+	public void Init () {
+        EventManager.OnTurnEnd += TurnEnd;
 	}
+
+    //Turn End because UI fires with TurnStart and this needs to be called before
+    public void TurnEnd(int id)
+    {
+        if (currentCd >0 && cd > 0)
+        {
+            currentCd--;
+        }
+    }
 }

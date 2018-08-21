@@ -46,6 +46,7 @@ public class Arrow : Ability { //NOT WORKING
     // Use this for initialization
     void Start()
     {
+        base.Init();
         GameObject f = GameObject.Find("World");
         field = f.GetComponent<Field>();
     }

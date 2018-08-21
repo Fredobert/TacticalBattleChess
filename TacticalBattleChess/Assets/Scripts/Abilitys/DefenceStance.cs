@@ -23,6 +23,6 @@ public class DefenceStance : Ability {
 
     // Use this for initialization
     void Start () {
-		
+        base.Init();
 	}
 }

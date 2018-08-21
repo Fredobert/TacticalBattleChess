@@ -192,15 +192,24 @@ public class BuildWindow : EditorWindow {
 
     public Tile GetSelectedTile()
     {
-        GameObject SelectedObject = Selection.activeTransform.gameObject;
-        if (SelectedObject.GetComponent<Tile>() != null)
+        if (Selection.activeTransform != null)
         {
-            return SelectedObject.GetComponent<Tile>();
+            GameObject SelectedObject = Selection.activeTransform.gameObject;
+            if (SelectedObject == null)
+            {
+                return null;
+            }
+            if (SelectedObject.GetComponent<Tile>() != null)
+            {
+                return SelectedObject.GetComponent<Tile>();
+            }
+            else if (SelectedObject.GetComponent<TileContent>() != null)
+            {
+                return SelectedObject.transform.parent.GetComponent<Tile>();
+            }
+            //return null when Character or Content Todo Replace it
         }
-        else if (SelectedObject.GetComponent<TileContent>() != null)
-        {
-            return SelectedObject.transform.parent.GetComponent<Tile>();
-        }
+
         return null;
     }
 

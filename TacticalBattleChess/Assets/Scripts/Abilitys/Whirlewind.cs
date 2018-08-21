@@ -13,7 +13,7 @@ public class Whirlewind : Ability {
 
     // Use this for initialization
     void Start () {
-		
+        base.Init();
 	}
 
     public override void CastAbility(Character character, Tile tile)

@@ -33,6 +33,7 @@ public class Heal : Ability
     // Use this for initialization
     void Start()
     {
+        base.Init();
         GameObject f = GameObject.Find("World");
         field = f.GetComponent<Field>();
     }

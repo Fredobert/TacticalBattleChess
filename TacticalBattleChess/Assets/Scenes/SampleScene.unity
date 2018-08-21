@@ -4546,7 +4546,7 @@ Prefab:
         type: 2}
       propertyPath: grave
       value: 
-      objectReference: {fileID: 542561382}
+      objectReference: {fileID: 0}
     - target: {fileID: 114362415405213028, guid: 607b996f807a64e47bc5b5bde832b42e,
         type: 2}
       propertyPath: charUIs.Array.data[6]
@@ -6108,7 +6108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   units: []
   teamid: 0
-  ap: 0
+  ap: 2
   maxap: 2
   freeMove: 1
   pf:
@@ -6941,34 +6941,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec0b5bac36cb4c547a7290598d336094, type: 2}
   m_IsPrefabAsset: 0
---- !u!1 &542561382
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 542561383}
-  m_Layer: 0
-  m_Name: Grave
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &542561383
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 542561382}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -44.3, y: -7.9, z: 2.7452745}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &543652933
 GameObject:
   m_ObjectHideFlags: 0
@@ -11394,7 +11366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   units: []
   teamid: 1
-  ap: 0
+  ap: 2
   maxap: 2
   freeMove: 1
   pf:
@@ -13143,7 +13115,7 @@ Transform:
   - {fileID: 1092422645}
   - {fileID: 2112326550}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1179223564
 GameObject:
