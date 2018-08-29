@@ -39,6 +39,16 @@ public class EventManager : MonoBehaviour {
         }
     }
 
+    public delegate void LeaveAction(Tile tile);
+    public static event LeaveAction OnLeave;
+    public static void Leave(Tile tile)
+    {
+        if(OnLeave != null)
+        {
+            OnLeave(tile);
+        }
+    }
+
     public delegate void HoverTileAction( Tile tile, GameObject obj);
     public static event HoverTileAction OnHoverTile;
 

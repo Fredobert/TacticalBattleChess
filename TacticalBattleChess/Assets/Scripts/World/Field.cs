@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using UnityEditor;
 using UnityEngine;
 
 
@@ -24,11 +23,11 @@ public class Field : MonoBehaviour
     public Material team1;
     public Material team2;
 
-    public Player player1;
-    public Player player2;
+    public HumanPlayer player1;
+    public HumanPlayer player2;
 
     [HideInInspector]
-    public int currentPlayer;
+    public int currentPlayer = 0;
     public List<Tile> allTiles;
     [HideInInspector]
     public Transform parent;
@@ -53,8 +52,6 @@ public class Field : MonoBehaviour
     GameObject C;
 
 
-    System.Random r;
-
     //test
     public float isox = 1f;
     public float isoy = 1f;
@@ -72,7 +69,6 @@ public class Field : MonoBehaviour
             DestroyImmediate(GameObject.Find(parentname));
         }
         parent = new GameObject(parentname).transform;
-        r = new System.Random();
         allTiles = new List<Tile>();
 
         //init player
@@ -82,8 +78,8 @@ public class Field : MonoBehaviour
         p2.transform.SetParent(parent.transform);
         p1.name = "player1";
         p2.name = "player2";
-        player1 = p1.GetComponent<Player>();
-        player2 = p2.GetComponent<Player>();
+        player1 = p1.GetComponent<HumanPlayer>();
+        player2 = p2.GetComponent<HumanPlayer>();
 
 
         player1.teamid = 0;
@@ -143,13 +139,14 @@ public class Field : MonoBehaviour
     }
 
 
-
+  
     void Start()
     {
 
         //Quick and Dirty solution  Problem Gameobject/Script variables get cleared on Play
-        player1 = GameObject.Find("player1").GetComponent<Player>();
-        player2 = GameObject.Find("player2").GetComponent<Player>();
+        player1 = GameObject.Find("player1").GetComponent<HumanPlayer>();
+        player2 = GameObject.Find("player2").GetComponent<HumanPlayer>();
+        player1.TurnStart();
         print("started");
     }
 
@@ -171,17 +168,12 @@ public class Field : MonoBehaviour
         tile.tileContent.character = c;
         c.Init();
         CharUIElement cue = Instantiate(charuiprefab).GetComponent<CharUIElement>();
-        if (Application.isEditor)
-        {
-            EditorUtility.SetDirty(GetComponent<UiHandler>());
-        }
-
         cue.character = c;
         cue.Init();
         GetComponent<UiHandler>().AddUI(cue);
     }
 
-    public void AddTileContent(GameObject instantiatedTileContent,Tile tile)
+    public void AddTileContent(GameObject instantiatedTileContent, Tile tile)
     {
         if (Application.isEditor)
         {
@@ -199,7 +191,7 @@ public class Field : MonoBehaviour
 
     public void AddContent(GameObject instantiatedContent, Tile tile)
     {
-        if (tile.tileContent != null )
+        if (tile.tileContent != null)
         {
             if (tile.tileContent.content != null)
             {
@@ -214,7 +206,7 @@ public class Field : MonoBehaviour
             }
             tile.tileContent.content = instantiatedContent.GetComponent<Content>();
             Vector3 vec = tile.transform.position;
-            vec.z = -1f +vec.z;
+            vec.z = -1f + vec.z;
             instantiatedContent.transform.position = vec;
             instantiatedContent.transform.parent = tile.transform;
         }
@@ -222,11 +214,16 @@ public class Field : MonoBehaviour
     }
 
     //GAMESECTION
-
-    public void CastAbility(Character character, Ability ability,Tile target )
+    public bool busy = false;
+    public bool CastAbility(Character character, Ability ability,Tile target )
     {
-        EventManager.Ability();
-        character.CastAbility(ability, target);
+        if (ability.possibleCasts(character, character.standingOn).Contains(target))
+        {
+            EventManager.Ability();
+            character.CastAbility(ability, target);
+            return true;
+        }
+        return false;
     }
     public void MarkTile(Tile tile, MarkType mt)
     {
@@ -246,7 +243,7 @@ public class Field : MonoBehaviour
         }
     }
     //not functional at the moment
-    private bool busy;
+ 
 
 
 
@@ -258,6 +255,7 @@ public class Field : MonoBehaviour
         {
             return false;
         }
+        busy = true;
         selectedChar = character;
         pf.generatePath(character.standingOn, character.movment);
         StartCoroutine(GenPath());
@@ -274,8 +272,6 @@ public class Field : MonoBehaviour
             character.standingOn.tileContent.character = null;
             tile.tileContent.character = character;
             character.standingOn = tile;
-            //not finshed need to generae path bevor
-
             StartCoroutine(Move(character.gameObject, GetPath(tile,character.movment), 20f));
             return true;
         }
@@ -315,7 +311,6 @@ public class Field : MonoBehaviour
             }
             yield return null;
         }
-        Player z = getCurrentPlayer();
         getCurrentPlayer().FinishSelecting(pf.GetinRange());
         busy = false;
     }
@@ -342,15 +337,15 @@ public class Field : MonoBehaviour
             }
             yield return null;
         }
-        EventManager.Move();
         busy = false;
+        EventManager.Move();
         getCurrentPlayer().FinishedMoving();
     }
 
     //END
 
 
-    public Player getCurrentPlayer()
+    public HumanPlayer getCurrentPlayer()
     {
         if (currentPlayer == 0)
         {

@@ -130,6 +130,7 @@ public class BuildWindow : EditorWindow {
                 if (t != null)
                 {
                     z = PrefabUtility.InstantiatePrefab(f.characterPrefabs[selectedPrefab]) as GameObject;
+                    EditorUtility.SetDirty(f.GetComponent<UiHandler>());
                     f.AddCharPrefab(z, t, team);
                     //lazy
                     EditorUtility.SetDirty(z);

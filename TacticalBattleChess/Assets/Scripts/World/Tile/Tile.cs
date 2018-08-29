@@ -53,7 +53,10 @@ public class Tile : MonoBehaviour {
         }    
     }
 
-
+    private void OnMouseExit()
+    {
+        
+    }
     void OnMouseEnter()
     {
         EventManager.HoverTile(this,gameObject);
