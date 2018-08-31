@@ -18,7 +18,7 @@ Shader "Custom/CombinedShader" {
 
 		//Hover
 		[Toggle]	_OutlineActive("Range Active", float) = 0
-		_Outline("size of Outline",Range(0,0.05)) = 0.09
+		_Outline("size of Outline",Range(0,0.1)) = 0.02
 	_OutlineColor("Color for Outline",color) = (1,1,1,1)
 	}
 
@@ -87,25 +87,14 @@ SubShader{
 			col.rgb = col.rgb * _RangeTexFade + _RangeColor.rgb * (1 - _RangeTexFade);
 		}
 		if (_OutlineActive) {
-			//from https://www.reddit.com/r/godot/comments/84fhuh/2d_outline_shader_finally_got_it_working/
-			//this is bad beause it draws a weird outline if the sprite has holes, better set alpha to recognisable alphas beforehand
-			if (col.a == 0.0)
-			{
-				if (tex2D(_MainTex, i.uv + fixed2(0, _Outline)).a > 0.0 ||
-					tex2D(_MainTex, i.uv + fixed2(0, -_Outline)).a > 0.0 ||
-					tex2D(_MainTex, i.uv + fixed2(_Outline, 0)).a > 0.0 ||
-					tex2D(_MainTex, i.uv + fixed2( -_Outline, 0)).a > 0.0 ||
-					tex2D(_MainTex, i.uv + fixed2(-_Outline, _Outline)).a > 0.0 ||
-					tex2D(_MainTex, i.uv + fixed2(-_Outline, -_Outline)).a > 0.0 ||
-					tex2D(_MainTex, i.uv + fixed2(_Outline, -_Outline)).a > 0.0 ||
-					tex2D(_MainTex, i.uv + fixed2(_Outline, _Outline)).a > 0.0)
+
+			if (col.a == 0) {
+				if (col.b > 0.001 && col.b < _Outline) {
 					return _OutlineColor;
+				}
 			}
 		}
-		
-			return col;
-		
-	
+		return col;
 	}
 	ENDCG
 

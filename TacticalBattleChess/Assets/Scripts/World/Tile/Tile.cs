@@ -126,16 +126,16 @@ public class Tile : MonoBehaviour {
         if (tileContent != null)
         {
             tileContent.mat.SetFloat("_OutlineActive", 1f);
-            tileContent.mat.SetFloat("_Outline", 0.0284f);
+            tileContent.mat.SetFloat("_Outline", 0.02f);
             if (tileContent.character != null)
             {
                 tileContent.character.GetComponent<Renderer>().material.SetFloat("_OutlineActive", 1f);
-                tileContent.character.GetComponent<Renderer>().material.SetFloat("_Outline", 0.0284f);
+                tileContent.character.GetComponent<Renderer>().material.SetFloat("_Outline", 0.02f);
             }
             else if (tileContent.content != null)
             {
                 tileContent.content.GetComponent<Renderer>().material.SetFloat("_OutlineActive", 1f);
-                tileContent.content.GetComponent<Renderer>().material.SetFloat("_Outline", 0.0284f);
+                tileContent.content.GetComponent<Renderer>().material.SetFloat("_Outline", 0.02f);
             }
         }
     }
@@ -144,17 +144,17 @@ public class Tile : MonoBehaviour {
         if (tileContent != null)
         {
             tileContent.mat.SetFloat("_OutlineActive", 1f);
-            tileContent.mat.SetFloat("_Outline", 0.05f);
+            tileContent.mat.SetFloat("_Outline", 0.03f);
         }
         if (tileContent.character != null)
         {
             tileContent.character.GetComponent<Renderer>().material.SetFloat("_OutlineActive", 1f);
-            tileContent.character.GetComponent<Renderer>().material.SetFloat("_Outline", 0.05f);
+            tileContent.character.GetComponent<Renderer>().material.SetFloat("_Outline", 0.03f);
         }
         else if (tileContent.content != null)
         {
             tileContent.content.GetComponent<Renderer>().material.SetFloat("_OutlineActive", 1f);
-            tileContent.content.GetComponent<Renderer>().material.SetFloat("_Outline", 0.05f);
+            tileContent.content.GetComponent<Renderer>().material.SetFloat("_Outline", 0.03f);
         }
     }
     public void UnHover()

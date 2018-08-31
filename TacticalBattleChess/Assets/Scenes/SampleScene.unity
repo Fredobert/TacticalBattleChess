@@ -12477,7 +12477,23 @@ Prefab:
       propertyPath: standingOn
       value: 
       objectReference: {fileID: 1150579634}
-    m_RemovedComponents: []
+    - target: {fileID: 61812253722266898, guid: af4cbb1e8bef3af44b4fe08c9e6337fc,
+        type: 2}
+      propertyPath: m_Offset.x
+      value: -0.077546634
+      objectReference: {fileID: 0}
+    - target: {fileID: 61812253722266898, guid: af4cbb1e8bef3af44b4fe08c9e6337fc,
+        type: 2}
+      propertyPath: m_Size.x
+      value: 0.15519325
+      objectReference: {fileID: 0}
+    - target: {fileID: 61812253722266898, guid: af4cbb1e8bef3af44b4fe08c9e6337fc,
+        type: 2}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 61812253722266898, guid: af4cbb1e8bef3af44b4fe08c9e6337fc, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: af4cbb1e8bef3af44b4fe08c9e6337fc, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &1130155399

@@ -115,7 +115,6 @@ public class BuildWindow : EditorWindow {
         }
         EditorGUILayout.EndScrollView();
 
-
     }
 
     void OnSelectionChange()
