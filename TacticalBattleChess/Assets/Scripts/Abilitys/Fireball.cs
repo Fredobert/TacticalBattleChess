@@ -7,7 +7,7 @@ public class Fireball : Ability {
 
     public GameObject prefab;
     public float speed = 0.2f;
-    public int damage = 10;
+    public int damage = 8;
 
 
 

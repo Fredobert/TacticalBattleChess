@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114716369252266962}
   - component: {fileID: 114423173193955570}
   - component: {fileID: 212345405459725484}
+  - component: {fileID: 114770059023935776}
   m_Layer: 9
   m_Name: Warrior
   m_TagString: Untagged
@@ -95,6 +96,17 @@ MonoBehaviour:
   currentCd: 0
   hpgain: 6
   maxhpgain: 6
+--- !u!114 &114770059023935776
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1358999823115300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f4432af10e402247a7ad3e9e1ebba07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212345405459725484
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -110,7 +122,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 09bc5f54810b4bc499eedb8223959e27, type: 2}
+  - {fileID: 2100000, guid: 1d921686884c5054d9ca0519a736909a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

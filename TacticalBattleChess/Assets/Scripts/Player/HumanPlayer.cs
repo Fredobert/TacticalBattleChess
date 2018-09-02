@@ -11,16 +11,17 @@ public class HumanPlayer : MonoBehaviour {
     public int ap = 2;
     public int maxap = 2;
     public int freeMove = 1;
+    public Color color;
     // Use this for initialization
     void Start()
     {
-        if (hc == null)
-        {
-            hc = new HumanController();
-            hc.Init();
-        }
         GameObject g = GameObject.Find("World");
         field = g.GetComponent<Field>();
+        if (hc == null)
+        {
+            hc = new HumanController(field.getCurrentPlayer());
+        }
+
 
         Reset();
     }
@@ -58,7 +59,7 @@ public class HumanPlayer : MonoBehaviour {
         }
         if (HTile != null&& STile != HTile)
         {
-            HTile.UnHover();
+            HTile.tilehelper.UnHover();
         }
         // only work if current Player = a Human Player
         if (field.currentPlayer == teamid)
@@ -71,7 +72,7 @@ public class HumanPlayer : MonoBehaviour {
         }
         if (STile != tile)
         {
-            tile.Hover();
+            tile.tilehelper.Hover();
         }
         HTile = tile;
     }
@@ -99,26 +100,26 @@ public class HumanPlayer : MonoBehaviour {
             {
                 UnSelect();
             }
-            tile.Click();
-            tile.mark();
+            tile.tilehelper.Select();
+            tile.tilehelper.Mark();
             SelectChar(tile);
         }
         if (SelectMode)
         {
             //ugly
-            STile.reset();
-            STile.UnHover();
+            STile.tilehelper.ResetAll();
+            STile.tilehelper.UnHover();
             if (marked.Contains(tile) && field.Move(tile, STile.GetCharacter()))
             {
-                tile.UnHover();
+                tile.tilehelper.UnHover();
                 UnSelect();
                 busy = true;
                 MoveAction();
             }
             else
             {
-                STile.Click();
-                STile.mark();
+                STile.tilehelper.Select();
+                STile.tilehelper.Mark();
             }
             return;
         }
@@ -131,8 +132,8 @@ public class HumanPlayer : MonoBehaviour {
         }
         if (AbilityMode)
         {
-            STile.reset();
-            STile.UnHover();
+            STile.tilehelper.ResetAll();
+            STile.tilehelper.UnHover();
             UnAbility();
         }
         SAbility = ability;
@@ -160,8 +161,8 @@ public class HumanPlayer : MonoBehaviour {
         {
             UnAbility();
             MarkRange();
-            STile.Click();
-            STile.mark();
+            STile.tilehelper.Select();
+            STile.tilehelper.Mark();
             return;
         }
         if (SelectMode)
@@ -204,7 +205,7 @@ public class HumanPlayer : MonoBehaviour {
         {
             if (marked[i] != null && marked[i] != STile.GetCharacter().standingOn)
             {
-                marked[i].range();
+                marked[i].tilehelper.Range();
             }
         }
     }
@@ -212,14 +213,14 @@ public class HumanPlayer : MonoBehaviour {
     {
         if (STile != null)
         {
-            STile.Click();
+            STile.tilehelper.Select();
         }
         markAb = ability.possibleCasts(tile.GetCharacter(), tile);
         for (int i = 0; i < markAb.Count; i++)
         {
             if (markAb[i] != null && markAb[i] != tile.GetCharacter().standingOn)
             {
-                markAb[i].range();
+                markAb[i].tilehelper.Range();
             }
         }
     }
@@ -228,14 +229,14 @@ public class HumanPlayer : MonoBehaviour {
     {
         for (int i = 0; i < path.Count; i++)
         {
-            path[i].unmark();
+            path[i].tilehelper.Unmark();
         }
         path = field.GetPath(target, STile.GetCharacter().movment);
         for (int i = 0; i < path.Count; i++)
         {
             if (path[i].Walkable())
             {
-                path[i].mark();
+                path[i].tilehelper.Mark();
             }
         }
     }
@@ -244,14 +245,14 @@ public class HumanPlayer : MonoBehaviour {
     {
         if (STile != null)
         {
-            STile.reset();
-            STile.UnHover();
+            STile.tilehelper.ResetAll();
+            STile.tilehelper.UnHover();
         }
         for (int i = 0; i < marked.Count; i++)
         {
             if (marked[i] != null)
             {
-                marked[i].reset();
+                marked[i].tilehelper.ResetAll();
             }
         }
         SelectMode = false;
@@ -261,12 +262,12 @@ public class HumanPlayer : MonoBehaviour {
 
     void UnAbility()
     { 
-        STile.UnHover();
+        STile.tilehelper.UnHover();
         for (int i = 0; i < markAb.Count; i++)
         {
             if (markAb[i] != null && markAb[i] != STile.GetCharacter().standingOn)
             {
-                markAb[i].reset();
+                markAb[i].tilehelper.ResetAll();
             }
         }
         AbilityMode = false;
@@ -282,6 +283,10 @@ public class HumanPlayer : MonoBehaviour {
         if (AbilityMode)
         {
             UnAbility();
+        }
+        if (HTile != null)
+        {
+            HTile.tilehelper.UnHover();
         }
         busy = false;
     }

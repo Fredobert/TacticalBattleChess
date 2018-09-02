@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4557927088280300}
   - component: {fileID: 212403391724263010}
   - component: {fileID: 114408259889028700}
+  - component: {fileID: 114840857855446240}
   m_Layer: 0
   m_Name: Tile_Water
   m_TagString: Untagged
@@ -54,9 +55,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 0}
   content: {fileID: 0}
-  standardMat: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  markMat: {fileID: 2100000, guid: 264498dad1e94444c8ef17d16ee95df5, type: 2}
-  rangedMat: {fileID: 2100000, guid: 59b8b29a1d8e04442aca7ad36a051585, type: 2}
+  mat: {fileID: 0}
+--- !u!114 &114840857855446240
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1435618842516450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c185b90eea8f901409bcbb2a73a9b569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212403391724263010
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -72,7 +82,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 09bc5f54810b4bc499eedb8223959e27, type: 2}
+  - {fileID: 2100000, guid: 7c0e7cc0eb7eb8641b17b611185bdcdf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

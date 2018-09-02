@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HumanController : ScriptableObject {
 
-    private Field field;
+[System.Serializable]
+public class HumanController {
 
     // Use this for initialization
-    public void Init()
+    public HumanController(HumanPlayer player)
     {
         EventManager.OnHoverTile += Hover;
         EventManager.OnSelectTile += SelectTile;
         EventManager.OnAbilityClick += SelectAbility;
         EventManager.OnDeselect += Deselect;
- 
+        this.player = player;
     }
     //always current Human Player
     public HumanPlayer player;
@@ -21,7 +21,7 @@ public class HumanController : ScriptableObject {
 
     void Hover(Tile tile, GameObject obj)
     {
-         player.Hover(tile);
+        player.Hover(tile);
     }
     void SelectTile(Tile tile, GameObject obj)
     {

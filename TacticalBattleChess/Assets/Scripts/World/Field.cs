@@ -57,7 +57,6 @@ public class Field : MonoBehaviour
     public float isoy = 1f;
     public void GenerateMap()
     {
-        GetComponent<UiHandler>().RemoveUI();
         pf = new Pathfinder();
         if (parent != null)
         {
@@ -80,7 +79,8 @@ public class Field : MonoBehaviour
         p2.name = "player2";
         player1 = p1.GetComponent<HumanPlayer>();
         player2 = p2.GetComponent<HumanPlayer>();
-
+        player1.color = Color.white;
+        player2.color = Color.black;
 
         player1.teamid = 0;
         player2.teamid = 1;
@@ -146,7 +146,7 @@ public class Field : MonoBehaviour
         //Quick and Dirty solution  Problem Gameobject/Script variables get cleared on Play
         player1 = GameObject.Find("player1").GetComponent<HumanPlayer>();
         player2 = GameObject.Find("player2").GetComponent<HumanPlayer>();
-        player1.TurnStart();
+       // player1.TurnStart();
         print("started");
     }
 
@@ -161,7 +161,12 @@ public class Field : MonoBehaviour
         Character c = instantiatedChar.GetComponent<Character>();
         if (team == 0)
         {
-            c.transform.Rotate(0f, 180f, 0f);
+           c.transform.Rotate(0f, 180f, 0f);
+           instantiatedChar.GetComponent<CharacterShaderHelper>().SetTeamColor(player1.color);
+        }
+        else
+        {
+           instantiatedChar.GetComponent<CharacterShaderHelper>().SetTeamColor(player2.color);
         }
         c.team = team;
         c.standingOn = tile;
@@ -225,24 +230,6 @@ public class Field : MonoBehaviour
         }
         return false;
     }
-    public void MarkTile(Tile tile, MarkType mt)
-    {
-        switch (mt)
-        {
-            case (MarkType.Marked):
-                tile.range();
-                break;
-            case (MarkType.Path):
-                tile.mark();
-                break;
-            case (MarkType.Standard):
-                tile.reset();
-                break;
-            default:
-                break;
-        }
-    }
-    //not functional at the moment
  
 
 

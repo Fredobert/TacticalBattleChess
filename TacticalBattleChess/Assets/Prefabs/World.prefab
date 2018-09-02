@@ -110,6 +110,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 344aa528892b8904f920884444f0cc04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charUIs: []
+  t1anchor: {fileID: 0}
+  t0anchor: {fileID: 0}
+  marker: {fileID: 0}
+  turnCounter: {fileID: 0}
+  turnIndicator: {fileID: 0}
+  freeMoves: {fileID: 0}
+  apCounter: {fileID: 0}
+  field: {fileID: 0}
+  offset: -5000
+  markerOffset: 60
+  markActive: 0
 --- !u!114 &114524729707560404
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -211,7 +223,7 @@ MonoBehaviour:
     pid: 0
     start: {fileID: 0}
   tileprefab: {fileID: 1264945200148368, guid: 2f6d3a5781ac87d42a28e59e85b4e0a0, type: 2}
-  StandardTileContent: {fileID: 1529198710505484, guid: 7adeda000f0f7564e9bbd41adc55db6f,
+  StandardTileContent: {fileID: 1890594636013006, guid: 804a1b829dd27b6489bc3a88f9c70438,
     type: 2}
   charprefab: {fileID: 1924012324553540, guid: 8fbc7fb38156ad84aa380fc7b91eccc9, type: 2}
   playerprefab: {fileID: 1031095874426430, guid: 3df68b0fd07e46b49ad22aaec8eb91d1,
@@ -229,33 +241,7 @@ MonoBehaviour:
   contentPrefabs:
   - {fileID: 1748578997028872, guid: dedcc099c085e4b499cc9fa5fd0bafb4, type: 2}
   - {fileID: 1172967293447250, guid: f5da2f673d431974b855f518abf668f1, type: 2}
-  chars:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   isox: 0.79
   isoy: 0.7
+  busy: 0
   maxpathzyclen: 10

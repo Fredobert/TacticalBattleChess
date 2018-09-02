@@ -35,7 +35,6 @@ public class LightBeam : Ability
     IEnumerator Animation(GameObject g)
     {
         g.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, -4);
-        target.reset();
         yield return new WaitForSeconds(speed);
 
 

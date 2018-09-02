@@ -99,15 +99,4 @@ public class UiHandler : MonoBehaviour {
         marker.SetActive(false);
         markActive = false;
     }
-
-    public void RemoveUI()
-    {
-        charUIs = new List<CharUIElement>();
-        foreach (var item in charUIs)
-        {
-            DestroyImmediate(item);
-        }
-    }
-
-
 }

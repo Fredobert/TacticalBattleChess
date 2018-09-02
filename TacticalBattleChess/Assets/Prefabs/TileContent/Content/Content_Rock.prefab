@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4003537111441724}
   - component: {fileID: 212795970588721900}
   - component: {fileID: 114347036190756706}
+  - component: {fileID: 114601474597225252}
   m_Layer: 0
   m_Name: Content_Rock
   m_TagString: Untagged
@@ -53,6 +54,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkable: 0
+--- !u!114 &114601474597225252
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1748578997028872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01ce1beb0af465f429d9f335b800edde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212795970588721900
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -68,7 +80,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 09bc5f54810b4bc499eedb8223959e27, type: 2}
+  - {fileID: 2100000, guid: 3367b9d2ac2945744b229cf34bca0960, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

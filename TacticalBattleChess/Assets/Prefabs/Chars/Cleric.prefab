@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114232473996821894}
   - component: {fileID: 61117992777547598}
   - component: {fileID: 212502148303314554}
+  - component: {fileID: 114331073888303458}
   m_Layer: 9
   m_Name: Cleric
   m_TagString: Untagged
@@ -84,9 +85,21 @@ MonoBehaviour:
   maxhealth: 10
   health: 10
   movment: 3
+  alive: 1
   abilitys: []
   standingOn: {fileID: 0}
   material: {fileID: 0}
+--- !u!114 &114331073888303458
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1068106022645994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f4432af10e402247a7ad3e9e1ebba07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114426229824969738
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -99,6 +112,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 2766be6c10a7d8a4b8d92083409ce766, type: 3}
+  cd: 2
+  currentCd: 0
   speed: 0.9
   damage: 5
   prefab: {fileID: 1198414771491374, guid: 87b462df11fb6f741beb336fffc826ca, type: 2}
@@ -114,6 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: a62d4bc800cc6a54fb63f87dee077c13, type: 3}
+  cd: 2
+  currentCd: 0
   hpgain: 8
 --- !u!212 &212502148303314554
 SpriteRenderer:
@@ -130,7 +147,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 09bc5f54810b4bc499eedb8223959e27, type: 2}
+  - {fileID: 2100000, guid: 1d921686884c5054d9ca0519a736909a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -3,13 +3,13 @@
 Shader "Custom/CombinedShader" {
 	Properties{
 		_MainTex("Base (RGB) Trans (A)", 2D) = "white" {}
-	//Mark
-	[Toggle] _MarkActive("Mark Active",float) = 0
-	_MarkColor("Color for Mark",color) = (1,1,1,1)
-	_MaxTexFade("Max Fade of Texture",Range(0,1)) = 0.7
-	_MinTexFade("Min Fade of Texture",Range(0,1)) = 0.45
-	_MarkOffSet("y offset",float) = 0.008
-	_Speed("Speed of fade",float) = 2
+		//Mark
+		[Toggle] _MarkActive("Mark Active",float) = 0
+		_MarkColor("Color for Mark",color) = (1,1,1,1)
+		_MaxTexFade("Max Fade of Texture",Range(0,1)) = 0.7
+		_MinTexFade("Min Fade of Texture",Range(0,1)) = 0.45
+		_MarkOffSet("y offset",float) = 0.008
+		_Speed("Speed of fade",float) = 2
 
 		//Range
 		[Toggle]	_RangeActive("Outline Active", float) = 0
@@ -19,7 +19,7 @@ Shader "Custom/CombinedShader" {
 		//Hover
 		[Toggle]	_OutlineActive("Range Active", float) = 0
 		_Outline("size of Outline",Range(0,0.1)) = 0.02
-	_OutlineColor("Color for Outline",color) = (1,1,1,1)
+		_OutlineColor("Color for Outline",color) = (1,1,1,1)
 	}
 
 SubShader{

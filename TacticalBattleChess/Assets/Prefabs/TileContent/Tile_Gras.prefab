@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4489666657570264}
   - component: {fileID: 212177908854510368}
   - component: {fileID: 114371191143660972}
+  - component: {fileID: 114739839039198958}
   m_Layer: 0
   m_Name: Tile_Gras
   m_TagString: Untagged
@@ -35,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1890594636013006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.67, y: 1.28, z: 5.2813144}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -54,9 +55,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 0}
   content: {fileID: 0}
-  standardMat: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  markMat: {fileID: 2100000, guid: 264498dad1e94444c8ef17d16ee95df5, type: 2}
-  rangedMat: {fileID: 2100000, guid: 59b8b29a1d8e04442aca7ad36a051585, type: 2}
+  mat: {fileID: 0}
+--- !u!114 &114739839039198958
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1890594636013006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c185b90eea8f901409bcbb2a73a9b569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212177908854510368
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -72,7 +82,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 09bc5f54810b4bc499eedb8223959e27, type: 2}
+  - {fileID: 2100000, guid: 7c0e7cc0eb7eb8641b17b611185bdcdf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -92,14 +102,14 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d84740be0c632ee47aa6ba088fddecf6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1f23d2a0cd8b71648801852f9b86a9ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.2, y: 2.64}
+  m_Size: {x: 1.4, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
