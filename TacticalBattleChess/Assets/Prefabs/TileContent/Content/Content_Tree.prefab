@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4966217067820008}
   - component: {fileID: 212537189524730664}
-  - component: {fileID: 114104498313320280}
   - component: {fileID: 114505190382910272}
+  - component: {fileID: 114616453934837410}
   m_Layer: 0
   m_Name: Content_Tree
   m_TagString: Untagged
@@ -42,18 +42,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114104498313320280
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1172967293447250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c94bd66e04edb0148bbe2b40da1c8222, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkable: 0
 --- !u!114 &114505190382910272
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -65,6 +53,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ce1beb0af465f429d9f335b800edde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114616453934837410
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1172967293447250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e390bbb4707cfe47b5c0f576dddbcc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  walkable: 0
+  tile: {fileID: 0}
 --- !u!212 &212537189524730664
 SpriteRenderer:
   m_ObjectHideFlags: 1

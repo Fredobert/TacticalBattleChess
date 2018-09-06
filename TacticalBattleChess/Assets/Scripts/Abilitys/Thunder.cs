@@ -37,11 +37,8 @@ public class Thunder : Ability
         g.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, -4);
         yield return new WaitForSeconds(speed);
 
-
-        if (target.GetCharacter() != null)
-        {
-            target.GetCharacter().DealDamage(damage);
-        }
+        target.Effect(damage, GameHelper.EffectType.Thunder);
+        
         Destroy(g);
     }
 

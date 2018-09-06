@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Tile_Gras : TileContent
 {
-    protected override void Init()
+    private void OnEnable()
     {
-
+        type = GameHelper.TileType.Gras;
     }
 }

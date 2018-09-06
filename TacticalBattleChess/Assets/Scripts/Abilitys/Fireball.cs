@@ -38,15 +38,15 @@ public class Fireball : Ability {
 
     IEnumerator Animation(GameObject g)
     {
-        while (from != null && from.Walkable() != false)
+        while (from != null && from.Walkable())
         {
             g.transform.position = new Vector3(from.transform.position.x, from.transform.position.y, -4);
             from = from.neighboors[directionOffset];
             yield return new WaitForSeconds(speed);
         }
-        if (from != null && from.GetComponent<Tile>().GetCharacter() != null)
+        if (from != null)
         {
-            from.GetComponent<Tile>().GetCharacter().DealDamage(damage);
+            from.Effect(damage,GameHelper.EffectType.Fire);
         }
         Destroy(g);
     }

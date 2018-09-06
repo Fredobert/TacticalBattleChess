@@ -39,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1489244729823150}
   m_LocalRotation: {x: 0.008726225, y: 0.008726225, z: -0.0000761528, w: 0.9999238}
-  m_LocalPosition: {x: -0.9955589, y: 2.5230925, z: -0.15672356}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -86,7 +86,7 @@ MonoBehaviour:
   currentCd: 0
   prefab: {fileID: 1997320040396084, guid: e7217176c33eb1f438995a2b21f5778e, type: 2}
   speed: 0.2
-  damage: 10
+  damage: 8
 --- !u!114 &114445935508336904
 MonoBehaviour:
   m_ObjectHideFlags: 1

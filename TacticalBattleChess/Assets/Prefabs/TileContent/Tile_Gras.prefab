@@ -53,8 +53,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eeca038168054f4aa462cf24ea664f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tile: {fileID: 0}
   character: {fileID: 0}
   content: {fileID: 0}
+  type: 1
   mat: {fileID: 0}
 --- !u!114 &114739839039198958
 MonoBehaviour:

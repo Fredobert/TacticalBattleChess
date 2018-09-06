@@ -19,4 +19,9 @@ public class Mage : Character
         abilitys.Add(GetComponent<Fireball>());
         abilitys.Add(GetComponent<Thunder>());
     }
+
+    public override void Effect(int z, GameHelper.EffectType type)
+    {
+        base.Effect(z, type);
+    }
 }

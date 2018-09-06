@@ -80,10 +80,13 @@ public class Tile : MonoBehaviour {
         }
         return null;
     }
-    //bainstorming
-    public void Effect()
-    {
 
+    public void Effect(int z, GameHelper.EffectType type)
+    {
+        if (tileContent != null)
+        {
+            tileContent.Effect(z, type);
+        }
     }
 
 }

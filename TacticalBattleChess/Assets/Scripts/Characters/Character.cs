@@ -51,6 +51,24 @@ public abstract class Character : MonoBehaviour
         }
         OnHeal(heal);
     }
+    
+    public virtual void Effect(int z,GameHelper.EffectType type)
+    {
+        switch (type)
+        {
+            case GameHelper.EffectType.Fire:
+            case GameHelper.EffectType.Thunder:
+            case GameHelper.EffectType.Light:
+                DealDamage(z);
+                break;
+            case GameHelper.EffectType.Heal:
+                HealChar(z);
+                break;
+            default:
+
+                break;
+        }
+    }
 
     public void CastAbility(Ability ability,Tile tile)
     {

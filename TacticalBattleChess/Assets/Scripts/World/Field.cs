@@ -101,12 +101,12 @@ public class Field : MonoBehaviour
                 gamefield[i, j].transform.SetParent(parent.transform);
                 Tile t = gamefield[i, j].GetComponent<Tile>();
                 GameObject g = Instantiate(StandardTileContent);
-                TileContent tc = g.GetComponent<TileContent>();
-                t.tileContent = tc;
-                g.transform.SetParent(t.transform);
-                g.transform.position = t.transform.position;
+                AddTileContent(g, t);
+                //TileContent tc = g.GetComponent<TileContent>();
+               // t.tileContent = tc;
+              //  g.transform.SetParent(t.transform);
+             //   g.transform.position = t.transform.position;
                 t.Init(i + "-:" + j);
-                tc.AInit();
                 allTiles.Add(t);
             }
         }
@@ -156,8 +156,8 @@ public class Field : MonoBehaviour
         parent = GameObject.Find(parentname).transform;
         Vector3 tilePos = tile.transform.position;
         tilePos.z = -1 + tilePos.z;
+        instantiatedChar.transform.SetParent(parent.transform, false);
         instantiatedChar.transform.position = tilePos;
-        instantiatedChar.transform.SetParent(parent.transform);
         Character c = instantiatedChar.GetComponent<Character>();
         if (team == 0)
         {
@@ -180,18 +180,21 @@ public class Field : MonoBehaviour
 
     public void AddTileContent(GameObject instantiatedTileContent, Tile tile)
     {
-        if (Application.isEditor)
+        if (tile.tileContent != null)
         {
-            DestroyImmediate(tile.tileContent.gameObject);
-        }
-        else
-        {
-            Destroy(tile.tileContent.gameObject);
+            if (Application.isEditor)
+            {
+                DestroyImmediate(tile.tileContent.gameObject);
+            }
+            else
+            {
+                Destroy(tile.tileContent.gameObject);
+            }
         }
         tile.tileContent = instantiatedTileContent.GetComponent<TileContent>();
+        instantiatedTileContent.transform.SetParent(tile.transform, false);
         instantiatedTileContent.transform.position = tile.transform.position;
-        instantiatedTileContent.transform.parent = tile.transform;
-        tile.tileContent.AInit();
+        tile.tileContent.BaseInit(tile, this);
     }
 
     public void AddContent(GameObject instantiatedContent, Tile tile)
@@ -210,10 +213,11 @@ public class Field : MonoBehaviour
                 }
             }
             tile.tileContent.content = instantiatedContent.GetComponent<Content>();
+            tile.tileContent.content.Init(tile);
+            instantiatedContent.transform.SetParent(tile.transform, false);
             Vector3 vec = tile.transform.position;
             vec.z = -1f + vec.z;
             instantiatedContent.transform.position = vec;
-            instantiatedContent.transform.parent = tile.transform;
         }
 
     }

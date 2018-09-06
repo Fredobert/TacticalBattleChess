@@ -4,12 +4,13 @@ using UnityEngine;
 
 public abstract class TileContent : MonoBehaviour {
 
-    protected Tile tile;
+    public Tile tile;
    
     protected bool walkable = true;
     protected Field field;
     public Character character;
     public Content content;
+    public GameHelper.TileType type;
     // protected Field field;
     // Use this for initialization
     public Material mat;
@@ -47,22 +48,33 @@ public abstract class TileContent : MonoBehaviour {
         }
         return walkable;
     }
+
+    public void DoEffect(int z, GameHelper.EffectType type)
+    {
+        if (content != null)
+        {
+            content.Effect(z, type);
+        }
+        if (character != null)
+        {
+            character.Effect(z, type);
+        }
+    }
+
+    public virtual void Effect(int z, GameHelper.EffectType type)
+    {
+        DoEffect(z, type);
+    }
+
     public virtual Character GetCharacter()
     {
         return character;
     }
 
-    //useless at the moment may be removed
-    protected abstract void Init();
-    public void AInit()
-    {
-        Init();
-    }
     public void BaseInit(Tile tile, Field field)
     {
         this.field = field;
         this.tile = tile;
-        Init();
     }
 
 
