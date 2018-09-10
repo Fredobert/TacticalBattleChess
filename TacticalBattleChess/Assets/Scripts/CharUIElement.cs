@@ -32,7 +32,10 @@ public class CharUIElement : MonoBehaviour {
         {
             print("ERROR: Character in UI not Set");
         }
-        
+        character.OnDamageTaken += RefreshHealthBar;
+        character.OnHeal += RefreshHealthBar;
+        EventManager.OnTurnStart += TurnStart;
+        character.OnAbility += Cast;
     }
     public void Init()
     {
@@ -41,10 +44,7 @@ public class CharUIElement : MonoBehaviour {
         ability1.image.sprite = character.abilitys[0].icon;
         healthText.text = character.maxhealth + "/" + character.health;
         ability2.image.sprite = character.abilitys[1].icon;
-        character.OnDamageTaken += RefreshHealthBar;
-        character.OnHeal += RefreshHealthBar;
-        EventManager.OnTurnStart += TurnStart;
-        character.OnAbility += Cast;
+
     }
     void RefreshHealthBar(int dmg){
         healthText.text = character.health + "/" + character.maxhealth;

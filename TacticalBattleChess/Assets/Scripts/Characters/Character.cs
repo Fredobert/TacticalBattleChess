@@ -29,7 +29,6 @@ public abstract class Character : MonoBehaviour
 
     protected abstract void AbInit();
 
-
     public void DealDamage(int dmg)
     {
         health -= dmg;

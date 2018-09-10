@@ -53,7 +53,10 @@ public class UiHandler : MonoBehaviour {
     public void AddUI(CharUIElement cue)
     {
         charUIs.Add(cue);
-     
+        PositionUI(cue);
+    }
+    public void PositionUI(CharUIElement cue)
+    {
         RectTransform rect;
         int count;
         if (cue.character.team == 0)
@@ -61,13 +64,14 @@ public class UiHandler : MonoBehaviour {
             rect = t0anchor.GetComponent<RectTransform>();
             count = t0anchor.transform.childCount;
             cue.transform.SetParent(t0anchor.transform);
-        } else  {
+        }
+        else
+        {
             rect = t1anchor.GetComponent<RectTransform>();
             count = t1anchor.transform.childCount;
             cue.transform.SetParent(t1anchor.transform);
         }
-        cue.GetComponent<RectTransform>().anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y -count * -offset);
-
+        cue.GetComponent<RectTransform>().anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y - count * -offset);
     }
 
     public void Mark(Character character)
@@ -98,5 +102,47 @@ public class UiHandler : MonoBehaviour {
     {
         marker.SetActive(false);
         markActive = false;
+    }
+
+    public CharUIElement RemoveUI(Character character)
+    {
+        for (int i = 0; i < charUIs.Count; i++)
+        {
+            if (charUIs[i] != null && charUIs[i].character == character)
+            {
+                CharUIElement z = charUIs[i];
+                charUIs.Remove(charUIs[i]);
+                OrderUI();
+                return z;
+            }
+        }
+        //charUIs.RemoveAll(x => x.character == character);
+        return null;
+    }
+    public CharUIElement Get(Character character)
+    {
+        for (int i = 0; i < charUIs.Count; i++)
+        {
+            if (charUIs[i] != null && charUIs[i].character == character)
+            {
+                return charUIs[i];
+            }
+        }
+        Debug.Log("Error");
+        return null;
+    }
+    public void ClearNones()
+    {
+        charUIs.RemoveAll(x => x == null);
+    }
+    public void OrderUI()
+    {
+        t1anchor.transform.DetachChildren();
+        t0anchor.transform.DetachChildren();
+        //charUIs.ForEach(x => AddUI(x));
+        for (int i = 0; i < charUIs.Count; i++)
+        {
+            PositionUI(charUIs[i]);
+        }
     }
 }

@@ -16,11 +16,13 @@ public class BuildWindow : EditorWindow {
 
         BuildWindow window = (BuildWindow)EditorWindow.GetWindow(typeof(BuildWindow));
         window.Show();
+
         f = GameObject.Find("World").GetComponent<Field>();
     }
     bool tchar = false;
     bool ttile = false;
     bool tcont = false;
+
     void OnGUI()
     {
      
@@ -128,26 +130,63 @@ public class BuildWindow : EditorWindow {
                 t = GetSelectedTile();
                 if (t != null)
                 {
-                    z = PrefabUtility.InstantiatePrefab(f.characterPrefabs[selectedPrefab]) as GameObject;
-                    EditorUtility.SetDirty(f.GetComponent<UiHandler>());
-                    f.AddCharPrefab(z, t, team);
-                    //lazy
-                    EditorUtility.SetDirty(z);
-                    EditorUtility.SetDirty(t);
-                    EditorUtility.SetDirty(t.GetComponent<Tile>().tileContent);
-                    Selection.objects = new Object[0];
+                    CharUIElement cue;
+                    if (selectedPrefab == -1)
+                    {
+                        if (t.tileContent.GetCharacter() != null)
+                        {
+
+
+                            //Undo.RegisterCompleteObjectUndo(f.GetComponent<UiHandler>().gameObject, "New Char");
+                            //Undo.RegisterCompleteObjectUndo(t.tileContent, "New Char");
+                            Undo.RegisterFullObjectHierarchyUndo(GameObject.Find("Canvas"), "Remove Char");
+                            Undo.DestroyObjectImmediate(f.GetComponent<UiHandler>().Get(t.tileContent.GetCharacter()).gameObject);
+                            f.GetComponent<UiHandler>().ClearNones();
+                            f.GetComponent<UiHandler>().OrderUI();
+                            //cue = f.GetComponent<UiHandler>().RemoveUI(t.tileContent.GetCharacter());
+                            //Undo.DestroyObjectImmediate(cue.gameObject);
+                            //
+                            Undo.RecordObject(f.GetComponent<UiHandler>(), "Remove Char");
+                            Undo.DestroyObjectImmediate(t.tileContent.GetCharacter().gameObject);
+                            //EditorUtility.SetDirty(f.GetComponent<UiHandler>());
+
+                            //Todo Delete UI with undo flag
+                        }
+                    }
+                    else
+                    {
+                        //Undo.RegisterCompleteObjectUndo(t.tileContent, "New Char");
+                        Undo.RegisterCompleteObjectUndo(f.GetComponent<UiHandler>().gameObject, "New Char");
+
+                        z = PrefabUtility.InstantiatePrefab(f.characterPrefabs[selectedPrefab]) as GameObject;
+                        f.AddCharPrefab(z, t, team);
+                        EditorUtility.SetDirty(z.GetComponent<Renderer>());
+                        t.tileContent.type = GameHelper.TileType.Gras;
+                        Undo.RegisterCreatedObjectUndo(z, "New Char");
+                        cue = Instantiate(f.charuiprefab).GetComponent<CharUIElement>();
+                        cue.character = z.GetComponent<Character>();
+                        cue.Init();
+                        f.GetComponent<UiHandler>().AddUI(cue);
+                        Undo.RegisterCreatedObjectUndo(cue.gameObject, "New Char");
+                        //has to be done or UiHandler charUis contains None refereces after play
+                        //EditorUtility.SetDirty(f.GetComponent<UiHandler>());
+                        Selection.objects = new Object[0];
+                    }
                 }
                 break;
             case 1:
                 t = GetSelectedTile();
                 if (t != null)
                 {
+                    if (t.tileContent != null)
+                    {
+                        Undo.RegisterCompleteObjectUndo(t, "New TileContent");
+                        Undo.DestroyObjectImmediate(t.tileContent.gameObject);
+                    }
                     z = PrefabUtility.InstantiatePrefab(f.tilePrefabs[selectedPrefab]) as GameObject;
                     f.AddTileContent(z, t);
-                    //lazy
-                    EditorUtility.SetDirty(z);
-                    EditorUtility.SetDirty(t);
-                    EditorUtility.SetDirty(t.GetComponent<Tile>().tileContent);
+                    Undo.RegisterCreatedObjectUndo(z, "New TileContent");
+                    Undo.RegisterCompleteObjectUndo(t, "New TileContent");
                     Selection.objects = new Object[0];
                 }
                 break;
@@ -155,12 +194,15 @@ public class BuildWindow : EditorWindow {
                 t = GetSelectedTile();
                 if (t != null)
                 {
+                    if (t.tileContent.content!= null)
+                    {
+                        Undo.RegisterCompleteObjectUndo(t.tileContent, "New Content");
+                        Undo.DestroyObjectImmediate(t.tileContent.content.gameObject);
+                    }
                     z = PrefabUtility.InstantiatePrefab(f.contentPrefabs[selectedPrefab]) as GameObject;
                     f.AddContent(z, t);
-                    //lazy
-                    EditorUtility.SetDirty(z);
-                    EditorUtility.SetDirty(t);
-                    EditorUtility.SetDirty(t.GetComponent<Tile>().tileContent);
+                    Undo.RegisterCreatedObjectUndo(z, "New Content");
+                    Undo.RegisterCompleteObjectUndo(t.tileContent, "New Content");
                     Selection.objects = new Object[0];
                 }
                 break;
@@ -171,6 +213,19 @@ public class BuildWindow : EditorWindow {
     public void GenerateContent(List<GameObject> list,int id, GUIStyle style, ref Rect rect)
     {
         EditorGUI.indentLevel++;
+        style = EditorStyles.label;
+        if (-1 == selectedPrefab && prefabmodus == id)
+        {
+            style = new GUIStyle(style);
+            style.normal.textColor = Color.blue;
+        }
+        rect = EditorGUILayout.GetControlRect();
+        rect = EditorGUI.IndentedRect(rect);
+        if (GUI.Button(rect, "none", style))
+        {
+            selectedPrefab = -1;
+            prefabmodus = id;
+        }
         for (int i = 0; i < list.Count; i++)
         {
             style = EditorStyles.label;
