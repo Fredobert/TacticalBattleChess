@@ -10,13 +10,16 @@ public class BuildWindow : EditorWindow {
     int prefabmodus = -1;
     int team;
 
+    static int conSize;
+    static int offSet;
     [MenuItem("Window/Builder")]
     public static void ShowWindow()
     {
 
         BuildWindow window = (BuildWindow)EditorWindow.GetWindow(typeof(BuildWindow));
         window.Show();
-
+        conSize = 60;
+        offSet = 4;
         f = GameObject.Find("World").GetComponent<Field>();
     }
     bool tchar = false;
@@ -25,103 +28,12 @@ public class BuildWindow : EditorWindow {
 
     void OnGUI()
     {
-     
-        EditorGUILayout.BeginScrollView(Vector2.zero);
-        GUIStyle style = EditorStyles.label;
-        GUIStyle parentstyle = EditorStyles.largeLabel;
-        parentstyle.normal.textColor = Color.red;
-        if (selectedPrefab == -1)
-        {
-            style = new GUIStyle(style);
-            style.normal.textColor = Color.blue;
-        }
-        Rect rect = EditorGUILayout.GetControlRect();
-        rect = EditorGUI.IndentedRect(rect);
-        if (GUI.Button(rect, "none", style))
-        {
-            selectedPrefab = -1;
-            prefabmodus = -1;
-        }
-        rect = EditorGUILayout.GetControlRect();
-        rect = EditorGUI.IndentedRect(rect);
-        //ugly but i dont know how better :(
-        if (tchar)
-        {
-            if (GUI.Button(rect, "Chars", parentstyle))
-            {
-                tchar = false;
-
-            }
-        }
-        else
-        {
-            if (GUI.Button(rect, "Chars", parentstyle))
-            {
-                tchar = true;
-            }
-        }
-        if (tchar)
-        {
-            team = EditorGUILayout.IntField("team", team);
-            GenerateContent(f.characterPrefabs, 0, style, ref rect);
-        }
-        rect = EditorGUILayout.GetControlRect();
-        rect = EditorGUI.IndentedRect(rect);
-
-        if (ttile)
-        {
-            if (GUI.Button(rect, "Tiles", parentstyle))
-            {
-                ttile = false;
-            }
-        }
-        else
-        {
-            if (GUI.Button(rect, "Tiles", parentstyle))
-            {
-                ttile = true;
-            }
-        }
-        if (ttile)
-        {
-            GenerateContent(f.tilePrefabs, 1, style, ref rect);
-        }
-        rect = EditorGUILayout.GetControlRect();
-        rect = EditorGUI.IndentedRect(rect);
-
-        if (tcont)
-        {
-            if (GUI.Button(rect, "Content", parentstyle))
-            {
-                tcont = false;
-            }
-        }
-        else
-        {
-            if (GUI.Button(rect, "Content", parentstyle))
-            {
-                tcont = true;
-            }
-        }
-        if (tcont)
-        {
-            GenerateContent(f.contentPrefabs, 2, style, ref rect);
-        }
-        rect = EditorGUILayout.GetControlRect();
-        rect = EditorGUI.IndentedRect(rect);
- 
-        // tiles
-        if (GUI.Button(rect, "Mark Scene Dirty", EditorStyles.miniButton))
-        {
-            EditorSceneManager.MarkAllScenesDirty();
-        }
-        EditorGUILayout.EndScrollView();
+        DrawMenuFancy();
 
     }
 
     void OnSelectionChange()
     {
-
         Tile t;
         GameObject z;
         switch (prefabmodus)
@@ -209,42 +121,59 @@ public class BuildWindow : EditorWindow {
         }
      
     }
-
-    public void GenerateContent(List<GameObject> list,int id, GUIStyle style, ref Rect rect)
+   
+    //On Progress
+    public void DrawMenuFancy()
     {
-        EditorGUI.indentLevel++;
-        style = EditorStyles.label;
-        if (-1 == selectedPrefab && prefabmodus == id)
-        {
-            style = new GUIStyle(style);
-            style.normal.textColor = Color.blue;
-        }
-        rect = EditorGUILayout.GetControlRect();
-        rect = EditorGUI.IndentedRect(rect);
-        if (GUI.Button(rect, "none", style))
-        {
-            selectedPrefab = -1;
-            prefabmodus = id;
-        }
-        for (int i = 0; i < list.Count; i++)
-        {
-            style = EditorStyles.label;
-            if (i == selectedPrefab && prefabmodus == id)
-            {
-                style = new GUIStyle(style);
-                style.normal.textColor = Color.blue;
-            }
-            rect = EditorGUILayout.GetControlRect();
-            rect = EditorGUI.IndentedRect(rect);
-            if (GUI.Button(rect, list[i].name, style))
-            {
-                selectedPrefab = i;
-                prefabmodus = id;
-            }
-        }
-        EditorGUI.indentLevel--;
-    }
+        int maxContentsPerRow = ((int)position.width) / (conSize + offSet);
+        EditorGUILayout.BeginScrollView(new Vector2(0,0));
 
+
+        tchar = EditorGUILayout.Foldout(tchar, "Characters");
+        if(tchar)
+        {
+            team = EditorGUILayout.IntField("team", team);
+            DrawTexButtons(f.characterPrefabs, maxContentsPerRow,0);
+        }
+        ttile = EditorGUILayout.Foldout(ttile, "Tiles");
+        if (ttile)
+        {
+            DrawTexButtons(f.tilePrefabs, maxContentsPerRow, 1);
+        }
+        tcont = EditorGUILayout.Foldout(tcont, "Contents");
+        if (tcont)
+        {
+            DrawTexButtons(f.contentPrefabs, maxContentsPerRow, 2);
+        }
+        EditorGUILayout.EndScrollView();
+    }
+    public void DrawTexButtons(List<GameObject> gameobjects, int maxRowContent,int id,int currentElement = 0 )
+    {
+        EditorGUILayout.BeginHorizontal();
+        for (int i = currentElement; i < ((gameobjects.Count > currentElement + maxRowContent)? currentElement + maxRowContent:gameobjects.Count); i++)
+        {
+                Texture2D tex = gameobjects[i].GetComponent<SpriteRenderer>().sprite.texture;
+                if (prefabmodus == id && selectedPrefab == i)
+                {
+                    GUI.backgroundColor = new Color(32/255f,115/255f,249/255f);
+                }
+                else
+                {
+                    GUI.backgroundColor = Color.white;
+                }
+                if (GUILayout.Button(tex, GUILayout.Width(conSize), GUILayout.Height(conSize)))
+                {
+                    selectedPrefab = i;
+                    prefabmodus = id;
+                }
+        }
+        EditorGUILayout.EndHorizontal();
+        if (gameobjects.Count > currentElement+ maxRowContent)
+        {
+            DrawTexButtons(gameobjects, maxRowContent, currentElement + maxRowContent);
+        }
+    }
+   
     public Tile GetSelectedTile()
     {
         if (Selection.activeTransform != null)
