@@ -67,6 +67,8 @@ public class Field : MonoBehaviour
             DestroyImmediate(GameObject.Find(parentname));
         }
         parent = new GameObject(parentname).transform;
+
+       
         allTiles = new List<Tile>();
 
         //init player
@@ -103,7 +105,8 @@ public class Field : MonoBehaviour
                 allTiles.Add(t);
             }
         }
-
+        parent.transform.SetParent(gameObject.transform, false);
+        parent.transform.position = gameObject.transform.position;
         int zx;
         int zy;
         //set neighbours

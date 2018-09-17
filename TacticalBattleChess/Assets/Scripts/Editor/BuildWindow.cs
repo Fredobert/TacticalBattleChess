@@ -51,6 +51,7 @@ public class BuildWindow : EditorWindow {
 
                             //Undo.RegisterCompleteObjectUndo(f.GetComponent<UiHandler>().gameObject, "New Char");
                             //Undo.RegisterCompleteObjectUndo(t.tileContent, "New Char");
+                            Undo.RecordObject(f.GetComponent<UiHandler>(), "Remove Char");
                             Undo.RegisterFullObjectHierarchyUndo(GameObject.Find("Canvas"), "Remove Char");
                             Undo.DestroyObjectImmediate(f.GetComponent<UiHandler>().Get(t.tileContent.GetCharacter()).gameObject);
                             f.GetComponent<UiHandler>().ClearNones();
@@ -58,7 +59,7 @@ public class BuildWindow : EditorWindow {
                             //cue = f.GetComponent<UiHandler>().RemoveUI(t.tileContent.GetCharacter());
                             //Undo.DestroyObjectImmediate(cue.gameObject);
                             //
-                            Undo.RecordObject(f.GetComponent<UiHandler>(), "Remove Char");
+                            
                             Undo.DestroyObjectImmediate(t.tileContent.GetCharacter().gameObject);
                             //EditorUtility.SetDirty(f.GetComponent<UiHandler>());
 
@@ -67,12 +68,13 @@ public class BuildWindow : EditorWindow {
                     }
                     else
                     {
-                        //Undo.RegisterCompleteObjectUndo(t.tileContent, "New Char");
-                        Undo.RegisterCompleteObjectUndo(f.GetComponent<UiHandler>().gameObject, "New Char");
+                        int grp = Undo.GetCurrentGroup();
+                        //Undo.RegisterCompleteObjectUndo(t.tileContent, "New Cha);
+                        Undo.RecordObject(f.GetComponent<UiHandler>(), "New Char");
+                        Undo.RecordObject(t.tileContent,"New Char");
 
                         z = PrefabUtility.InstantiatePrefab(f.characterPrefabs[selectedPrefab]) as GameObject;
                         f.AddCharPrefab(z, t, team);
-                        EditorUtility.SetDirty(z.GetComponent<Renderer>());
                         t.tileContent.type = GameHelper.TileType.Gras;
                         Undo.RegisterCreatedObjectUndo(z, "New Char");
                         cue = Instantiate(f.charuiprefab).GetComponent<CharUIElement>();
@@ -81,7 +83,9 @@ public class BuildWindow : EditorWindow {
                         f.GetComponent<UiHandler>().AddUI(cue);
                         Undo.RegisterCreatedObjectUndo(cue.gameObject, "New Char");
                         //has to be done or UiHandler charUis contains None refereces after play
-                        //EditorUtility.SetDirty(f.GetComponent<UiHandler>());
+                        EditorUtility.SetDirty(f.GetComponent<UiHandler>());
+                        Undo.CollapseUndoOperations(grp);
+
                         Selection.objects = new Object[0];
                     }
                 }
