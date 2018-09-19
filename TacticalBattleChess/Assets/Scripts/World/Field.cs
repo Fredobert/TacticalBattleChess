@@ -20,8 +20,6 @@ public class Field : MonoBehaviour
     public string parentname = "StandardGrid";
     //maybe par fields
     //fields
-    public Material team1;
-    public Material team2;
 
     public HumanPlayer player1;
     public HumanPlayer player2;
@@ -42,8 +40,9 @@ public class Field : MonoBehaviour
    public GameObject tileprefab;
    public GameObject StandardTileContent;
    public GameObject charprefab;
-   public GameObject playerprefab;
-   public GameObject charuiprefab;
+   public GameObject player1prefab;
+    public GameObject player2prefab;
+    public GameObject charuiprefab;
 
     public List<GameObject> characterPrefabs = new List<GameObject>();
     public List<GameObject> tilePrefabs = new List<GameObject>();
@@ -68,19 +67,19 @@ public class Field : MonoBehaviour
             DestroyImmediate(GameObject.Find(parentname));
         }
         parent = new GameObject(parentname).transform;
+
+       
         allTiles = new List<Tile>();
 
         //init player
-        GameObject p1 = Instantiate(playerprefab);
-        GameObject p2 = Instantiate(playerprefab);
+        GameObject p1 = Instantiate(player1prefab);
+        GameObject p2 = Instantiate(player2prefab);
         p1.transform.SetParent(parent.transform);
         p2.transform.SetParent(parent.transform);
         p1.name = "player1";
         p2.name = "player2";
         player1 = p1.GetComponent<HumanPlayer>();
         player2 = p2.GetComponent<HumanPlayer>();
-        player1.color = Color.white;
-        player2.color = Color.black;
 
         player1.teamid = 0;
         player2.teamid = 1;
@@ -102,15 +101,12 @@ public class Field : MonoBehaviour
                 Tile t = gamefield[i, j].GetComponent<Tile>();
                 GameObject g = Instantiate(StandardTileContent);
                 AddTileContent(g, t);
-                //TileContent tc = g.GetComponent<TileContent>();
-               // t.tileContent = tc;
-              //  g.transform.SetParent(t.transform);
-             //   g.transform.position = t.transform.position;
                 t.Init(i + "-:" + j);
                 allTiles.Add(t);
             }
         }
-
+        parent.transform.SetParent(gameObject.transform, false);
+        parent.transform.position = gameObject.transform.position;
         int zx;
         int zy;
         //set neighbours
@@ -162,20 +158,16 @@ public class Field : MonoBehaviour
         if (team == 0)
         {
            c.transform.Rotate(0f, 180f, 0f);
-           instantiatedChar.GetComponent<CharacterShaderHelper>().SetTeamColor(player1.color);
+            instantiatedChar.GetComponent<Renderer>().sharedMaterial = player1.TeamCharacterMaterial;
         }
         else
         {
-           instantiatedChar.GetComponent<CharacterShaderHelper>().SetTeamColor(player2.color);
+            instantiatedChar.GetComponent<Renderer>().sharedMaterial = player2.TeamCharacterMaterial;
         }
         c.team = team;
         c.standingOn = tile;
         tile.tileContent.character = c;
         c.Init();
-        CharUIElement cue = Instantiate(charuiprefab).GetComponent<CharUIElement>();
-        cue.character = c;
-        cue.Init();
-        GetComponent<UiHandler>().AddUI(cue);
     }
 
     public void AddTileContent(GameObject instantiatedTileContent, Tile tile)

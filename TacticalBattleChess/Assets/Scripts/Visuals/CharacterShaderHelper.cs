@@ -10,9 +10,11 @@ public class CharacterShaderHelper : MonoBehaviour {
     }
     public void SetTeamColor(Color color)
     {
-        Material temp = new Material(GetComponent<SpriteRenderer>().sharedMaterial);
-        temp.SetColor("_TeamColorOutline", color);
-        GetComponent<SpriteRenderer>().sharedMaterial = temp;
+        //current Workaround
+        //Material temp = new Material(GetComponent<SpriteRenderer>().sharedMaterial);
+        //temp.SetColor("_TeamColorOutline", color);
+        //GetComponent<SpriteRenderer>().sharedMaterial = temp;
+        //GetComponent<Renderer>().sharedMaterial.SetColor("_TeamColorOutline", color);
     }
     public void Mark()
     {

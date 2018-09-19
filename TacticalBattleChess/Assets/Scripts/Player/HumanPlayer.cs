@@ -11,7 +11,7 @@ public class HumanPlayer : MonoBehaviour {
     public int ap = 2;
     public int maxap = 2;
     public int freeMove = 1;
-    public Color color;
+    public Material TeamCharacterMaterial;
     // Use this for initialization
     void Start()
     {
