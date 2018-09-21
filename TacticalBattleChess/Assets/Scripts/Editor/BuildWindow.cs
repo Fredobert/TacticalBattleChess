@@ -1,193 +1,255 @@
-﻿using System.Collections;
+﻿
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.SceneManagement;
+
 public class BuildWindow : EditorWindow {
 
-    static Field f;
+    Field f;
     int selectedPrefab = -1;
     int prefabmodus = -1;
     int team;
+    Texture2D deltex;
+    int conSize;
+    int offSet;
+    Color selectedColor = new Color(32 / 255f, 115 / 255f, 249 / 255f);
 
     [MenuItem("Window/Builder")]
     public static void ShowWindow()
     {
-
         BuildWindow window = (BuildWindow)EditorWindow.GetWindow(typeof(BuildWindow));
+        window.minSize = new Vector2(600, 600);
         window.Show();
-        f = GameObject.Find("World").GetComponent<Field>();
     }
+
+    public void OnEnable()
+    {
+        conSize = 60;
+        offSet = 4;
+        f = GameObject.Find("World").GetComponent<Field>();
+        deltex = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Textures/Delete.png", typeof(Texture2D));
+    }
+
+    void OnGUI()
+    {
+        DrawMenu();
+
+    }
+
     bool tchar = false;
     bool ttile = false;
     bool tcont = false;
-    void OnGUI()
+    public void DrawMenu()
     {
+        int maxContentsPerRow = ((int)position.width) / (conSize + offSet);
      
-        EditorGUILayout.BeginScrollView(Vector2.zero);
-        GUIStyle style = EditorStyles.label;
-        GUIStyle parentstyle = EditorStyles.largeLabel;
-        parentstyle.normal.textColor = Color.red;
-        if (selectedPrefab == -1)
-        {
-            style = new GUIStyle(style);
-            style.normal.textColor = Color.blue;
-        }
-        Rect rect = EditorGUILayout.GetControlRect();
-        rect = EditorGUI.IndentedRect(rect);
-        if (GUI.Button(rect, "none", style))
-        {
-            selectedPrefab = -1;
-            prefabmodus = -1;
-        }
-        rect = EditorGUILayout.GetControlRect();
-        rect = EditorGUI.IndentedRect(rect);
-        //ugly but i dont know how better :(
-        if (tchar)
-        {
-            if (GUI.Button(rect, "Chars", parentstyle))
-            {
-                tchar = false;
+        EditorGUILayout.BeginScrollView(new Vector2(0, 0),GUIStyle.none,GUI.skin.verticalScrollbar);
 
-            }
-        }
-        else
-        {
-            if (GUI.Button(rect, "Chars", parentstyle))
-            {
-                tchar = true;
-            }
-        }
+
+        tchar = EditorGUILayout.Foldout(tchar, "Characters");
         if (tchar)
         {
             team = EditorGUILayout.IntField("team", team);
-            GenerateContent(f.characterPrefabs, 0, style, ref rect);
-        }
-        rect = EditorGUILayout.GetControlRect();
-        rect = EditorGUI.IndentedRect(rect);
 
+            DrawContent(f.characterPrefabs,true, maxContentsPerRow, 0);
+        }
+        ttile = EditorGUILayout.Foldout(ttile, "Tiles");
         if (ttile)
         {
-            if (GUI.Button(rect, "Tiles", parentstyle))
-            {
-                ttile = false;
-            }
+            DrawContent(f.tilePrefabs,false, maxContentsPerRow, 1);
         }
-        else
-        {
-            if (GUI.Button(rect, "Tiles", parentstyle))
-            {
-                ttile = true;
-            }
-        }
-        if (ttile)
-        {
-            GenerateContent(f.tilePrefabs, 1, style, ref rect);
-        }
-        rect = EditorGUILayout.GetControlRect();
-        rect = EditorGUI.IndentedRect(rect);
-
+        tcont = EditorGUILayout.Foldout(tcont, "Contents");
         if (tcont)
         {
-            if (GUI.Button(rect, "Content", parentstyle))
-            {
-                tcont = false;
-            }
+            DrawContent(f.contentPrefabs,true, maxContentsPerRow, 2);
         }
-        else
-        {
-            if (GUI.Button(rect, "Content", parentstyle))
-            {
-                tcont = true;
-            }
-        }
-        if (tcont)
-        {
-            GenerateContent(f.contentPrefabs, 2, style, ref rect);
-        }
-        rect = EditorGUILayout.GetControlRect();
-        rect = EditorGUI.IndentedRect(rect);
- 
-        // tiles
-        if (GUI.Button(rect, "Mark Scene Dirty", EditorStyles.miniButton))
-        {
-            EditorSceneManager.MarkAllScenesDirty();
-        }
+        GUI.backgroundColor = Color.green;
+        EditorGUILayout.HelpBox("Create selected Content by selecting a Tile in Scene", MessageType.Info);
         EditorGUILayout.EndScrollView();
+    }
 
+    public void DrawContent(List<GameObject> gameobjects,bool deleteOpt, int maxRowContent, int id)
+    {
+        count = 0;
+        AddButton(new Texture2D(0, 0), "none", maxRowContent, -2, -2);
+        if (deleteOpt)
+        {
+           AddButton(deltex, "Delete", maxRowContent, id, -1);
+        }
+        for (int i = 0; i < gameobjects.Count; i++)
+        {
+            Texture2D tex = gameobjects[i].GetComponent<SpriteRenderer>().sprite.texture;
+            AddButton(tex, gameobjects[i].name, maxRowContent, id, i);
+        }
+        if (count % maxRowContent != 0)
+        {
+            EditorGUILayout.EndHorizontal();
+        }
+
+    }
+
+    //Help Method for DrawContent
+    int count = 0;
+    private void AddButton(Texture2D tex, string text, int maxRowContent, int id, int value)
+    {
+        if (count % maxRowContent == 0)
+        {
+            EditorGUILayout.BeginHorizontal();
+        }
+        DrawButton(tex, text, (prefabmodus == id && selectedPrefab == value) ? selectedColor : Color.white, "", id, value);
+        count++;
+        if (count % maxRowContent == 0)
+        {
+            EditorGUILayout.EndHorizontal();
+        }
+    }
+
+    public void DrawButton(Texture2D tex, string text, Color backGroundColor, string name, int id, int index)
+    {
+        GUI.backgroundColor = backGroundColor;
+        GUIContent gc = new GUIContent();
+        gc.text = text;
+        gc.image = tex;
+        //better create UI skin asset and load it
+        GUI.skin.button.imagePosition = ImagePosition.ImageAbove;
+        GUI.skin.button.alignment = TextAnchor.LowerCenter;
+        GUI.skin.button.fontSize = 8;
+        if (GUILayout.Button(gc, GUILayout.Width(conSize), GUILayout.Height(conSize)))
+        {
+            selectedPrefab = index;
+            prefabmodus = id;
+        }
     }
 
     void OnSelectionChange()
     {
-
-        Tile t;
-        GameObject z;
+        Tile t = GetSelectedTile();
+        if (t == null || EditorApplication.isPlaying )
+        {
+            return;
+        }
         switch (prefabmodus)
         {
             case 0:
-                t = GetSelectedTile();
-                if (t != null)
+                if (selectedPrefab == -1)
                 {
-                    z = PrefabUtility.InstantiatePrefab(f.characterPrefabs[selectedPrefab]) as GameObject;
-                    EditorUtility.SetDirty(f.GetComponent<UiHandler>());
-                    f.AddCharPrefab(z, t, team);
-                    //lazy
-                    EditorUtility.SetDirty(z);
-                    EditorUtility.SetDirty(t);
-                    EditorUtility.SetDirty(t.GetComponent<Tile>().tileContent);
-                    Selection.objects = new Object[0];
+                    if (t.tileContent.GetCharacter() != null)
+                    {
+                        RemoveCharacter(t);
+                    }
+                }
+                else
+                {
+                    if (t.tileContent.GetCharacter() != null)
+                    {
+                        RemoveCharacter(t);
+                    }
+                    AddCharacter(t, f.characterPrefabs[selectedPrefab] as GameObject);
                 }
                 break;
             case 1:
-                t = GetSelectedTile();
-                if (t != null)
-                {
-                    z = PrefabUtility.InstantiatePrefab(f.tilePrefabs[selectedPrefab]) as GameObject;
-                    f.AddTileContent(z, t);
-                    //lazy
-                    EditorUtility.SetDirty(z);
-                    EditorUtility.SetDirty(t);
-                    EditorUtility.SetDirty(t.GetComponent<Tile>().tileContent);
-                    Selection.objects = new Object[0];
-                }
+                AddTileContent(t, f.tilePrefabs[selectedPrefab] as GameObject);
                 break;
             case 2:
-                t = GetSelectedTile();
-                if (t != null)
+                if (selectedPrefab == -1)
                 {
-                    z = PrefabUtility.InstantiatePrefab(f.contentPrefabs[selectedPrefab]) as GameObject;
-                    f.AddContent(z, t);
-                    //lazy
-                    EditorUtility.SetDirty(z);
-                    EditorUtility.SetDirty(t);
-                    EditorUtility.SetDirty(t.GetComponent<Tile>().tileContent);
-                    Selection.objects = new Object[0];
+                    if (t.tileContent.content != null)
+                    {
+                        RemoveContent(t);
+                    }
+                }
+                else
+                {
+                    if (t.tileContent.content != null)
+                    {
+                        RemoveContent(t);
+                    }
+                    AddContent(t, f.contentPrefabs[selectedPrefab] as GameObject);
                 }
                 break;
         }
-     
     }
 
-    public void GenerateContent(List<GameObject> list,int id, GUIStyle style, ref Rect rect)
+    //Add Remove Section
+    private void RemoveCharacter(Tile t)
     {
-        EditorGUI.indentLevel++;
-        for (int i = 0; i < list.Count; i++)
+        int grp = Undo.GetCurrentGroup();
+        //weird RegisterObect not enough UiHandler.charuis will not get updated but with RegisterCompleteObjectUndo it works
+        Undo.RegisterCompleteObjectUndo(f.GetComponent<UiHandler>().gameObject, "New Char");
+        //Same here
+        Undo.RegisterCompleteObjectUndo(t.tileContent, "Remove Char");
+
+        //save position of Ui
+        Undo.RegisterFullObjectHierarchyUndo(GameObject.Find("Canvas"), "Remove Char");
+        CharUIElement cue = f.GetComponent<UiHandler>().Get(t.tileContent.GetCharacter());
+        Undo.DestroyObjectImmediate(cue.gameObject);
+        f.GetComponent<UiHandler>().ClearNones();
+        f.GetComponent<UiHandler>().OrderUI();
+
+        Undo.DestroyObjectImmediate(t.tileContent.GetCharacter().gameObject);
+        t.tileContent.character = null;
+
+        //has to be done or UiHandler charUis contains None refereces after play
+        EditorUtility.SetDirty(f.GetComponent<UiHandler>());
+        Undo.CollapseUndoOperations(grp);
+    }
+    private void AddCharacter(Tile t,GameObject prefab)
+    {
+        int grp = Undo.GetCurrentGroup();
+        Undo.RecordObject(f.GetComponent<UiHandler>(), "New Char");
+        Undo.RecordObject(t.tileContent, "New Char");
+
+        GameObject z = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+        f.AddCharPrefab(z, t, team);
+        t.tileContent.type = GameHelper.TileType.Gras;
+        Undo.RegisterCreatedObjectUndo(z, "New Char");
+
+        CharUIElement cue = Instantiate(f.charuiprefab).GetComponent<CharUIElement>();
+        cue.character = z.GetComponent<Character>();
+        cue.Init();
+        f.GetComponent<UiHandler>().AddUI(cue);
+        Undo.RegisterCreatedObjectUndo(cue.gameObject, "New Char");
+
+        //has to be done or UiHandler charUis contains None refereces after play
+        EditorUtility.SetDirty(f.GetComponent<UiHandler>());
+        Undo.CollapseUndoOperations(grp);
+    }
+
+    private void RemoveContent(Tile t)
+    {
+        Undo.RegisterCompleteObjectUndo(t.tileContent, "New Content");
+        Undo.DestroyObjectImmediate(t.tileContent.content.gameObject);
+    }
+
+    private void AddContent(Tile t, GameObject prefab)
+    {
+        GameObject z = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+        f.AddContent(z, t);
+        Undo.RegisterCreatedObjectUndo(z, "New Content");
+        Undo.RegisterCompleteObjectUndo(t.tileContent, "New Content");
+    }
+
+    private void AddTileContent(Tile t, GameObject prefab)
+    {
+        Character character = null;
+        Content content = null;    
+
+        int grp = Undo.GetCurrentGroup();
+        if (t.tileContent != null)
         {
-            style = EditorStyles.label;
-            if (i == selectedPrefab && prefabmodus == id)
-            {
-                style = new GUIStyle(style);
-                style.normal.textColor = Color.blue;
-            }
-            rect = EditorGUILayout.GetControlRect();
-            rect = EditorGUI.IndentedRect(rect);
-            if (GUI.Button(rect, list[i].name, style))
-            {
-                selectedPrefab = i;
-                prefabmodus = id;
-            }
+            character = t.tileContent.character;
+            content = t.tileContent.content;
+            Undo.RegisterCompleteObjectUndo(t, "New TileContent");
+            Undo.DestroyObjectImmediate(t.tileContent.gameObject);
         }
-        EditorGUI.indentLevel--;
+        GameObject z = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+        f.AddTileContent(z, t);
+        t.tileContent.character = character;
+        t.tileContent.content = content;
+        Undo.RegisterCreatedObjectUndo(z, "New TileContent");
+        Undo.RegisterCompleteObjectUndo(t, "New TileContent");
+
+        Undo.CollapseUndoOperations(grp);
     }
 
     public Tile GetSelectedTile()
@@ -209,7 +271,6 @@ public class BuildWindow : EditorWindow {
             }
             //return null when Character or Content Todo Replace it
         }
-
         return null;
     }
 

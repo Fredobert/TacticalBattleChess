@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4819905004344044}
   - component: {fileID: 114162525961920822}
   m_Layer: 0
-  m_Name: Player
+  m_Name: EnemyPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,3 +55,5 @@ MonoBehaviour:
   ap: 2
   maxap: 2
   freeMove: 1
+  TeamCharacterMaterial: {fileID: 2100000, guid: f53fe53b0a653414eb955dea82671af0,
+    type: 2}

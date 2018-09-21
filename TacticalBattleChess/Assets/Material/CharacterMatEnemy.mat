@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: CharacterMat
+  m_Name: CharacterMatEnemy
   m_Shader: {fileID: 4800000, guid: 4caeadadc99b13b4c948d86440dcbce1, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
@@ -80,4 +80,4 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineColor: {r: 1, g: 0, b: 0, a: 1}
-    - _TeamColorOutline: {r: 1, g: 1, b: 1, a: 1}
+    - _TeamColorOutline: {r: 0, g: 0, b: 0, a: 1}
