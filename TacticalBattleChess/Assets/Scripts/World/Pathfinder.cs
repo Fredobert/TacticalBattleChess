@@ -13,7 +13,7 @@ public class Pathfinder  {
 
 
     //version 1.0 Dijkstara because we want all multiple ways and only all possible outcomes within a certain raneg
-    List<Tile> pq;
+    PriorityQueue<Tile> pq;
     //beta
     List<Tile> inRange;
 
@@ -23,10 +23,10 @@ public class Pathfinder  {
     {
         this.start = start;
         this.maxweight = maxweight;
-        pq = new List<Tile>();
+        pq = new PriorityQueue<Tile>(200);
         allwalkables = new List<Tile>();
         inRange = new List<Tile>();
-        pq.Add(start);
+        pq.Add(start,0);
         start.g = 0;
         pid++;
     }
@@ -36,12 +36,12 @@ public class Pathfinder  {
     private Tile curElement;
     public bool next()
     {
-        if (pq.Count == 0)
+        if (pq.IsEmpty())
         {
             return true;
         }
 
-        curElement = poll();
+        curElement = pq.Poll();
         //curElement.g = 1;
         curElement.pid = pid;
         //beta
@@ -60,13 +60,13 @@ public class Pathfinder  {
             {
                 n.g =1;
                 n.pid = pid;
-                if (!pq.Contains(n))
+                int pos = pq.Contains(n, n.g);
+                if (pos == -1)
                 {
-
                     //+1 maybe wrong in certain cases
                     n.g = curElement.g +1;
                     n.from = curElement;
-                    Add(n);
+                    pq.Add(n,n.g);
                     continue;
                 }
                 if (curElement.g +1 > n.g)
@@ -76,47 +76,22 @@ public class Pathfinder  {
                 n.from = curElement;
                 n.g = curElement.g + 1;
                 //reanrange in pq poor performance
-                pq.Remove(n);
-                Add(n);
+                pq.DecreasePrio(pos, n.g);
 
             }
         }
 
+        //remove before build
         if (dz > 10000)
         {
+            Debug.Log("Error in pathfinder!");
             //ERROR
             return true;
         }
         //could be buggy tetsing 
         return false;
     }
-    //poor performance
-    private void Add(Tile t)
-    {
-        if (pq.Count == 0)
-        {
-            pq.Add(t);
-        }
-        else
-        {
 
-            for (int i = 0; i < pq.Count; i++)
-            {
-                if (pq[i].g <= t.g)
-                {
-                    pq.Insert(i, t);
-                    return;
-                }
-            }
-        }
-    }
-    private Tile poll()
-    {
-        Tile z = pq[pq.Count - 1];
-        allwalkables.Add(z);
-        pq.RemoveAt(pq.Count - 1);
-        return z;
-    }
     public List<Tile> GetinRange()
     {
         return inRange;
