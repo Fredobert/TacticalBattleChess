@@ -109,17 +109,25 @@ public class Field : MonoBehaviour
         parent.transform.position = gameObject.transform.position;
         int zx;
         int zy;
+        int dx;
+        int dy;
         //set neighbours
         for (int i = 0; i < gamefield.GetLength(0); i++)
         {
             for (int j = 0; j < gamefield.GetLength(1); j++)
             {
                 int[] z = { i, j + 1, i + 1, j, i, j - 1, i - 1, j };
+                int[] diag = { i +1, j +1, i +1, j-1, i-1, j-1 , i-1 , j+1 };
                 List<Tile> n = new List<Tile>();
+                List<Tile> d = new List<Tile>();
                 for (int k = 0; k < z.Length; k += 2)
                 {
                     zx = z[k];
                     zy = z[k + 1];
+
+                    dx = diag[k];
+                    dy = diag[k + 1];
+                    //add neighboors
                     if (zx > -1 && zx < gamefield.GetLength(0) && zy > -1 && zy < gamefield.GetLength(1))
                     {
                         n.Add(gamefield[zx, zy].GetComponent<Tile>());
@@ -128,8 +136,18 @@ public class Field : MonoBehaviour
                     {
                         n.Add(null);
                     }
+                    //add diagonal neighboors
+                    if (dx > -1 && dx < gamefield.GetLength(0) && dy > -1 && dy < gamefield.GetLength(1))
+                    {
+                        d.Add(gamefield[dx, dy].GetComponent<Tile>());
+                    }
+                    else
+                    {
+                        d.Add(null);
+                    }
                 }
                 gamefield[i, j].GetComponent<Tile>().neighboors = n;
+                gamefield[i, j].GetComponent<Tile>().diagonalNeighboors = d;
             }
         }
     }

@@ -55,6 +55,7 @@ public abstract class Character : MonoBehaviour
     {
         switch (type)
         {
+            case GameHelper.EffectType.Normal:
             case GameHelper.EffectType.Fire:
             case GameHelper.EffectType.Thunder:
             case GameHelper.EffectType.Light:

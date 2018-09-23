@@ -11,6 +11,7 @@ public class Tile : MonoBehaviour {
     public int g = 1;
     //pre set
     public List<Tile> neighboors;
+    public List<Tile> diagonalNeighboors;
     public string id;
 
 

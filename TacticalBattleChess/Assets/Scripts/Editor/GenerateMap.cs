@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 [CustomEditor(typeof(Field))]
 public class GenerateMap : Editor
@@ -12,8 +13,14 @@ public class GenerateMap : Editor
         Field f = target as Field;
 
         EditorGUILayout.HelpBox("Building options", MessageType.Info);
+
+    
         if (GUILayout.Button("Rebuild Map"))
         {
+            //int grp = Undo.GetCurrentGroup();
+            //Undo.RegisterFullObjectHierarchyUndo(GameObject.Find("Canvas"), "New World");
+            //Undo.RegisterFullObjectHierarchyUndo(f.gameObject, "New World");
+   
             UiHandler ui = f.GetComponent<UiHandler>();
 
 
@@ -31,9 +38,10 @@ public class GenerateMap : Editor
             ui.charUIs = new List<CharUIElement>();
 
 
-
             f.GenerateMap();
+            //Undo.RegisterCreatedObjectUndo(GameObject.Find(f.parentname), "New World");
             EditorUtility.SetDirty(f);
+            //Undo.CollapseUndoOperations(grp);
         }
     }
 }

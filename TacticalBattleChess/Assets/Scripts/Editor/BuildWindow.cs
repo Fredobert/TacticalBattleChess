@@ -18,7 +18,7 @@ public class BuildWindow : EditorWindow {
     public static void ShowWindow()
     {
         BuildWindow window = (BuildWindow)EditorWindow.GetWindow(typeof(BuildWindow));
-        window.minSize = new Vector2(600, 600);
+        window.minSize = new Vector2(300, 150);
         window.Show();
     }
 
