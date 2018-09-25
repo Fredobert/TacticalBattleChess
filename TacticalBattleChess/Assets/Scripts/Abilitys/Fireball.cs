@@ -7,7 +7,7 @@ public class Fireball : Ability {
 
     public GameObject prefab;
     public float speed = 0.2f;
-    public int damage = 8;
+    public int damage = 2;
 
 
 
@@ -25,8 +25,6 @@ public class Fireball : Ability {
         GameObject g = Instantiate(prefab);
         g.transform.Rotate(0, 0, directionOffset * -90);
         StartCoroutine(Animation(g));
-   
-         
     }
 
     public override List<Tile> possibleCasts(Character character, Tile from)
@@ -44,9 +42,12 @@ public class Fireball : Ability {
             from = from.neighboors[directionOffset];
             yield return new WaitForSeconds(speed);
         }
-        if (from != null)
+        if (from != null && from.tileContent != null)
         {
             from.Effect(damage,GameHelper.EffectType.Fire);
+            BurningTile b = ScriptableObject.CreateInstance<BurningTile>();
+            b.prefab = prefab;
+            b.Apply(from);
         }
         Destroy(g);
     }

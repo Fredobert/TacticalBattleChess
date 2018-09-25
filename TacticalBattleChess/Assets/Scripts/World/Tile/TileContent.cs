@@ -78,4 +78,21 @@ public abstract class TileContent : MonoBehaviour {
     }
 
 
+
+
+    //Events
+    public delegate void WalkOverAction(Character character);
+    public event WalkOverAction OnWalkOver;
+    public void  WalkOver(Character character)
+    {
+        if (OnWalkOver != null)
+        {
+            OnWalkOver(character);
+        }
+    }
+
+
+
+
+
 }

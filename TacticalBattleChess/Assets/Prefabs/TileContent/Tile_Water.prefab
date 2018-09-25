@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212403391724263010}
   - component: {fileID: 114408259889028700}
   - component: {fileID: 114840857855446240}
+  - component: {fileID: 114132697907374356}
   m_Layer: 0
   m_Name: Tile_Water
   m_TagString: Untagged
@@ -42,6 +43,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114132697907374356
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1435618842516450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad36cf5737943704dafd6ae725e40497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effects: []
 --- !u!114 &114408259889028700
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -53,8 +66,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93af70c8047f83b46811bc8d3bde5eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tile: {fileID: 0}
   character: {fileID: 0}
   content: {fileID: 0}
+  type: 0
   mat: {fileID: 0}
 --- !u!114 &114840857855446240
 MonoBehaviour:

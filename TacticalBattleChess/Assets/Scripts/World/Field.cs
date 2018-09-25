@@ -330,10 +330,12 @@ public class Field : MonoBehaviour
             cha.transform.position = Vector3.MoveTowards(cha.transform.position, currentPos, speed * Time.deltaTime);
             if (cha.transform.position == currentPos)
             {
-
+                
                 if (currentPath-- > 0)
                 {
                     currentPos = new Vector3(path[currentPath].transform.position.x, path[currentPath].transform.position.y, -1f +path[currentPath].transform.position.z);
+                    //need stop condition!
+                    path[currentPath].tileContent.WalkOver(cha.GetComponent<Character>());
                 }
             }
             yield return null;
