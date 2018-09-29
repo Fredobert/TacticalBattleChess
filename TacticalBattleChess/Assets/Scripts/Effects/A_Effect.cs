@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class A_Effect : ScriptableObject {
+public abstract class A_Effect : MonoBehaviour {
+
+    public abstract void Apply(Tile tile);
 
 
-
+   
 
 }

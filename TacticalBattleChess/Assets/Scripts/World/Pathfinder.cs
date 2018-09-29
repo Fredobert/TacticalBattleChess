@@ -7,7 +7,7 @@ using UnityEngine;
 public class Pathfinder  {
     //if target is not rechable this freezes
    // public Tile[,] field;
-    public int pid = 0;
+    public static int pid = 0;
     public Tile start;
     private List<Tile> allwalkables;
 
@@ -31,7 +31,10 @@ public class Pathfinder  {
         pid++;
     }
 
-
+    public static int UsePid()
+    {
+        return ++pid;
+    }
     //lazy verison with List.sort better PRiorityQueue
     private Tile curElement;
     public bool next()

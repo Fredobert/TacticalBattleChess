@@ -35,11 +35,11 @@ public class Whirlewind : Ability {
             {
                 if (target.neighboors[j] != null && target.neighboors[j].GetCharacter() != null)
                 {
-                    target.neighboors[j].Effect(damage,GameHelper.EffectType.Normal);
+                    target.neighboors[j].Effect(damage,GameHelper.AbilityType.Normal);
                 }
                 if (target.diagonalNeighboors[j] != null && target.diagonalNeighboors[j].GetCharacter() != null)
                 {
-                    target.diagonalNeighboors[j].Effect(damage, GameHelper.EffectType.Normal);
+                    target.diagonalNeighboors[j].Effect(damage, GameHelper.AbilityType.Normal);
                 }
             }
             yield return new WaitForSeconds(speed);

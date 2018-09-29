@@ -48,6 +48,8 @@ public class Field : MonoBehaviour
     public List<GameObject> tilePrefabs = new List<GameObject>();
     public List<GameObject> contentPrefabs = new List<GameObject>();
 
+    public static EffectSpawner effectSpawner;
+
     GameObject C;
 
 
@@ -160,6 +162,7 @@ public class Field : MonoBehaviour
         //Quick and Dirty solution  Problem Gameobject/Script variables get cleared on Play
         player1 = GameObject.Find("player1").GetComponent<HumanPlayer>();
         player2 = GameObject.Find("player2").GetComponent<HumanPlayer>();
+        effectSpawner = GetComponent<EffectSpawner>();
        // player1.TurnStart();
         print("started");
     }

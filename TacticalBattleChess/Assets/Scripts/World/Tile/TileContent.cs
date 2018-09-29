@@ -49,7 +49,7 @@ public abstract class TileContent : MonoBehaviour {
         return walkable;
     }
 
-    public void DoEffect(int z, GameHelper.EffectType type)
+    public void DoEffect(int z, GameHelper.AbilityType type)
     {
         if (content != null)
         {
@@ -61,7 +61,7 @@ public abstract class TileContent : MonoBehaviour {
         }
     }
 
-    public virtual void Effect(int z, GameHelper.EffectType type)
+    public virtual void Effect(int z, GameHelper.AbilityType type)
     {
         DoEffect(z, type);
     }

@@ -44,10 +44,8 @@ public class Fireball : Ability {
         }
         if (from != null && from.tileContent != null)
         {
-            from.Effect(damage,GameHelper.EffectType.Fire);
-            BurningTile b = ScriptableObject.CreateInstance<BurningTile>();
-            b.prefab = prefab;
-            b.Apply(from);
+            from.Effect(damage,GameHelper.AbilityType.Fire);
+            Field.effectSpawner.Spawn(GameHelper.EffectType.Burning, from);
         }
         Destroy(g);
     }
