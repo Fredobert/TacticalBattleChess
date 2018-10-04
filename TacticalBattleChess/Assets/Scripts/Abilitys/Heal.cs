@@ -12,7 +12,7 @@ public class Heal : Ability
     public override void CastAbility(Character character, Tile tile)
     {
         //Character healchar = tile.GetCharacter();
-        tile.Effect(hpgain, GameHelper.EffectType.Heal);
+        tile.Effect(hpgain, GameHelper.AbilityType.Heal);
     }
 
     public override List<Tile> possibleCasts(Character character, Tile tile)

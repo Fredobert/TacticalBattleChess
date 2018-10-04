@@ -10,9 +10,9 @@ public class Content_Tree: Content
         type = GameHelper.ContentType.Tree;
     }
 
-    public override void Effect(int z, GameHelper.EffectType type)
+    public override void Effect(int z, GameHelper.AbilityType type)
     {
-        if (type == GameHelper.EffectType.Fire)
+        if (type == GameHelper.AbilityType.Fire)
         {
             Remove();
         }

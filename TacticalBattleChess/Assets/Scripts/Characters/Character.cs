@@ -51,17 +51,17 @@ public abstract class Character : MonoBehaviour
         OnHeal(heal);
     }
     
-    public virtual void Effect(int z,GameHelper.EffectType type)
+    public virtual void Effect(int z,GameHelper.AbilityType type)
     {
         switch (type)
         {
-            case GameHelper.EffectType.Normal:
-            case GameHelper.EffectType.Fire:
-            case GameHelper.EffectType.Thunder:
-            case GameHelper.EffectType.Light:
+            case GameHelper.AbilityType.Normal:
+            case GameHelper.AbilityType.Fire:
+            case GameHelper.AbilityType.Thunder:
+            case GameHelper.AbilityType.Light:
                 DealDamage(z);
                 break;
-            case GameHelper.EffectType.Heal:
+            case GameHelper.AbilityType.Heal:
                 HealChar(z);
                 break;
             default:

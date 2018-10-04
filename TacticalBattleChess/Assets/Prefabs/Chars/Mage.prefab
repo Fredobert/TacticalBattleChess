@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 212381175947438324}
   - component: {fileID: 61812253722266898}
   - component: {fileID: 114914849349967408}
+  - component: {fileID: 114779885092227266}
   m_Layer: 9
   m_Name: Mage
   m_TagString: Untagged
@@ -86,7 +87,7 @@ MonoBehaviour:
   currentCd: 0
   prefab: {fileID: 1997320040396084, guid: e7217176c33eb1f438995a2b21f5778e, type: 2}
   speed: 0.2
-  damage: 8
+  damage: 2
 --- !u!114 &114445935508336904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -123,6 +124,18 @@ MonoBehaviour:
   abilitys: []
   standingOn: {fileID: 0}
   material: {fileID: 0}
+--- !u!114 &114779885092227266
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1489244729823150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad36cf5737943704dafd6ae725e40497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effects: []
 --- !u!114 &114914849349967408
 MonoBehaviour:
   m_ObjectHideFlags: 1

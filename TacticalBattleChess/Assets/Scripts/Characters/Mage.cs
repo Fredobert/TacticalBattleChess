@@ -20,7 +20,7 @@ public class Mage : Character
         abilitys.Add(GetComponent<Thunder>());
     }
 
-    public override void Effect(int z, GameHelper.EffectType type)
+    public override void Effect(int z, GameHelper.AbilityType type)
     {
         base.Effect(z, type);
     }

@@ -40,7 +40,7 @@ public class LightBeam : Ability
 
         if (target.GetCharacter() != null)
         {
-            target.Effect(damage,GameHelper.EffectType.Light);
+            target.Effect(damage,GameHelper.AbilityType.Light);
         }
         Destroy(g);
     }

@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212177908854510368}
   - component: {fileID: 114371191143660972}
   - component: {fileID: 114739839039198958}
+  - component: {fileID: 114556922260952596}
   m_Layer: 0
   m_Name: Tile_Gras
   m_TagString: Untagged
@@ -58,6 +59,18 @@ MonoBehaviour:
   content: {fileID: 0}
   type: 1
   mat: {fileID: 0}
+--- !u!114 &114556922260952596
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1890594636013006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad36cf5737943704dafd6ae725e40497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effects: []
 --- !u!114 &114739839039198958
 MonoBehaviour:
   m_ObjectHideFlags: 1

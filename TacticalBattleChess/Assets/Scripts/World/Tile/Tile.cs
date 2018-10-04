@@ -82,7 +82,7 @@ public class Tile : MonoBehaviour {
         return null;
     }
 
-    public void Effect(int z, GameHelper.EffectType type)
+    public void Effect(int z, GameHelper.AbilityType type)
     {
         if (tileContent != null)
         {

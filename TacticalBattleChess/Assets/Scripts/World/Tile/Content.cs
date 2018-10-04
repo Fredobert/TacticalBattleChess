@@ -17,7 +17,7 @@ public abstract class Content : MonoBehaviour
         return walkable;
     }
 
-    public virtual void Effect(int z, GameHelper.EffectType type)
+    public virtual void Effect(int z, GameHelper.AbilityType type)
     {
 
     }
