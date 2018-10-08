@@ -85,6 +85,10 @@ public class TileHelper : MonoBehaviour {
         {
             tile.GetCharacter().GetComponent<CharacterShaderHelper>().Range();
         }
+        if (tile.tileContent != null)
+        {
+            tile.tileContent.GetComponent<TileContentShaderHelper>().Select();
+        }
     }
     public void UnHover()
     {

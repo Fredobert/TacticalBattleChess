@@ -10,16 +10,20 @@ Shader "Custom/TileContentShader" {
 		_MinTexFade("Min Fade of Texture",Range(0,1)) = 0.45
 		_MarkOffSet("y offset",float) = 0.008
 		_Speed("Speed of fade",float) = 2
-
+		
 		//Range
 		[Toggle]	_RangeActive("Range Active", float) = 0
 		_RangeColor("Color for Range",color) = (1,1,1,1)
 		_RangeTexFade("Fade of Texture for Range",Range(0,1)) = 0.584
 
+		//Select
+		[Toggle]	_SelectActive("Select Active", float) = 0
+		_SelectColor("Color for Select",color) = (1,1,1,1)
+		_SelectTex("Select texture",2D) = "white"{}
 		//Outline
-		[Toggle]	_OutlineActive("Outline Active", float) = 0
-		_Outline("size of Outline",Range(0,0.1)) = 0.02
-		_OutlineColor("Color for Outline",color) = (1,1,1,1)
+		[Toggle]	_OutlineActive("Select Active", float) = 0
+		_OutlineColor("Color for Select",color) = (1,1,1,1)
+		_OutlineTex("Range texture",2D) = "white"{}
 	}
 
 	SubShader{
@@ -49,6 +53,8 @@ Shader "Custom/TileContentShader" {
 		};
 
 		sampler2D _MainTex;
+		sampler2D _SelectTex;
+		sampler2D _OutlineTex;
 		float4 _MarkColor;
 		float _MinTexFade;
 		float _MaxTexFade;
@@ -60,8 +66,10 @@ Shader "Custom/TileContentShader" {
 		float _RangeTexFade;
 		bool _RangeActive;
 
+		bool _SelectActive;
+		float4 _SelectColor;
+
 		bool _OutlineActive;
-		float _Outline;
 		float4 _OutlineColor;
 		//Vertex
 		v2f vert(appdata v)
@@ -80,18 +88,22 @@ Shader "Custom/TileContentShader" {
 			fixed4 col = tex2D(_MainTex, i.uv);
 			float fade = (abs((_MaxTexFade - _MinTexFade) * sin(_Time.y*_Speed))) + _MinTexFade;
 			if (_MarkActive) {
+
 				col.rgb = col.rgb * fade + _MarkColor.rgb * (1 - fade);
 			}
 			if (_RangeActive) {
 				col.rgb = col.rgb * _RangeTexFade + _RangeColor.rgb * (1 - _RangeTexFade);
 			}
-			if (_OutlineActive) {
+			if (_SelectActive) {
 
-				if (col.a == 0) {
-					if (col.b > 0 && col.b < _Outline) {
-						return _OutlineColor;
-					}
-				}
+				fixed4 selectMask = tex2D(_SelectTex, i.uv);
+				col.rgb = (selectMask.a)* _SelectColor.rgb + (abs(selectMask.a - 1))*col.rgb;
+				col.a += selectMask.a;
+			}
+			if (_OutlineActive) {
+				fixed4 outMask = tex2D(_OutlineTex, i.uv);
+				col.rgb = (outMask.a)* _OutlineColor.rgb + (abs(outMask.a - 1))*col.rgb;
+				col.a += outMask.a;
 			}
 			return col;
 		}

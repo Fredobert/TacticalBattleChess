@@ -56,6 +56,8 @@ public class Field : MonoBehaviour
     //test
     public float isox = 1f;
     public float isoy = 1f;
+    public float offx = 3.3f;
+        
     public void GenerateMap()
     {
         pf = new Pathfinder();
@@ -96,7 +98,7 @@ public class Field : MonoBehaviour
             {
                 //iso version
                 //gamefield[i, j] = Instantiate(tileprefab, new Vector3(((i+j) * isox) * padding, ((i - j) * isoy) * padding, (gamefield.GetLength(1)-j)/10f + (i )/100f), Quaternion.identity);
-                gamefield[i, j] = Instantiate(tileprefab, new Vector3(((i +j/3.3f) * isox) * padding,  j * isoy * padding, 1-((gamefield.GetLength(1) - j) / 10f + (i) / 100f)), Quaternion.identity);
+                gamefield[i, j] = Instantiate(tileprefab, new Vector3(((i +j/offx) * isox) * padding,  j * isoy * padding, 1-((gamefield.GetLength(1) - j) / 10f + (i) / 100f)), Quaternion.identity);
 
                 gamefield[i, j].name = "Tile" + i + "-" + j;
                 gamefield[i, j].transform.SetParent(parent.transform);

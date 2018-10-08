@@ -22,6 +22,10 @@ public class TileContentShaderHelper : MonoBehaviour {
     {
         sr.material.SetFloat("_OutlineActive", 1f);
     }
+    public void Select()
+    {
+        sr.material.SetFloat("_SelectActive", 1f);
+    }
     public void UnMark()
     {
         sr.material.SetFloat("_MarkActive", 0f);
@@ -34,9 +38,14 @@ public class TileContentShaderHelper : MonoBehaviour {
     {
         sr.material.SetFloat("_OutlineActive", 0f);
     }
+    public void UnSelect()
+    {
+        sr.material.SetFloat("_SelectActive", 0f);
+    }
     public void ResetAll()
     {
         UnMark();
         UnRange();
+        UnSelect();
     }
 }
