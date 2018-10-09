@@ -14,7 +14,7 @@ public class UiHandler : MonoBehaviour {
     public Text turnIndicator;
     public Text freeMoves;
     public Text apCounter;
-    public Field field;
+    public Game game;
     public float offset = -5000f;
     public float markerOffset = 60f;
     public bool markActive = false;
@@ -28,15 +28,15 @@ public class UiHandler : MonoBehaviour {
         EventManager.OnTurnStart += TurnStart;
         //EventManager.OnTurnStart += Ability;
         turnIndicator.text = "Player " + ((_turnCounter % 2) + 1);
-        freeMoves.text = field.getCurrentPlayer().freeMove+ "";
-        apCounter.text = field.getCurrentPlayer().ap+ "";
-        print(field.getCurrentPlayer().ap);
+        freeMoves.text = game.GetCurrentPlayer().freeMove+ "";
+        apCounter.text = game.GetCurrentPlayer().ap+ "";
+        print(game.GetCurrentPlayer().ap);
     }
 
     public void Action()
     {
-        freeMoves.text = field.getCurrentPlayer().freeMove + "";
-        apCounter.text = field.getCurrentPlayer().ap + "";
+        freeMoves.text = game.GetCurrentPlayer().freeMove + "";
+        apCounter.text = game.GetCurrentPlayer().ap + "";
      
     }
     public void TurnStart(int id)

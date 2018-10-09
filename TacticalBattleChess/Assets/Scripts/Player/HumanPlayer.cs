@@ -6,7 +6,8 @@ public class HumanPlayer : MonoBehaviour {
 
 
     public int teamid;
-    private Field field;
+    private Game game;
+    private World world;
     public static HumanController hc;
     public int ap = 2;
     public int maxap = 2;
@@ -16,10 +17,11 @@ public class HumanPlayer : MonoBehaviour {
     void Start()
     {
         GameObject g = GameObject.Find("World");
-        field = g.GetComponent<Field>();
+        game = g.GetComponent<Game>();
+        world = g.GetComponent<World>();
         if (hc == null)
         {
-            hc = new HumanController(field.getCurrentPlayer());
+            hc = new HumanController(game.GetCurrentPlayer());
         }
 
 
@@ -41,20 +43,20 @@ public class HumanPlayer : MonoBehaviour {
     //Basic Methods
     public void Hover(Tile tile)
     {
-        if (busy || field.busy)
+        if (busy || world.busy)
         {
             return;
         }
         //if Tile contains Character Mark him else unmark him   Todo Show Character Range and stats
         if (tile.GetCharacter() != null )
         {
-            field.GetComponent<UiHandler>().Mark(tile.GetCharacter());
+            game.GetComponent<UiHandler>().Mark(tile.GetCharacter());
         }
         else if(HTile != null)
         {
-            if (field.GetComponent<UiHandler>().markActive)
+            if (game.GetComponent<UiHandler>().markActive)
             {
-                field.GetComponent<UiHandler>().HideMarker();
+                game.GetComponent<UiHandler>().HideMarker();
             }
         }
         if (HTile != null&& STile != HTile)
@@ -62,7 +64,7 @@ public class HumanPlayer : MonoBehaviour {
             HTile.tilehelper.UnHover();
         }
         // only work if current Player = a Human Player
-        if (field.currentPlayer == teamid)
+        if (game.currentPlayer == teamid)
         {
             if (SelectMode&& !AbilityMode)
             {
@@ -78,14 +80,14 @@ public class HumanPlayer : MonoBehaviour {
     }
     public void SelectTile(Tile tile)
     {
-        if (busy || field.busy || field.currentPlayer != teamid)
+        if (busy || world.busy || game.currentPlayer != teamid)
         {
             return;
         }
 
         if (AbilityMode)
         {
-            if (markAb.Contains(tile) && field.CastAbility(STile.GetCharacter(), SAbility, tile))
+            if (markAb.Contains(tile) && world.CastAbility(STile.GetCharacter(), SAbility, tile))
             {
                 UnAbility();
                 UnSelect();
@@ -109,7 +111,7 @@ public class HumanPlayer : MonoBehaviour {
             //ugly
             STile.tilehelper.ResetAll();
             STile.tilehelper.UnHover();
-            if (marked.Contains(tile) && field.Move(tile, STile.GetCharacter()))
+            if (marked.Contains(tile) && world.Move(tile, STile.GetCharacter()))
             {
                 tile.tilehelper.UnHover();
                 UnSelect();
@@ -126,7 +128,7 @@ public class HumanPlayer : MonoBehaviour {
     }
     public void SelectAbility(Ability ability, Character character)
     {
-        if (busy || field.busy || field.currentPlayer != teamid || character.team != teamid)
+        if (busy || world.busy || game.currentPlayer != teamid || character.team != teamid)
         {
             return;
         }
@@ -153,7 +155,7 @@ public class HumanPlayer : MonoBehaviour {
     }
     public void Deselect(Tile tile)
     {
-        if (busy || field.busy || field.currentPlayer != teamid)
+        if (busy || world.busy || game.currentPlayer != teamid)
         {
             return;
         }
@@ -191,7 +193,7 @@ public class HumanPlayer : MonoBehaviour {
     //Help Methods
     void SelectChar(Tile characterTile)
     {
-        if (characterTile.GetCharacter() != null && field.SelectCharacter(characterTile.GetCharacter(), false))
+        if (characterTile.GetCharacter() != null && world.SelectCharacter(characterTile.GetCharacter(), false))
         {
             busy = true;
             SelectMode = true;
@@ -231,7 +233,7 @@ public class HumanPlayer : MonoBehaviour {
         {
             path[i].tilehelper.Unmark();
         }
-        path = field.GetPath(target, STile.GetCharacter().movment);
+        path = world.GetPath(target, STile.GetCharacter().movment);
         for (int i = 0; i < path.Count; i++)
         {
             if (path[i].Walkable())
@@ -324,7 +326,7 @@ public class HumanPlayer : MonoBehaviour {
     public void Finish()
     {
         Reset();
-        field.FinishTurn();
+        game.FinishTurn();
     }
         
 }

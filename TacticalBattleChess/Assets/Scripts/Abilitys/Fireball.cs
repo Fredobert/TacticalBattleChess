@@ -45,7 +45,7 @@ public class Fireball : Ability {
         if (from != null && from.tileContent != null)
         {
             from.Effect(damage,GameHelper.AbilityType.Fire);
-            Field.effectSpawner.Spawn(GameHelper.EffectType.Burning, from);
+            World.effectSpawner.Spawn(GameHelper.EffectType.Burning, from);
         }
         Destroy(g);
     }

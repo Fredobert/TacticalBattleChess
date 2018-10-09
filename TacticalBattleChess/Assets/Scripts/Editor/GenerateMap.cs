@@ -3,14 +3,14 @@ using UnityEditor;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-[CustomEditor(typeof(Field))]
+[CustomEditor(typeof(Game))]
 public class GenerateMap : Editor
 {
     public override void OnInspectorGUI()
     {
 
         DrawDefaultInspector();
-        Field f = target as Field;
+        Game g = target as Game;
 
         EditorGUILayout.HelpBox("Building options", MessageType.Info);
 
@@ -21,7 +21,7 @@ public class GenerateMap : Editor
             //Undo.RegisterFullObjectHierarchyUndo(GameObject.Find("Canvas"), "New World");
             //Undo.RegisterFullObjectHierarchyUndo(f.gameObject, "New World");
    
-            UiHandler ui = f.GetComponent<UiHandler>();
+            UiHandler ui = g.GetComponent<UiHandler>();
 
 
             //ui.t1anchor.transform.DetachChildren();
@@ -38,9 +38,11 @@ public class GenerateMap : Editor
             ui.charUIs = new List<CharUIElement>();
 
 
-            f.GenerateMap();
+            g.GenerateGame();
             //Undo.RegisterCreatedObjectUndo(GameObject.Find(f.parentname), "New World");
-            EditorUtility.SetDirty(f);
+            EditorUtility.SetDirty(g);
+            EditorUtility.SetDirty(g.GetComponent<Field>());
+            EditorUtility.SetDirty(g.GetComponent<World>());
             //Undo.CollapseUndoOperations(grp);
         }
     }
