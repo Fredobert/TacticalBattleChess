@@ -10,24 +10,40 @@ public class ContentShaderHelper : MonoBehaviour {
         sr = GetComponent<SpriteRenderer>();
     }
 
-    public void Mark()
+    public void Standard()
     {
-        sr.material.SetFloat("_MarkActive", 1f);
+        SetMark(false);
+        SetOutline(false);
+    }
+    public void Select()
+    {
+        SetMark(true);
+        SetOutline(true);
+        SetOutlineColor(Color.white);
+        SetOutlineSize(0.02f);
     }
     public void Hover()
     {
-        sr.material.SetFloat("_OutlineActive", 1f);
+        SetMark(false);
+        SetOutline(true);
+        SetOutlineColor(new Color(158, 255, 242));
+        SetOutlineSize(0.03f);
     }
-    public void UnMark()
+    //Help methods
+    private void SetMark(bool active)
     {
-        sr.material.SetFloat("_MarkActive", 0f);
+        sr.material.SetFloat("_MarkActive", (active) ? 1f : 0f);
     }
-    public void UnHover()
+    private void SetOutline(bool active)
     {
-        sr.material.SetFloat("_OutlineActive", 0f);
+        sr.material.SetFloat("_OutlineActive", (active) ? 1f : 0f);
     }
-    public void ResetAll()
+    private void SetOutlineColor(Color color)
     {
-        UnMark(); 
+        sr.material.SetColor("_OutlineColor", color);
+    }
+    private void SetOutlineSize(float size)
+    {
+        sr.material.SetFloat("_Outline", size);
     }
 }

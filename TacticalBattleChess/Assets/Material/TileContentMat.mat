@@ -100,7 +100,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MarkColor: {r: 0.90588236, g: 0.06274509, b: 0.09542363, a: 1}
-    - _OutlineColor: {r: 1, g: 0, b: 0, a: 1}
-    - _RangeColor: {r: 0.8862745, g: 0.3372549, b: 0.85882354, a: 1}
-    - _SelectColor: {r: 1, g: 0, b: 0, a: 1}
+    - _MarkColor: {r: 0.15874809, g: 0.9622642, b: 0, a: 1}
+    - _OutlineColor: {r: 0.36234283, g: 1, b: 0, a: 1}
+    - _RangeColor: {r: 0.61960787, g: 1, b: 0.9342353, a: 1}
+    - _SelectColor: {r: 1, g: 1, b: 1, a: 1}

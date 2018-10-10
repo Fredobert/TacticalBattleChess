@@ -5,47 +5,162 @@ using UnityEngine;
 public class TileContentShaderHelper : MonoBehaviour {
 
     private SpriteRenderer sr;
+    public Color FadeColor;
+    public int prev = 0;
+    public int curr = 0;
     public void OnEnable()
     {
         sr = GetComponent<SpriteRenderer>();
+        FadeColor = new UnityEngine.Color(158/255.0f, 1.0f, 238/255.0f);
     }
-
-    public void Mark()
-    {
-        sr.material.SetFloat("_MarkActive", 1f);
-    }
-    public void Range()
-    {
-        sr.material.SetFloat("_RangeActive", 1f);
-    }
+    //states
+   public void Standard()
+   {
+        if (curr == 0)
+        {
+            return;
+        }
+        SetMark(false);
+        SetRange(false);
+        SetOutline(false);
+        SetSelect(false);
+        prev = 0;
+        curr = 0;
+   }
     public void Hover()
     {
-        sr.material.SetFloat("_OutlineActive", 1f);
+        if (curr == 1)
+        {
+            return;
+        }
+        SetMark(false);
+        SetOutline(false);
+        SetRange(true);
+        SetRangeColor(FadeColor);
+        sr.material.SetFloat("_RangeTexFade", 0.584f);
+        SetSelect(false);
+        prev = curr;
+        curr = 1;
     }
     public void Select()
     {
-        sr.material.SetFloat("_SelectActive", 1f);
+        if (curr == 2)
+        {
+            return;
+        }
+        SetMark(false);
+        SetRange(true);
+        SetRangeColor(Color.white);
+        SetOutline(true);
+        SetOutlineColor(Color.white);
+        SetSelect(true);
+        SetSelectColor(Color.white);
+        prev = curr;
+        curr = 2;
     }
-    public void UnMark()
+    public void Range()
     {
-        sr.material.SetFloat("_MarkActive", 0f);
+        if (curr == 3)
+        {
+            return;
+        }
+        SetMark(false);
+        SetOutline(false);
+        SetRange(true);
+        SetRangeColor(FadeColor);
+        SetSelect(false);
+        prev = curr;
+        curr = 3;
     }
-    public void UnRange()
+    public void Path()
     {
-        sr.material.SetFloat("_RangeActive", 0f);
+        if (curr == 4)
+        {
+            return;
+        }
+        SetMark(true);
+        SetMarkColor(Color.green);
+        SetOutline(true);
+        SetOutlineColor(Color.green);
+        SetSelect(false);
+        SetRange(false);
+        prev = curr;
+        curr = 4;
     }
-    public void UnHover()
+    public void Ability()
     {
-        sr.material.SetFloat("_OutlineActive", 0f);
+        if (curr == 5)
+        {
+            return;
+        }
+        SetMark(true);
+        SetMarkColor(Color.red);
+        SetOutline(true);
+        SetOutlineColor(Color.red);
+        SetSelect(false);
+        SetRange(false);
+        prev = curr;
+        curr = 5;
     }
-    public void UnSelect()
+
+    //Temporary  solution
+    public void Undo()
     {
-        sr.material.SetFloat("_SelectActive", 0f);
+        switch (prev)
+        {
+            case 0:
+                Standard();
+                break;
+            case 1:
+                Hover();
+                break;
+            case 2:
+                Select();
+                break;
+            case 3:
+                Range();
+                break;
+            case 4:
+                Path();
+                break;
+            case 5:
+                Ability();
+                break;
+        }
     }
-    public void ResetAll()
+    //Help methods
+    private void SetMark(bool active)
     {
-        UnMark();
-        UnRange();
-        UnSelect();
+        sr.material.SetFloat("_MarkActive", (active)?1f:0f);
+    }
+    private void SetRange(bool active)
+    {
+        sr.material.SetFloat("_RangeActive", (active) ? 1f : 0f);
+    }
+    private void SetOutline(bool active)
+    {
+        sr.material.SetFloat("_OutlineActive", (active) ? 1f : 0f);
+    }
+    private void SetSelect(bool active)
+    {
+        sr.material.SetFloat("_SelectActive", (active) ? 1f : 0f);
+    }
+    private void SetMarkColor(Color color)
+    {
+        sr.material.SetColor("_MarkColor", color);
+    }
+    private void SetRangeColor(Color color)
+    {
+        sr.material.SetColor("_RangeColor", color);
+    }
+    private void SetOutlineColor(Color color)
+    {
+        sr.material.SetColor("_OutlineColor", color);
+    }
+    private void SetSelectColor(Color color)
+    {
+        sr.material.SetColor("_SelectColor", color);
     }
 }
+
+
