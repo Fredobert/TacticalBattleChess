@@ -41,6 +41,7 @@ public class Arrow : Ability { //NOT WORKING
             target.GetComponent<Tile>().GetCharacter().DealDamage(damage);
         }
         Destroy(g);
+        Finished();
     }
 
     // Use this for initialization

@@ -50,6 +50,7 @@ public class Jump : Ability
             g.transform.position = vec;
             yield return null;
         }
+        Finished();
     }
 
     // Use this for initialization

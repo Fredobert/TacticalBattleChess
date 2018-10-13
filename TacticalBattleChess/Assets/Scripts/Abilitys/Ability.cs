@@ -15,11 +15,14 @@ public abstract class Ability : MonoBehaviour {
     public abstract void CastAbility(Character character,Tile tile);
 
 
-	// Use this for initialization
 	public void Init () {
         EventManager.OnTurnEnd += TurnEnd;
 	}
 
+    public void Finished()
+    {
+        Game.world.FinishedAbility();
+    }
     //Turn End because UI fires with TurnStart and this needs to be called before
     public void TurnEnd(int id)
     {

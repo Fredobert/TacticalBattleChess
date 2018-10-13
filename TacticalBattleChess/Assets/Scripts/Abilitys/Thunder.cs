@@ -41,6 +41,7 @@ public class Thunder : Ability
         World.effectSpawner.Spawn(GameHelper.EffectType.Thunder, target);
         yield return new WaitForSeconds(speed);
         Destroy(g);
+        Finished();
     }
 
 

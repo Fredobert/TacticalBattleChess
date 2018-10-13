@@ -43,6 +43,7 @@ public class Whirlewind : Ability {
                 }
             }
             yield return new WaitForSeconds(speed);
+            Finished();
         }
     }
 }

@@ -48,6 +48,7 @@ public class Fireball : Ability {
             World.effectSpawner.Spawn(GameHelper.EffectType.Burning, from);
         }
         Destroy(g);
+        Finished();
     }
 
     // Use this for initialization

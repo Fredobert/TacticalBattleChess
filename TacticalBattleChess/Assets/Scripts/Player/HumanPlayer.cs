@@ -23,180 +23,87 @@ public class HumanPlayer : MonoBehaviour {
         {
             hc = new HumanController(game.GetCurrentPlayer());
         }
-
-
-        Reset();
     }
 
-    bool SelectMode;
-    bool busy;
-    bool AbilityMode;
 
-    Tile HTile;
-    Tile STile;
-    Ability SAbility;
 
+    Character selectedCharacter;
+    Ability selectedAbility;
+    Tile hoveredTile;
+    
     List<Tile> path = new List<Tile>();
     List<Tile> marked = new List<Tile>();
     List<Tile> markAb = new List<Tile>();
+    public Character GetSelectedCharacter()
+    {
+        return selectedCharacter;
+    }
+    public bool SelectCharacter(Character character)
+    {
+        if (world.SelectCharacter(character, false))
+        {
+            selectedCharacter = character;
+            character.standingOn.tilehelper.Select();
+            return true;
+        }
+        return false;
+    }
 
-    //Basic Methods
+    public bool CastAbility(Tile tile)
+    {
+        if (markAb.Contains(tile) && world.CastAbility(selectedCharacter, selectedAbility, tile))
+        {
+            ActionAbility();
+            return true;
+        }
+        return false;
+    }
+
+    public bool SelectAbility(Ability ability, Character character)
+    {
+        selectedAbility = ability;
+        MarkAbility(ability, character.standingOn);
+        return true;
+    }
+    public bool Move(Tile tile)
+    {
+        if (marked.Contains(tile) && world.Move(tile, selectedCharacter))
+        {
+            return true;
+        }
+        return false;
+    }
     public void Hover(Tile tile)
     {
-        if (busy || world.busy|| HTile == tile)
+        if (hoveredTile != null)
         {
-            return;
-        }
-        //if Tile contains Character Mark him else unmark him   Todo Show Character Range and stats
-        if (tile.GetCharacter() != null )
-        {
-            game.GetComponent<UiHandler>().Mark(tile.GetCharacter());
-        }
-        else if(HTile != null)
-        {
-            if (game.GetComponent<UiHandler>().markActive)
+            hoveredTile.tilehelper.Undo();
+            if (hoveredTile.GetCharacter() != null && game.GetComponent<UiHandler>().markActive)
             {
                 game.GetComponent<UiHandler>().HideMarker();
             }
         }
-        if (HTile != null&& STile != HTile)
+        if (tile.GetCharacter() != null)
         {
-            HTile.tilehelper.Undo(); //<-------------------
+            game.GetComponent<UiHandler>().Mark(tile.GetCharacter());
         }
-        // only work if current Player = a Human Player
-
-        if (game.currentPlayer == teamid && SelectMode && !AbilityMode)
-        {
-            MarkPath(tile);
-        }
-        else if (STile != tile)
-        {
-            tile.tilehelper.Hover();
-        }
-        HTile = tile;
+        tile.tilehelper.Hover();
+        hoveredTile = tile;
     }
-    public void SelectTile(Tile tile)
+    public void DrawPath(Tile tile)
     {
-        if (busy || world.busy || game.currentPlayer != teamid)
-        {
-            return;
-        }
-
-        if (AbilityMode)
-        {
-            if (markAb.Contains(tile) && world.CastAbility(STile.GetCharacter(), SAbility, tile))
-            {
-                UnAbility();
-                UnSelect();
-                ActionAbility();
-            }
-            return;
-        }
-        //Else if tile Contains Char
-        if (tile.GetCharacter() != null && tile.GetCharacter().team == teamid)
-        {
-            if (SelectMode)
-            {
-                UnSelect();
-            }
-            tile.tilehelper.Select();
-            SelectChar(tile);
-        }
-        if (SelectMode)
-        {
-            //ugly
-            STile.tilehelper.Standard();
-            if (marked.Contains(tile) && world.Move(tile, STile.GetCharacter()))
-            {
-                UnSelect();
-                busy = true;
-                MoveAction();
-            }
-            else
-            {
-                STile.tilehelper.Select();
-            }
-            return;
-        }
+        MarkPath(tile);
     }
-    public void SelectAbility(Ability ability, Character character)
+    public void AbilityHover(Tile tile)
     {
-        if (busy || world.busy || game.currentPlayer != teamid || character.team != teamid)
-        {
-            return;
-        }
-        if (AbilityMode)
-        {
-            STile.tilehelper.Standard();
-            UnAbility();
-        }
-        SAbility = ability;
-        AbilityMode = true;
-        //Ability is pressed without selecting first
-        if (STile == null || STile.GetCharacter() == null || STile.GetCharacter() != character)
-        {
-            if (SelectMode)
-            {
-                UnSelect();
-            }
-            SelectChar(character.standingOn);
-            return;
-        }
-        UnSelect();
-        MarkAbility(ability, character.standingOn);
-    }
-    public void Deselect(Tile tile)
-    {
-        if (busy || world.busy || game.currentPlayer != teamid)
-        {
-            return;
-        }
-        if (AbilityMode)
-        {
-            UnAbility();
-            MarkRange();
-            STile.tilehelper.Select();
-            return;
-        }
-        if (SelectMode)
-        {
-            UnSelect();
-        }
-    }
-    //Finish Methods
-    public void FinishSelecting(List<Tile> inRange)
-    {
-        marked = inRange;
-        busy = false;
-        if (AbilityMode)
-        {
-            MarkAbility(SAbility, STile);
-            return;
-        }
-        MarkRange();
-    }
-    public void FinishedMoving()
-    {
-
-        busy = false;
+        Hover(tile);
     }
 
-    //Help Methods
-    void SelectChar(Tile characterTile)
-    {
-        if (characterTile.GetCharacter() != null && world.SelectCharacter(characterTile.GetCharacter(), false))
-        {
-            busy = true;
-            SelectMode = true;
-            STile = characterTile;
-        }
-    }
-
-    void MarkRange()
+    public void MarkRange()
     {
         for (int i = 0; i < marked.Count; i++)
         {
-            if (marked[i] != null && marked[i] != STile.GetCharacter().standingOn)
+            if (marked[i] != null && marked[i] != selectedCharacter.standingOn)
             {
                 marked[i].tilehelper.Range();
             }
@@ -204,9 +111,9 @@ public class HumanPlayer : MonoBehaviour {
     }
     void MarkAbility(Ability ability, Tile tile)
     {
-        if (STile != null)
+        if (selectedCharacter != null)
         {
-            STile.tilehelper.Select();
+            selectedCharacter.standingOn.tilehelper.Select();
         }
         markAb = ability.possibleCasts(tile.GetCharacter(), tile);
         for (int i = 0; i < markAb.Count; i++)
@@ -220,13 +127,12 @@ public class HumanPlayer : MonoBehaviour {
 
     void MarkPath(Tile target)
     {
-        Debug.Log("ashd " + path.Count);
         for (int i = 0; i < path.Count; i++)
         {
             path[i].tilehelper.Range();
-            
+
         }
-        path = world.GetPath(target, STile.GetCharacter().movment);
+        path = world.GetPath(target, selectedCharacter.movment);
         //path.Add(target);
         for (int i = 0; i < path.Count; i++)
         {
@@ -237,11 +143,11 @@ public class HumanPlayer : MonoBehaviour {
         }
     }
 
-    void UnSelect()
+    public void UnSelect()
     {
-        if (STile != null)
+        if (selectedCharacter != null)
         {
-            STile.tilehelper.Standard();
+            selectedCharacter.standingOn.tilehelper.Standard();
         }
         for (int i = 0; i < marked.Count; i++)
         {
@@ -250,42 +156,43 @@ public class HumanPlayer : MonoBehaviour {
                 marked[i].tilehelper.Standard();
             }
         }
-        SelectMode = false;
         marked = new List<Tile>();
         path = new List<Tile>();
     }
 
-    void UnAbility()
-    { 
-        STile.tilehelper.Standard();
+    public void UnAbility()
+    {
+        selectedCharacter.standingOn.tilehelper.Standard();
         for (int i = 0; i < markAb.Count; i++)
         {
-            if (markAb[i] != null && markAb[i] != STile.GetCharacter().standingOn)
+            if (markAb[i] != null && markAb[i] != selectedCharacter.standingOn)
             {
                 markAb[i].tilehelper.Standard();
             }
         }
-        AbilityMode = false;
-        SAbility = null;
         markAb = new List<Tile>();
     }
-    void Reset()
+ 
+    //Finish Methods
+    public void FinishSelecting(List<Tile> inRange)
     {
-        if (SelectMode)
-        {
-            UnSelect();
-        }
-        if (AbilityMode)
-        {
-            UnAbility();
-        }
-        if (HTile != null)
-        {
-            HTile.tilehelper.Standard();
-        }
-        busy = false;
+       
+        marked = inRange;
+        hc.FinischSelecting();
+    }
+    public void FinishedMoving()
+    {
+        hc.FinishMoving();
+        MoveAction();
     }
 
+    public void FinishedAbility()
+    {
+        hc.FinishedAbility();
+    }
+
+
+    //Player
     public void TurnStart()
     {
         hc.Next(this);
@@ -318,7 +225,6 @@ public class HumanPlayer : MonoBehaviour {
 
     public void Finish()
     {
-        Reset();
         game.FinishTurn();
     }
         

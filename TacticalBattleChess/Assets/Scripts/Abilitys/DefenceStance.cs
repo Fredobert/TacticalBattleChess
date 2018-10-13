@@ -12,6 +12,7 @@ public class DefenceStance : Ability {
     {
         character.maxhealth += maxhpgain;
         character.Heal(hpgain);
+        Finished();
     }
 
     public override List<Tile> possibleCasts(Character character, Tile tile)

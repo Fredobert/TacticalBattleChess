@@ -43,6 +43,7 @@ public class LightBeam : Ability
             target.Effect(damage,GameHelper.AbilityType.Light);
         }
         Destroy(g);
+        Finished();
     }
 
 

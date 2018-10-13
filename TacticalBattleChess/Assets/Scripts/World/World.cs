@@ -15,8 +15,9 @@ public class World : MonoBehaviour
     public static Field field;
     public static Pathfinder pf;
     public static EffectSpawner effectSpawner;
-
+    public float moveSpeed = 60f;
     private Game game;
+    public bool busy = false;
 
     void Start()
     {
@@ -106,11 +107,11 @@ public class World : MonoBehaviour
         return false;
     }
 
-    public bool busy = false;
-
-
-
-
+    public void FinishedAbility()
+    {
+        game.GetCurrentPlayer().FinishedAbility();
+    }
+   
 
     private Character selectedChar;
 
@@ -137,7 +138,7 @@ public class World : MonoBehaviour
             character.standingOn.tileContent.character = null;
             tile.tileContent.character = character;
             character.standingOn = tile;
-            StartCoroutine(Move(character.gameObject, GetPath(tile, character.movment), 20f));
+            StartCoroutine(Move(character.gameObject, GetPath(tile, character.movment), moveSpeed));
             return true;
         }
         return false;
