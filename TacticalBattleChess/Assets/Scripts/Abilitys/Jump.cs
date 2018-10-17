@@ -24,7 +24,12 @@ public class Jump : Ability
         character.standingOn = target;
     }
 
-    public override List<Tile> possibleCasts(Character character, Tile from)
+    public override List<Tile> DrawIndicator(Tile tile)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override List<Tile> PossibleCasts(Character character, Tile from)
     {
         List<Tile> possible = new List<Tile>();
         for (int i = 0; i < field.allTiles.Count; i++)

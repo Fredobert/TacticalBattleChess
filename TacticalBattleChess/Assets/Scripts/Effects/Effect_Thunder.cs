@@ -6,7 +6,7 @@ public class Effect_Thunder : A_Effect
 {
 
     public int damage = 1;
-
+    public GameHelper.AbilityType damageType = GameHelper.AbilityType.Thunder;
 
     private Tile tile;
     private bool active = false;
@@ -23,29 +23,14 @@ public class Effect_Thunder : A_Effect
             this.tile = tile;
             active = true;
             tile.tileContent.GetComponent<EffectHandler>().AddEffect(this);
-            waterTiles = new List<Tile>();
-            GetAllWaterTiles(waterTiles, Pathfinder.UsePid(), tile);
+
+            waterTiles = Game.world.GetAllSameConnectedTile(tile, GameHelper.TileType.Water);
             thunders = new List<GameObject>();
             for (int i = 0; i < waterTiles.Count; i++)
             {
                 thunders.Add(Instantiate(thunderPregab, waterTiles[i].transform));
             }
             StartCoroutine(Effect());
-        }
-    }
-
-    private void GetAllWaterTiles(List<Tile> watertiles, int pid, Tile tile)
-    {
-        Tile z;
-        for (int i = 0; i < tile.neighboors.Count; i++)
-        {
-            z = tile.neighboors[i];
-            if (z != null && z.tileContent != null && z.tileContent.type == GameHelper.TileType.Water && z.pid < pid)
-            {
-                watertiles.Add(z);
-                z.pid = pid;
-                GetAllWaterTiles(watertiles, pid, z);
-            }
         }
     }
 
@@ -74,4 +59,13 @@ public class Effect_Thunder : A_Effect
         }
     }
 
+    public override List<Tile> DrawIndicator(Tile tile)
+    {
+        List<Tile> indicatorTiles = Game.world.GetAllSameConnectedTile(tile, GameHelper.TileType.Water);
+        for (int i = 0; i < indicatorTiles.Count; i++)
+        {
+            World.indicator.DrawDamage(indicatorTiles[i], damageType, damage);
+        }
+        return indicatorTiles;
+    }
 }

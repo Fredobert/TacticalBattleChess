@@ -26,7 +26,7 @@ public class LightBeam : Ability
         StartCoroutine(Animation(g));
     }
 
-    public override List<Tile> possibleCasts(Character character, Tile from)
+    public override List<Tile> PossibleCasts(Character character, Tile from)
     {
         return field.allTiles;
     }
@@ -46,8 +46,11 @@ public class LightBeam : Ability
         Finished();
     }
 
-
-
-
-
+    public override List<Tile> DrawIndicator(Tile tile)
+    {
+        List<Tile> indicatorTiles = new List<Tile>();
+        World.indicator.DrawDamage(tile, GameHelper.AbilityType.Light, damage);
+        indicatorTiles.Add(tile);
+        return indicatorTiles;
+    }
 }

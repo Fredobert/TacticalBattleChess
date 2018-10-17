@@ -21,7 +21,7 @@ public class Whirlewind : Ability {
         StartCoroutine(Animation(tile));
     }
 
-    public override List<Tile> possibleCasts(Character character, Tile tile)
+    public override List<Tile> PossibleCasts(Character character, Tile tile)
     {
         return new List<Tile> { tile };
     }
@@ -45,5 +45,23 @@ public class Whirlewind : Ability {
             yield return new WaitForSeconds(speed);
             Finished();
         }
+    }
+    public override List<Tile> DrawIndicator(Tile tile)
+    {
+        List<Tile> indicatorTiles = new List<Tile>();
+        for (int j = 0; j < tile.neighboors.Count; j++)
+        {
+            if (tile.neighboors[j] != null)
+            {
+                World.indicator.DrawDamage(tile.neighboors[j], GameHelper.AbilityType.Normal, damage*turns);
+                indicatorTiles.Add(tile.neighboors[j]);
+            }
+            if (tile.diagonalNeighboors[j])
+            {
+                World.indicator.DrawDamage(tile.diagonalNeighboors[j], GameHelper.AbilityType.Normal, damage * turns);
+                indicatorTiles.Add(tile.diagonalNeighboors[j]);
+            }
+        }
+        return indicatorTiles;
     }
 }

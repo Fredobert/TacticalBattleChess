@@ -71,7 +71,11 @@ public class HumanController {
                 if (player.CastAbility(tile))
                 {
                     player.UnAbility();
-                    state = States.Ability;
+                    //CastAbility when Ability has no Coroutine AbilityFinished is called before state = States.Ability 
+                    if (state == States.Casting)
+                    {
+                        state = States.Ability;
+                    }
                 }
                 break;
         }
@@ -124,8 +128,7 @@ public class HumanController {
                 break;
             case States.Casting:
                 player.UnAbility();
-                player.MarkRange();
-                state = States.Select;
+                state = States.Ready;
                 break;
         }
     }

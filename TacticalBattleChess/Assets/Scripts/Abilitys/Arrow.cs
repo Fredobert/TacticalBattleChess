@@ -21,7 +21,12 @@ public class Arrow : Ability { //NOT WORKING
         StartCoroutine(Animation(g,target));
     }
 
-    public override List<Tile> possibleCasts(Character character, Tile from)
+    public override List<Tile> DrawIndicator(Tile tile)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override List<Tile> PossibleCasts(Character character, Tile from)
     {
         return field.allTiles;
     }

@@ -9,11 +9,16 @@ public abstract class Ability : MonoBehaviour {
     public int cd = 2;
     public int currentCd = 0;
 
-    public abstract List<Tile> possibleCasts(Character character, Tile tile);
+    public abstract List<Tile> PossibleCasts(Character character, Tile tile);
 
 
     public abstract void CastAbility(Character character,Tile tile);
 
+    public abstract List<Tile> DrawIndicator(Tile tile);
+
+    public virtual void RemoveIndicator()
+    {
+    }
 
 	public void Init () {
         EventManager.OnTurnEnd += TurnEnd;
@@ -21,6 +26,7 @@ public abstract class Ability : MonoBehaviour {
 
     public void Finished()
     {
+        RemoveIndicator();
         Game.world.FinishedAbility();
     }
     //Turn End because UI fires with TurnStart and this needs to be called before

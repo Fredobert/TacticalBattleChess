@@ -16,7 +16,15 @@ public class Heal : Ability
         Finished();
     }
 
-    public override List<Tile> possibleCasts(Character character, Tile tile)
+    public override List<Tile> DrawIndicator(Tile tile)
+    {
+        List<Tile> indicatorTiles = new List<Tile>();
+        World.indicator.DrawDamage(tile, GameHelper.AbilityType.Heal, hpgain);
+        indicatorTiles.Add(tile);
+        return indicatorTiles;
+    }
+
+    public override List<Tile> PossibleCasts(Character character, Tile tile)
     {
         List<Tile> possible = new List<Tile>();
         for (int i = 0; i < field.allTiles.Count; i++)

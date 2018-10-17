@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TileHelper : MonoBehaviour {
 
-    Tile tile;
-	// Use this for initialization
-	void Start () {
-        tile = GetComponent<Tile>();      
-	}
+    public Tile tile;
+    public TextMeshPro textmp;
+
+    public int damage;
+    public bool textShown;
+
 
     public void Range()
     {
@@ -43,6 +45,7 @@ public class TileHelper : MonoBehaviour {
    
     public void Standard()
     {
+        HideText();
         if (tile.tileContent != null)
         {
             tile.tileContent.GetComponent<TileContentShaderHelper>().Standard();
@@ -106,6 +109,7 @@ public class TileHelper : MonoBehaviour {
 
     public void Undo()
     {
+        HideText();
         if (tile.tileContent != null)
         {
             tile.tileContent.GetComponent<TileContentShaderHelper>().Undo();
@@ -121,5 +125,32 @@ public class TileHelper : MonoBehaviour {
     }
 
 
+    public void AbilityDefault(int damage, Color color)
+    {
+        tile.tileContent.GetComponent<TileContentShaderHelper>().AbilityIndicator(color, color);
+        SetText(damage, color);
+    }
 
+    public void AbilityTraverse(Color color)
+    {
+        tile.tileContent.GetComponent<TileContentShaderHelper>().AbilityIndicator(color, color);
+    }
+
+    public void SetText(int damage, Color color)
+    {
+        textmp.color = color;
+        SetText(damage);
+    }
+    public void SetText(int damageText)
+    {
+        damage += damageText;
+        textShown = true;
+        textmp.text = (damage < 0)?"+"+(damage*-1):damage+ "";
+    }
+    public void HideText()
+    {
+        damage = 0;
+        textShown = false;
+        textmp.text = "";
+    }
 }

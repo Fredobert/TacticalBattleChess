@@ -15,6 +15,7 @@ public class World : MonoBehaviour
     public static Field field;
     public static Pathfinder pf;
     public static EffectSpawner effectSpawner;
+    public static Indicator indicator;
     public float moveSpeed = 60f;
     private Game game;
     public bool busy = false;
@@ -25,6 +26,7 @@ public class World : MonoBehaviour
         effectSpawner = GetComponent<EffectSpawner>();
         field = GetComponent<Field>();
         effectSpawner = GetComponent<EffectSpawner>();
+        indicator = GetComponent<Indicator>();
         pf = new Pathfinder();
     }
 
@@ -98,7 +100,7 @@ public class World : MonoBehaviour
 
     public bool CastAbility(Character character, Ability ability, Tile target)
     {
-        if (ability.possibleCasts(character, character.standingOn).Contains(target))
+        if (ability.PossibleCasts(character, character.standingOn).Contains(target))
         {
             EventManager.Ability();
             character.CastAbility(ability, target);
@@ -157,6 +159,35 @@ public class World : MonoBehaviour
         character.standingOn.tileContent.character = null;
         character.standingOn = null;
     }
+    public void KillEffect(A_Effect effect)
+    {
+
+    }
+
+
+    public List<Tile> GetAllSameConnectedTile(Tile tile, GameHelper.TileType type)
+    {
+        int pid = Pathfinder.UsePid();
+        List<Tile> tiles = new List<Tile>();
+        GetAllSameConnectedTile(tiles, pid, tile, type);
+        return tiles;
+    }
+
+    private void GetAllSameConnectedTile(List<Tile> tiles,int pid,Tile tile,GameHelper.TileType type)
+    {
+        Tile z;
+        for (int i = 0; i < tile.neighboors.Count; i++)
+        {
+            z = tile.neighboors[i];
+            if (z != null && z.tileContent != null && z.tileContent.type == type && z.pid < pid)
+            {
+                tiles.Add(z);
+                z.pid = pid;
+                GetAllSameConnectedTile(tiles, pid, z,type);
+            }
+        }
+    }
+
 
     //Cououtines
 

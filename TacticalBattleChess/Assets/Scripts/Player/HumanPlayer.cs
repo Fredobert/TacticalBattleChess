@@ -53,7 +53,6 @@ public class HumanPlayer : MonoBehaviour {
     {
         if (markAb.Contains(tile) && world.CastAbility(selectedCharacter, selectedAbility, tile))
         {
-            ActionAbility();
             return true;
         }
         return false;
@@ -94,9 +93,39 @@ public class HumanPlayer : MonoBehaviour {
     {
         MarkPath(tile);
     }
+
+    Tile abilityDrawn = null;
+
     public void AbilityHover(Tile tile)
     {
-        Hover(tile);
+
+        if (abilityDrawn != null)
+        {
+            World.indicator.RemoveNoCast();
+            abilityDrawn = null;
+        }
+        if (markAb.Contains(tile))
+        {
+            if (hoveredTile != null)
+            {
+                if (!markAb.Contains(hoveredTile))
+                {
+                    hoveredTile.tilehelper.Undo();
+                    if (hoveredTile.GetCharacter() != null && game.GetComponent<UiHandler>().markActive)
+                    {
+                        game.GetComponent<UiHandler>().HideMarker();
+                    }
+                }
+                hoveredTile = null;
+            }
+            World.indicator.DrawNotCastedAbility(selectedAbility, tile);
+            abilityDrawn = tile;
+        }
+        else
+        {
+            Hover(tile);
+        }
+       
     }
 
     public void MarkRange()
@@ -115,7 +144,7 @@ public class HumanPlayer : MonoBehaviour {
         {
             selectedCharacter.standingOn.tilehelper.Select();
         }
-        markAb = ability.possibleCasts(tile.GetCharacter(), tile);
+        markAb = ability.PossibleCasts(tile.GetCharacter(), tile);
         for (int i = 0; i < markAb.Count; i++)
         {
             if (markAb[i] != null && markAb[i] != tile.GetCharacter().standingOn)
@@ -127,6 +156,7 @@ public class HumanPlayer : MonoBehaviour {
 
     void MarkPath(Tile target)
     {
+        
         for (int i = 0; i < path.Count; i++)
         {
             path[i].tilehelper.Range();
@@ -162,6 +192,11 @@ public class HumanPlayer : MonoBehaviour {
 
     public void UnAbility()
     {
+        if (abilityDrawn != null)
+        {
+            World.indicator.RemoveNoCast();
+            abilityDrawn = null;
+        }
         selectedCharacter.standingOn.tilehelper.Standard();
         for (int i = 0; i < markAb.Count; i++)
         {
@@ -188,7 +223,13 @@ public class HumanPlayer : MonoBehaviour {
 
     public void FinishedAbility()
     {
+        if (abilityDrawn != null)
+        {
+            World.indicator.RemoveNoCast();
+            abilityDrawn = null;
+        }
         hc.FinishedAbility();
+        ActionAbility();
     }
 
 

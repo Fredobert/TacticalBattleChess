@@ -15,7 +15,15 @@ public class DefenceStance : Ability {
         Finished();
     }
 
-    public override List<Tile> possibleCasts(Character character, Tile tile)
+    public override List<Tile> DrawIndicator(Tile tile)
+    {
+        List<Tile> indicatorTiles = new List<Tile>();
+        World.indicator.DrawDamage(tile,GameHelper.AbilityType.Heal, hpgain);
+        indicatorTiles.Add(tile);
+        return indicatorTiles;
+    }
+
+    public override List<Tile> PossibleCasts(Character character, Tile tile)
     {
         return new List<Tile> { tile };
     }

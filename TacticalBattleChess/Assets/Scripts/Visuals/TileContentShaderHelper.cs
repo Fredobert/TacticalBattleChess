@@ -11,7 +11,7 @@ public class TileContentShaderHelper : MonoBehaviour {
     public void OnEnable()
     {
         sr = GetComponent<SpriteRenderer>();
-        FadeColor = new UnityEngine.Color(158/255.0f, 1.0f, 238/255.0f);
+        FadeColor = new Color(158/255.0f, 1.0f, 238/255.0f);
     }
     //states
    public void Standard()
@@ -93,8 +93,8 @@ public class TileContentShaderHelper : MonoBehaviour {
         {
             return;
         }
-        SetMark(true);
-        SetMarkColor(Color.red);
+        SetMark(false);
+        //SetMarkColor(Color.red);
         SetOutline(true);
         SetOutlineColor(Color.red);
         SetSelect(false);
@@ -103,16 +103,38 @@ public class TileContentShaderHelper : MonoBehaviour {
         curr = 5;
     }
 
+
+    public void AbilityIndicator(Color MarkColor, Color OutlineColor)
+    {
+        SetMark(true);
+        SetMarkColor(MarkColor);
+        SetOutline(true);
+        SetOutlineColor(OutlineColor);
+        SetSelect(false);
+        SetRange(false);
+        prev = curr;
+        if (curr == 5)
+        {
+            curr = 7;
+        }
+        else
+        {
+            curr = 6;
+        }
+       
+    }
+
     //Temporary  solution
     public void Undo()
     {
+ 
         switch (prev)
         {
             case 0:
                 Standard();
                 break;
             case 1:
-                Hover();
+                //Hover();
                 break;
             case 2:
                 Select();
@@ -124,6 +146,13 @@ public class TileContentShaderHelper : MonoBehaviour {
                 Path();
                 break;
             case 5:
+                Ability();
+                break;
+            case 6:
+                Ability();
+                break;
+            case 7:
+                
                 Ability();
                 break;
         }

@@ -8,7 +8,7 @@ public class Fireball : Ability {
     public GameObject prefab;
     public float speed = 0.2f;
     public int damage = 2;
-
+    public Tile effectTile;
 
 
 
@@ -27,7 +27,39 @@ public class Fireball : Ability {
         StartCoroutine(Animation(g));
     }
 
-    public override List<Tile> possibleCasts(Character character, Tile from)
+    public override List<Tile> DrawIndicator(Tile tile)
+    {
+        List<Tile> indicatorTiles = new List<Tile>();
+        Tile ftile = from;
+        directionOffset = ftile.neighboors.IndexOf(tile);
+        if (directionOffset == -1)
+        {
+            return indicatorTiles;
+        }
+        ftile = ftile.neighboors[directionOffset]; 
+        while (ftile != null && ftile.Walkable())
+        {
+            World.indicator.DrawIndicator(ftile, GameHelper.AbilityType.Fire);
+            indicatorTiles.Add(ftile);
+            ftile = ftile.neighboors[directionOffset];
+        }
+        if (ftile != null && ftile.tileContent != null)
+        {
+            World.indicator.DrawDamage(ftile, GameHelper.AbilityType.Fire, damage);
+            indicatorTiles.Add(ftile);
+            effectTile = ftile;
+
+        }
+        return indicatorTiles;
+    }
+
+    public override void RemoveIndicator()
+    {
+
+        base.RemoveIndicator();
+    }
+
+    public override List<Tile> PossibleCasts(Character character, Tile from)
     {
         this.from = from;
         return from.neighboors;

@@ -26,7 +26,6 @@ public class Field : MonoBehaviour
     public Transform parent;
     //fix gamefield is null on play
     public GameObject[,] gamefield;
-    [HideInInspector]
 
     //prefab section
    public GameObject tileprefab;
@@ -117,18 +116,6 @@ public class Field : MonoBehaviour
                 gamefield[i, j].GetComponent<Tile>().diagonalNeighboors = d;
             }
         }
-    }
-
-
-  
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-   
     }
 
 }

@@ -26,7 +26,7 @@ public class Thunder : Ability
         StartCoroutine(Animation(g));
     }
 
-    public override List<Tile> possibleCasts(Character character, Tile from)
+    public override List<Tile> PossibleCasts(Character character, Tile from)
     {
         return field.allTiles;
     }
@@ -44,7 +44,17 @@ public class Thunder : Ability
         Finished();
     }
 
-
+    public override List<Tile> DrawIndicator(Tile tile)
+    {
+        List<Tile> indicatorTiles = new List<Tile>();
+        World.indicator.DrawDamage(tile, GameHelper.AbilityType.Thunder, damage);
+        if (tile.tileContent.type == GameHelper.TileType.Water)
+        {
+            World.indicator.DrawEffect(World.effectSpawner.GetEffect(GameHelper.EffectType.Thunder), tile);
+        }
+        indicatorTiles.Add(tile);
+        return indicatorTiles;
+    }
 
 
 
