@@ -113,7 +113,7 @@ public class TileContentShaderHelper : MonoBehaviour {
         SetSelect(false);
         SetRange(false);
         prev = curr;
-        if (curr == 5)
+        if (curr == 5 || curr == 7)
         {
             curr = 7;
         }
@@ -135,6 +135,7 @@ public class TileContentShaderHelper : MonoBehaviour {
                 break;
             case 1:
                 //Hover();
+                Standard();
                 break;
             case 2:
                 Select();
@@ -149,10 +150,11 @@ public class TileContentShaderHelper : MonoBehaviour {
                 Ability();
                 break;
             case 6:
-                Ability();
+                //Ability();
+                Standard();
                 break;
             case 7:
-                
+                //Standard();
                 Ability();
                 break;
         }

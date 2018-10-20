@@ -26,6 +26,7 @@ public class BurningTile : A_Effect {
 	
     public void WalkOver(Character character)
     {
+        Debug.Log("ALARM");
         character.Effect(damage, damageType);
     }
 	

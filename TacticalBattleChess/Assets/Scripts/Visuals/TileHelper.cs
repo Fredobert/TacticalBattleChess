@@ -11,6 +11,7 @@ public class TileHelper : MonoBehaviour {
     public int damage;
     public bool textShown;
 
+    public bool Dangerous = false;
 
     public void Range()
     {
@@ -45,6 +46,7 @@ public class TileHelper : MonoBehaviour {
    
     public void Standard()
     {
+        Dangerous = false;
         HideText();
         if (tile.tileContent != null)
         {
@@ -109,6 +111,7 @@ public class TileHelper : MonoBehaviour {
 
     public void Undo()
     {
+        Dangerous = false;
         HideText();
         if (tile.tileContent != null)
         {
@@ -129,11 +132,13 @@ public class TileHelper : MonoBehaviour {
     {
         tile.tileContent.GetComponent<TileContentShaderHelper>().AbilityIndicator(color, color);
         SetText(damage, color);
+        Dangerous = true;
     }
 
     public void AbilityTraverse(Color color)
     {
         tile.tileContent.GetComponent<TileContentShaderHelper>().AbilityIndicator(color, color);
+        Dangerous = true;
     }
 
     public void SetText(int damage, Color color)

@@ -79,7 +79,7 @@ public abstract class Character : MonoBehaviour
     //buggy null exception
     public void Kill()
     {
-        World.Kill(this);
+        Game.world.Kill(this);
     }
 
 

@@ -28,7 +28,6 @@ public class ShaderHelper : MonoBehaviour {
     {
         Material mat = sr.material;
         mat.SetFloat("_RangeActive", 1.0f);
-        
     }
     // Rebuild Sprite
 

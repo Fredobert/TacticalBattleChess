@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4819905004344044}
-  - component: {fileID: 114162525961920822}
+  - component: {fileID: 114198706054084436}
   m_Layer: 0
   m_Name: EnemyPlayer
   m_TagString: Untagged
@@ -40,7 +40,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114162525961920822
+--- !u!114 &114198706054084436
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,12 +48,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1031095874426430}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dda4277c08742db4caf1b0741835e56b, type: 3}
+  m_Script: {fileID: 11500000, guid: 437e9463a855dcc40a8d6d52c583bc43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamid: 0
-  ap: 2
-  maxap: 2
-  freeMove: 1
+  teamid: 1
+  teamname: EvilBoys
   TeamCharacterMaterial: {fileID: 2100000, guid: f53fe53b0a653414eb955dea82671af0,
     type: 2}
+  units: []

@@ -6,16 +6,15 @@ using UnityEngine;
 [System.Serializable]
 public class HumanController {
 
-    public enum States { Waiting,Ready,Selecting,Select,SelectForAbility,Casting,Moving,Ability};
-    public States state = States.Ready;
+    public enum States { Init,Waiting,Ready,Selecting,Select,SelectForAbility,Casting,Moving,Ability};
+    public States state = States.Init;
 
-    public HumanController(HumanPlayer player)
+    public HumanController()
     {
         EventManager.OnHoverTile += Hover;
         EventManager.OnSelectTile += SelectTile;
         EventManager.OnAbilityClick += SelectAbility;
         EventManager.OnDeselect += Deselect;
-        this.player = player;
     }
     //always current Human Player
     public HumanPlayer player;

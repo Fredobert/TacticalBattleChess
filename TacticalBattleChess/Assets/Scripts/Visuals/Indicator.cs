@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public struct AbilityAction
+public class AbilityAction
 {
    public Ability ability;
    public Tile tile;
@@ -16,9 +16,13 @@ public struct AbilityAction
         this.tile = tile;
         this.tiles = tiles;
     }
+    public void SetTiles(List<Tile> tiles)
+    {
+        this.tiles = tiles;
+    }
 }
 
-public struct EffectAction
+public class EffectAction
 {
     public A_Effect effect;
     public Tile tile;
@@ -28,6 +32,11 @@ public struct EffectAction
     {
         this.effect = effect;
         this.tile = tile;
+        this.tiles = tiles;
+    }
+
+    public void SetTiles(List<Tile> tiles)
+    {
         this.tiles = tiles;
     }
 }
@@ -48,13 +57,42 @@ public class Indicator : MonoBehaviour {
     bool noCast = false;
     bool noCastSet = false;
 
+
+    void Start()
+    {
+        EventManager.OnMoveAction += Refresh;
+        EventManager.OnAbilityAction += Refresh;
+    }
+
     public void DrawAbility(Ability ability, Tile tile)
     {
         activeAbilitys.Add(new AbilityAction(ability, tile, ability.DrawIndicator(tile)));
     }
 
 
-  
+
+    public void Refresh()
+    {
+        for (int i = 0; i < activeAbilitys.Count; i++)
+        {
+            RemoveAbility(activeAbilitys[i]);
+        }
+        for (int i = 0; i < activeEffects.Count; i++)
+        {
+            RemoveEffect(activeEffects[i]);
+        }
+
+        for (int i = 0; i < activeAbilitys.Count; i++)
+        {
+            activeAbilitys[i].SetTiles(activeAbilitys[i].ability.DrawIndicator(activeAbilitys[i].tile));
+        }
+        for (int i = 0; i < activeEffects.Count; i++)
+        {
+            activeEffects[i].SetTiles(activeEffects[i].effect.DrawIndicator(activeEffects[i].tile));
+        }
+
+    }
+
     public void DrawEffect(A_Effect effect, Tile tile)
     {
         if (noCast)
@@ -65,12 +103,12 @@ public class Indicator : MonoBehaviour {
         {
             activeEffects.Add(new EffectAction(effect, tile, effect.DrawIndicator(tile)));
         }
-
     }
 
 
     public void DrawNotCastedAbility(Ability ability, Tile tile)
     {
+        Refresh();
         noCast = true;
         abilityNoCast = new AbilityAction(ability, tile, ability.DrawIndicator(tile));
         noCast = false;
@@ -88,6 +126,7 @@ public class Indicator : MonoBehaviour {
             }
             NoCastEffects = new List<EffectAction>();
             noCastSet = false;
+            World.indicator.Refresh();
         }
 
     }
@@ -101,6 +140,7 @@ public class Indicator : MonoBehaviour {
             AbilityAction aa = activeAbilitys[index];
             RemoveAbility(aa);
             activeAbilitys.RemoveAt(index);
+            Refresh();
         }
     }
 
@@ -121,6 +161,7 @@ public class Indicator : MonoBehaviour {
             EffectAction ea = activeEffects[index];
             RemoveEffect(ea);
             activeEffects.RemoveAt(index);
+            Refresh();
         }
     }
     private void RemoveEffect(EffectAction ea)

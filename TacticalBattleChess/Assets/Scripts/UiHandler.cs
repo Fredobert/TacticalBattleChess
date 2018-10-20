@@ -28,16 +28,12 @@ public class UiHandler : MonoBehaviour {
         EventManager.OnTurnStart += TurnStart;
         //EventManager.OnTurnStart += Ability;
         turnIndicator.text = "Player " + ((_turnCounter % 2) + 1);
-        freeMoves.text = game.GetCurrentPlayer().freeMove+ "";
-        apCounter.text = game.GetCurrentPlayer().ap+ "";
-        print(game.GetCurrentPlayer().ap);
     }
 
     public void Action()
     {
-        freeMoves.text = game.GetCurrentPlayer().freeMove + "";
-        apCounter.text = game.GetCurrentPlayer().ap + "";
-     
+        freeMoves.text = HumanPlayer.hc.player.freeMove + "";
+        apCounter.text = HumanPlayer.hc.player.ap + "";
     }
     public void TurnStart(int id)
     {

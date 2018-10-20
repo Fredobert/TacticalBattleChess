@@ -14,7 +14,8 @@ public class Tile : MonoBehaviour {
     public List<Tile> diagonalNeighboors;
     public string id;
 
-
+    public int x;
+    public int y;
 
     public TileContent tileContent;
     private Field field;
@@ -25,6 +26,11 @@ public class Tile : MonoBehaviour {
     public void Init(string id)
     {
         this.id = id;
+    }
+
+    public Tile Go(int index)
+    {
+        return neighboors[index % 4];
     }
 
 

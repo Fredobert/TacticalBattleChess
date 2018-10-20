@@ -43,10 +43,12 @@ public class World : MonoBehaviour
         if (team == 0)
         {
             c.transform.Rotate(0f, 180f, 0f);
+            GetComponent<Game>().player1.units.Add(c);
             instantiatedChar.GetComponent<Renderer>().sharedMaterial = GetComponent<Game>().player1.TeamCharacterMaterial;
         }
         else
         {
+            GetComponent<Game>().player2.units.Add(c);
             instantiatedChar.GetComponent<Renderer>().sharedMaterial = GetComponent<Game>().player2.TeamCharacterMaterial;
         }
         c.team = team;
@@ -54,6 +56,7 @@ public class World : MonoBehaviour
         tile.tileContent.character = c;
         c.Init();
     }
+
     public void AddTileContent(GameObject instantiatedTileContent, Tile tile)
     {
         if (tile.tileContent != null)
@@ -152,8 +155,9 @@ public class World : MonoBehaviour
         return World.pf.GetPath(tile, range);
     }
 
-    public static void Kill(Character character)
+    public void Kill(Character character)
     {
+        game.GetPlayer(character.team).KillCharacter(character);
         character.alive = false;
         character.gameObject.SetActive(false);
         character.standingOn.tileContent.character = null;
@@ -208,8 +212,9 @@ public class World : MonoBehaviour
             }
             yield return null;
         }
-        game.GetCurrentPlayer().FinishSelecting(pf.GetinRange());
         busy = false;
+        game.GetCurrentPlayer().FinishSelecting(pf.GetinRange());
+        
     }
 
     //follow a path needs testing 
@@ -220,9 +225,9 @@ public class World : MonoBehaviour
 
         currentPath = path.Count - 1;
         currentPos = new Vector3(path[currentPath].transform.position.x, path[currentPath].transform.position.y, -1f + path[currentPath].transform.position.z);
+        path[currentPath].tileContent.WalkOver(cha.GetComponent<Character>());
         while (currentPath > -1)
         {
-
             cha.transform.position = Vector3.MoveTowards(cha.transform.position, currentPos, speed * Time.deltaTime);
             if (cha.transform.position == currentPos)
             {

@@ -2,29 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HumanPlayer : MonoBehaviour {
+public class HumanPlayer : SimplePlayer {
 
 
-    public int teamid;
     private Game game;
     private World world;
     public static HumanController hc;
     public int ap = 2;
     public int maxap = 2;
     public int freeMove = 1;
-    public Material TeamCharacterMaterial;
     // Use this for initialization
     void Start()
     {
         GameObject g = GameObject.Find("World");
         game = g.GetComponent<Game>();
         world = g.GetComponent<World>();
-        if (hc == null)
-        {
-            hc = new HumanController(game.GetCurrentPlayer());
-        }
+        GetHumanController();
     }
 
+    public  static HumanController GetHumanController()
+    {
+        if (hc == null)
+        {
+            hc = new HumanController();
+        }
+        return hc;
+    }
 
 
     Character selectedCharacter;
@@ -81,6 +84,7 @@ public class HumanPlayer : MonoBehaviour {
             {
                 game.GetComponent<UiHandler>().HideMarker();
             }
+            World.indicator.Refresh();
         }
         if (tile.GetCharacter() != null)
         {
@@ -88,6 +92,7 @@ public class HumanPlayer : MonoBehaviour {
         }
         tile.tilehelper.Hover();
         hoveredTile = tile;
+        World.indicator.Refresh();
     }
     public void DrawPath(Tile tile)
     {
@@ -125,11 +130,11 @@ public class HumanPlayer : MonoBehaviour {
         {
             Hover(tile);
         }
-       
     }
 
     public void MarkRange()
     {
+
         for (int i = 0; i < marked.Count; i++)
         {
             if (marked[i] != null && marked[i] != selectedCharacter.standingOn)
@@ -137,6 +142,7 @@ public class HumanPlayer : MonoBehaviour {
                 marked[i].tilehelper.Range();
             }
         }
+        World.indicator.Refresh();
     }
     void MarkAbility(Ability ability, Tile tile)
     {
@@ -163,6 +169,7 @@ public class HumanPlayer : MonoBehaviour {
 
         }
         path = world.GetPath(target, selectedCharacter.movment);
+        World.indicator.Refresh();
         //path.Add(target);
         for (int i = 0; i < path.Count; i++)
         {
@@ -179,6 +186,7 @@ public class HumanPlayer : MonoBehaviour {
         {
             selectedCharacter.standingOn.tilehelper.Standard();
         }
+        World.indicator.Refresh();
         for (int i = 0; i < marked.Count; i++)
         {
             if (marked[i] != null)
@@ -209,19 +217,18 @@ public class HumanPlayer : MonoBehaviour {
     }
  
     //Finish Methods
-    public void FinishSelecting(List<Tile> inRange)
+    public override void FinishSelecting(List<Tile> inRange)
     {
-       
         marked = inRange;
         hc.FinischSelecting();
     }
-    public void FinishedMoving()
+    public override void FinishedMoving()
     {
         hc.FinishMoving();
         MoveAction();
     }
 
-    public void FinishedAbility()
+    public override void FinishedAbility()
     {
         if (abilityDrawn != null)
         {
@@ -234,9 +241,10 @@ public class HumanPlayer : MonoBehaviour {
 
 
     //Player
-    public void TurnStart()
+    public override void TurnStart()
     {
         hc.Next(this);
+        hc.Turn();
         ap = maxap;
         freeMove = 1;
     }
@@ -264,9 +272,14 @@ public class HumanPlayer : MonoBehaviour {
         }
     }
 
-    public void Finish()
+    public override void Finish()
     {
+        hc.Finish();
         game.FinishTurn();
     }
-        
+
+    public override void KillCharacter(Character character)
+    {
+        units.Remove(character);
+    }
 }
