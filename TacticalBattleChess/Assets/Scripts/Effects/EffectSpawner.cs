@@ -5,7 +5,8 @@ using UnityEngine;
 public class EffectSpawner : MonoBehaviour {
     public A_Effect burning;
     public A_Effect thunder;
-
+    public A_Effect spiderweb;
+    public A_Effect poison;
 
     public void Spawn(GameHelper.EffectType type , Tile tile)
     {
@@ -21,6 +22,10 @@ public class EffectSpawner : MonoBehaviour {
                 return burning;
             case GameHelper.EffectType.Thunder:
                 return thunder;
+            case GameHelper.EffectType.SpiderWeb:
+                return spiderweb;
+            case GameHelper.EffectType.Poison:
+                return poison;
         }
         return null;
     }

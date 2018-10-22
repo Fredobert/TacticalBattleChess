@@ -23,12 +23,12 @@ GameObject:
   - component: {fileID: 61812253722266898}
   - component: {fileID: 114914849349967408}
   - component: {fileID: 114779885092227266}
-  - component: {fileID: 114140799009338128}
-  - component: {fileID: 114633539526987018}
-  - component: {fileID: 114666626545799630}
-  - component: {fileID: 114433487330724124}
+  - component: {fileID: 114427815799182330}
+  - component: {fileID: 114500157897955618}
+  - component: {fileID: 114274311674926110}
+  - component: {fileID: 114223116533632806}
   m_Layer: 9
-  m_Name: Spider
+  m_Name: SpiderMelee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.4673639, y: 0.40654203}
+    pivot: {x: 0.5096618, y: 0.36151373}
     oldSize: {x: 15.555555, y: 13.333333}
     newSize: {x: 1.4, y: 1.2}
     adaptiveTilingThreshold: 0.5
@@ -72,7 +72,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.0001, y: 0.0001}
   m_EdgeRadius: 0
---- !u!114 &114140799009338128
+--- !u!114 &114223116533632806
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -80,15 +80,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1489244729823150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29a82b787a97448478d83e0a4d787fea, type: 3}
+  m_Script: {fileID: 11500000, guid: bd93e1f372d5bff4da4460ebb69dffa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 114633539526987018}
+  character: {fileID: 114427815799182330}
   aiPlayer: {fileID: 0}
-  order: 0
+  order: 1
+  spider: {fileID: 114427815799182330}
   state: 0
-  spider: {fileID: 114633539526987018}
---- !u!114 &114433487330724124
+--- !u!114 &114274311674926110
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,17 +96,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1489244729823150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 297d30bf0986f4a409805616148a58b0, type: 3}
+  m_Script: {fileID: 11500000, guid: fafe1edb89a37e744ac1bbc0916ac40c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   cd: 2
   currentCd: 0
-  prefab: {fileID: 1066006131663904, guid: f116e9b052235044696d605820fb888f, type: 2}
-  speed: 0.2
-  damage: 2
+  damage: 4
   type: 5
---- !u!114 &114633539526987018
+--- !u!114 &114427815799182330
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,18 +112,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1489244729823150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36bd35479e13fa140b5697c6da94fe13, type: 3}
+  m_Script: {fileID: 11500000, guid: a61d9ffe63fadd848bdafd2aea0fcf9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
   maxhealth: 10
   health: 10
-  movment: 3
+  movment: 4
   alive: 1
   abilitys: []
   standingOn: {fileID: 0}
   material: {fileID: 0}
---- !u!114 &114666626545799630
+--- !u!114 &114500157897955618
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,12 +131,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1489244729823150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6af82127347719347a936264898e01c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 44379b722e9f78e4187f6bfe6aa018ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   cd: 2
   currentCd: 0
+  damage: 5
+  type: 4
 --- !u!114 &114779885092227266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -197,7 +197,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 711de7ecd3bfc484ca27074d42d10b0e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9617a4e9a32ea064581a37b12013552b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

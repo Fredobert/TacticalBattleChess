@@ -55,7 +55,7 @@ public class Effect_Thunder : A_Effect
             }
             thunders = new List<GameObject>();
             tile.tileContent.GetComponent<EffectHandler>().RemoveEffect(this);
-            Destroy(this);
+            Destroy(this.gameObject);
         }
     }
 

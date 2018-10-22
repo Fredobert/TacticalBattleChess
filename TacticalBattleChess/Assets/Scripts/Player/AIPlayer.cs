@@ -31,6 +31,7 @@ public class AIPlayer : SimplePlayer {
     World world;
     List<AIUnit> aiUnits;
     List<AbilityAction> actions = new List<AbilityAction>();
+    bool abilityModus = false;
     void Start()
     {
         GameObject g = GameObject.Find("World");
@@ -64,7 +65,7 @@ public class AIPlayer : SimplePlayer {
     {
         ability.PossibleCasts(character,character.standingOn);
         World.indicator.DrawAbility(ability, tile);
-        if (turnDelay < 0)
+        if (turnDelay <= 0)
         {
             CastAbility(character, ability, tile);
             World.indicator.RemoveAbility(ability, tile);
@@ -87,7 +88,11 @@ public class AIPlayer : SimplePlayer {
 
     public override void FinishedAbility()
     {
-        DoAbilitys();
+        if (abilityModus)
+        {
+            DoAbilitys();
+        }
+      
     }
 
     public override void FinishedMoving()
@@ -97,12 +102,17 @@ public class AIPlayer : SimplePlayer {
 
     public override void FinishSelecting(List<Tile> inRange)
     {
+
         //if unit is Selected from DoUnits, Unit can begin
+        Debug.Log("unit: " + currentUnit);
         aiUnits[currentUnit].Begin();
+
+
     }
     void FinishedAIAbilitys()
     {
         currentUnit = -1;
+        abilityModus = false;
         DoUnits();
     }
 
@@ -116,9 +126,10 @@ public class AIPlayer : SimplePlayer {
         }
         if (actions[currentUnit].Ready())
         {
-            CastAbility(actions[currentUnit]);
+            AbilityAction aa = actions[currentUnit];
             actions.RemoveAt(currentUnit);
             currentUnit--;
+            CastAbility(aa);
         }
         else
         {
@@ -145,6 +156,7 @@ public class AIPlayer : SimplePlayer {
         {
             Finish(); //End Game or so 
         }
+        abilityModus = true;
         DoAbilitys();
        // DoUnits();
     }

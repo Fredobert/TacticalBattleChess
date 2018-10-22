@@ -43,8 +43,9 @@ public class Whirlewind : Ability {
                 }
             }
             yield return new WaitForSeconds(speed);
-            Finished();
+            
         }
+        Finished();
     }
     public override List<Tile> DrawIndicator(Tile tile)
     {

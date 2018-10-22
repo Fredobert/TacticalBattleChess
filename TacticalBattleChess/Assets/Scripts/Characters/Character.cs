@@ -59,6 +59,7 @@ public abstract class Character : MonoBehaviour
             case GameHelper.AbilityType.Fire:
             case GameHelper.AbilityType.Thunder:
             case GameHelper.AbilityType.Light:
+            case GameHelper.AbilityType.Poison:
                 DealDamage(z);
                 break;
             case GameHelper.AbilityType.Heal:

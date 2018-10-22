@@ -6,7 +6,7 @@ public abstract class AIUnit : MonoBehaviour
 {
     public Character character;
     public AIPlayer aiPlayer;
-
+    public int order = 0;
     public void Init(AIPlayer player)
     {
         aiPlayer = player;

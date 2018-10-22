@@ -47,6 +47,7 @@ public class Indicator : MonoBehaviour {
     public Color lightColor;
     public Color healColor;
     public Color normalColor;
+    public Color poisonColor;
 
     public List<AbilityAction> activeAbilitys = new List<AbilityAction>();
     public List<EffectAction> activeEffects = new List<EffectAction>();
@@ -180,6 +181,7 @@ public class Indicator : MonoBehaviour {
             case GameHelper.AbilityType.Thunder:
             case GameHelper.AbilityType.Light:
             case GameHelper.AbilityType.Normal:
+            case GameHelper.AbilityType.Poison:
                 tile.tilehelper.AbilityDefault(damage, GetColor(type));
                 break;
             case GameHelper.AbilityType.Heal:
@@ -210,6 +212,8 @@ public class Indicator : MonoBehaviour {
                 return healColor;
             case GameHelper.AbilityType.Normal:
                 return normalColor;
+            case GameHelper.AbilityType.Poison:
+                return poisonColor;
         }
         return new Color();
     }

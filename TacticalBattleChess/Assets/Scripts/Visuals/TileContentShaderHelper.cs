@@ -79,9 +79,9 @@ public class TileContentShaderHelper : MonoBehaviour {
             return;
         }
         SetMark(true);
-        SetMarkColor(Color.green);
+        SetMarkColor(Color.blue);
         SetOutline(true);
-        SetOutlineColor(Color.green);
+        SetOutlineColor(Color.blue);
         SetSelect(false);
         SetRange(false);
         prev = curr;

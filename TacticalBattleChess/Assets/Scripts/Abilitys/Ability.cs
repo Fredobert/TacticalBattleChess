@@ -20,6 +20,11 @@ public abstract class Ability : MonoBehaviour {
     {
     }
 
+    public virtual bool IsNotOnCd()
+    {
+        return cd <= 0;
+    }
+
 	public void Init () {
         EventManager.OnTurnEnd += TurnEnd;
 	}

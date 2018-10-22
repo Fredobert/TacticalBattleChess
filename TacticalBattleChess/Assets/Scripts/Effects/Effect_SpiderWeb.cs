@@ -2,39 +2,52 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BurningTile : A_Effect {
+public class Effect_SpiderWeb : A_Effect
+{
 
-    public int turns = 4;
-    public int damage = 1;
-    public GameHelper.AbilityType damageType = GameHelper.AbilityType.Fire;
+    public int turns = 2;
+    public int movementDec = -10;
 
 
     private Tile tile;
+    private Character character = null;
     private bool active = false;
 
     public override void Apply(Tile tile)
     {
         if (tile.tileContent != null)
         {
+            if (tile.tileContent != null && tile.GetCharacter() != null)
+            {
+                
+                character = tile.GetCharacter();
+                character.movment += movementDec;
+            }
             this.tile = tile;
             active = true;
-            tile.tileContent.OnWalkOver += WalkOver;
             EventManager.OnTurnEnd += TurnEnd;
             tile.tileContent.GetComponent<EffectHandler>().AddEffect(this);
         }
     }
-	
+
     public void WalkOver(Character character)
     {
-        character.Effect(damage, damageType);
+        if (this.character != null)
+        {
+            this.character.movment -= movementDec;
+            this.character = null;
+        }
+        else 
+        {
+            this.character = character;
+            this.character.movment += movementDec;
+        }
     }
-	
+
+
     public void TurnEnd(int id)
     {
-        if (tile.tileContent.GetCharacter() != null)
-        {
-            tile.tileContent.Effect(damage, damageType);
-        }
+      
         turns--;
         if (turns == 0)
         {
@@ -42,12 +55,16 @@ public class BurningTile : A_Effect {
         }
     }
 
-	//not tested
+    //not tested
     public void Kill()
     {
+        Debug.Log(active);
         if (active)
         {
-            tile.tileContent.OnWalkOver -= WalkOver;
+            if (tile.tileContent != null && tile.GetCharacter() != null)
+            {
+                this.character.movment -= movementDec;
+            }
             EventManager.OnTurnEnd -= TurnEnd;
             tile.tileContent.GetComponent<EffectHandler>().RemoveEffect(this);
             Destroy(this.gameObject);
@@ -57,7 +74,6 @@ public class BurningTile : A_Effect {
     public override List<Tile> DrawIndicator(Tile tile)
     {
         List<Tile> indicatorTiles = new List<Tile>();
-        World.indicator.DrawDamage(tile,damageType, damage);
         return indicatorTiles;
     }
 }

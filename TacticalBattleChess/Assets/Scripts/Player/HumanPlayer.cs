@@ -243,6 +243,7 @@ public class HumanPlayer : SimplePlayer {
     //Player
     public override void TurnStart()
     {
+        GetHumanController(); //Bug fix 
         hc.Next(this);
         hc.Turn();
         ap = maxap;

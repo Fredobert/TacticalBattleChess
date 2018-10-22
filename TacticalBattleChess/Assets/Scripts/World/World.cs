@@ -124,6 +124,7 @@ public class World : MonoBehaviour
     {
         if (busy)
         {
+            Debug.Log("Select was busy");
             return false;
         }
         busy = true;
@@ -137,7 +138,7 @@ public class World : MonoBehaviour
 
     public bool Move(Tile tile, Character character)
     {
-        if (character == selectedChar && GetPath(tile, character.movment).Count > 0 && !busy)
+        if (character == selectedChar && GetPath(tile, character.movment).Count > 0 )
         {
             busy = true;
             character.standingOn.tileContent.character = null;
