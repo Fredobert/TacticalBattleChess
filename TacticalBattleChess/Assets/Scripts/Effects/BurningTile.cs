@@ -6,7 +6,7 @@ public class BurningTile : A_Effect {
 
     public int turns = 4;
     public int damage = 1;
-
+    public GameHelper.AbilityType damageType = GameHelper.AbilityType.Fire;
 
 
     private Tile tile;
@@ -26,14 +26,14 @@ public class BurningTile : A_Effect {
 	
     public void WalkOver(Character character)
     {
-        character.Effect(damage, GameHelper.AbilityType.Fire);
+        character.Effect(damage, damageType);
     }
 	
     public void TurnEnd(int id)
     {
         if (tile.tileContent.GetCharacter() != null)
         {
-            tile.tileContent.Effect(damage, GameHelper.AbilityType.Fire);
+            tile.tileContent.Effect(damage, damageType);
         }
         turns--;
         if (turns == 0)
@@ -50,7 +50,16 @@ public class BurningTile : A_Effect {
             tile.tileContent.OnWalkOver -= WalkOver;
             EventManager.OnTurnEnd -= TurnEnd;
             tile.tileContent.GetComponent<EffectHandler>().RemoveEffect(this);
-            Destroy(this);
+            World.indicator.RemoveEffect(this, tile);
+            Destroy(this.gameObject);
         }
+    }
+
+    public override List<Tile> DrawIndicator(Tile tile)
+    {
+        List<Tile> indicatorTiles = new List<Tile>();
+        World.indicator.DrawDamage(tile,damageType, damage);
+        indicatorTiles.Add(tile);
+        return indicatorTiles;
     }
 }

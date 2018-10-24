@@ -1,66 +1,64 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-
+//prototype!
 public class TileHelper : MonoBehaviour {
 
-    Tile tile;
-	// Use this for initialization
-	void Start () {
-        tile = GetComponent<Tile>();      
-	}
+    public Tile tile;
+    public TextMeshPro textmp;
+
+    public int damage;
+    public bool textShown;
+
+    public bool Dangerous = false;
 
     public void Range()
     {
         if (tile.tileContent != null)
         {
             tile.tileContent.GetComponent<TileContentShaderHelper>().Range();
-        }
-
-    }
-    public void Mark()
-    {
-        if (tile.tileContent != null)
-        {
-            tile.tileContent.GetComponent<TileContentShaderHelper>().Mark();
             if (tile.tileContent.content != null)
             {
-                tile.tileContent.content.GetComponent<ContentShaderHelper>().Mark();
+                tile.tileContent.content.GetComponent<ContentShaderHelper>().Standard();
             }
         }
         if (tile.GetCharacter() != null)
         {
-            tile.GetCharacter().GetComponent<CharacterShaderHelper>().Mark();
+            tile.GetCharacter().GetComponent<CharacterShaderHelper>().Standard();
         }
     }
-    public void Unmark()
+    public void Select()
     {
         if (tile.tileContent != null)
         {
-            tile.tileContent.GetComponent<TileContentShaderHelper>().UnMark();
+            tile.tileContent.GetComponent<TileContentShaderHelper>().Select();
             if (tile.tileContent.content != null)
             {
-                tile.tileContent.content.GetComponent<ContentShaderHelper>().UnMark();
+                tile.tileContent.content.GetComponent<ContentShaderHelper>().Standard();
             }
         }
         if (tile.GetCharacter() != null)
         {
-            tile.GetCharacter().GetComponent<CharacterShaderHelper>().UnMark();
+            tile.GetCharacter().GetComponent<CharacterShaderHelper>().Select();
         }
     }
-    public void ResetAll()
+   
+    public void Standard()
     {
+        Dangerous = false;
+        HideText();
         if (tile.tileContent != null)
         {
-            tile.tileContent.GetComponent<TileContentShaderHelper>().ResetAll();
+            tile.tileContent.GetComponent<TileContentShaderHelper>().Standard();
             if (tile.tileContent.content != null)
             {
-                tile.tileContent.content.GetComponent<ContentShaderHelper>().ResetAll();
+                tile.tileContent.content.GetComponent<ContentShaderHelper>().Standard();
             }
         }
         if (tile.GetCharacter() != null)
         {
-            tile.GetCharacter().GetComponent<CharacterShaderHelper>().ResetAll();
+            tile.GetCharacter().GetComponent<CharacterShaderHelper>().Standard();
         }
     }
 
@@ -79,26 +77,85 @@ public class TileHelper : MonoBehaviour {
             tile.GetCharacter().GetComponent<CharacterShaderHelper>().Hover();
         }
     }
-    public void Select()
-    {
-        if (tile.GetCharacter() != null)
-        {
-            tile.GetCharacter().GetComponent<CharacterShaderHelper>().Range();
-        }
-    }
-    public void UnHover()
+
+    public void Path()
     {
         if (tile.tileContent != null)
         {
-            tile.tileContent.GetComponent<TileContentShaderHelper>().UnHover();
+            tile.tileContent.GetComponent<TileContentShaderHelper>().Path();
             if (tile.tileContent.content != null)
             {
-                tile.tileContent.content.GetComponent<ContentShaderHelper>().UnHover();
+                tile.tileContent.content.GetComponent<ContentShaderHelper>().Standard();
             }
         }
         if (tile.GetCharacter() != null)
         {
-            tile.GetCharacter().GetComponent<CharacterShaderHelper>().UnHover();
+            tile.GetCharacter().GetComponent<CharacterShaderHelper>().Select();
         }
+    }
+    public void Ability()
+    {
+        if (tile.tileContent != null)
+        {
+            tile.tileContent.GetComponent<TileContentShaderHelper>().Ability();
+            if (tile.tileContent.content != null)
+            {
+                tile.tileContent.content.GetComponent<ContentShaderHelper>().Standard();
+            }
+        }
+        if (tile.GetCharacter() != null)
+        {
+            tile.GetCharacter().GetComponent<CharacterShaderHelper>().Select();
+        }
+    }
+
+    public void Undo()
+    {
+        Dangerous = false;
+        HideText();
+        if (tile.tileContent != null)
+        {
+            tile.tileContent.GetComponent<TileContentShaderHelper>().Undo();
+            if (tile.tileContent.content != null)
+            {
+                tile.tileContent.content.GetComponent<ContentShaderHelper>().Standard();
+            }
+        }
+        if (tile.GetCharacter() != null)
+        {
+            tile.GetCharacter().GetComponent<CharacterShaderHelper>().Standard();
+        }
+    }
+
+
+    public void AbilityDefault(int damage, Color color)
+    {
+        tile.tileContent.GetComponent<TileContentShaderHelper>().AbilityIndicator(color, color);
+        SetText(damage, color);
+        Dangerous = true;
+    }
+
+    public void AbilityTraverse(Color color)
+    {
+        tile.tileContent.GetComponent<TileContentShaderHelper>().AbilityIndicator(color, color);
+        Dangerous = true;
+    }
+
+    public void SetText(int damage, Color color)
+    {
+        textmp.color = color;
+        SetText(damage);
+    }
+    public void SetText(int damageText)
+    {
+        damage += damageText;
+        textShown = true;
+        textmp.text = (damage < 0)?"+"+(damage*-1):damage+ "";
+    }
+    public void HideText()
+    {
+        damage = 0;
+        textShown = false;
+        textmp.text = "";
     }
 }

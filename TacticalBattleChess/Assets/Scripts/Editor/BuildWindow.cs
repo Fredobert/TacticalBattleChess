@@ -5,7 +5,7 @@ using UnityEditor;
 
 public class BuildWindow : EditorWindow {
 
-    Field f;
+    World world;
     int selectedPrefab = -1;
     int prefabmodus = -1;
     int team;
@@ -26,8 +26,8 @@ public class BuildWindow : EditorWindow {
     {
         conSize = 60;
         offSet = 4;
-        f = GameObject.Find("World").GetComponent<Field>();
-        deltex = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Textures/Delete.png", typeof(Texture2D));
+        world = GameObject.Find("World").GetComponent<World>();
+        deltex = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Textures/Other/Delete.png", typeof(Texture2D));
     }
 
     void OnGUI()
@@ -51,17 +51,17 @@ public class BuildWindow : EditorWindow {
         {
             team = EditorGUILayout.IntField("team", team);
 
-            DrawContent(f.characterPrefabs,true, maxContentsPerRow, 0);
+            DrawContent(world.characterPrefabs,true, maxContentsPerRow, 0);
         }
         ttile = EditorGUILayout.Foldout(ttile, "Tiles");
         if (ttile)
         {
-            DrawContent(f.tilePrefabs,false, maxContentsPerRow, 1);
+            DrawContent(world.tilePrefabs,false, maxContentsPerRow, 1);
         }
         tcont = EditorGUILayout.Foldout(tcont, "Contents");
         if (tcont)
         {
-            DrawContent(f.contentPrefabs,true, maxContentsPerRow, 2);
+            DrawContent(world.contentPrefabs,true, maxContentsPerRow, 2);
         }
         GUI.backgroundColor = Color.green;
         EditorGUILayout.HelpBox("Create selected Content by selecting a Tile in Scene", MessageType.Info);
@@ -144,11 +144,11 @@ public class BuildWindow : EditorWindow {
                     {
                         RemoveCharacter(t);
                     }
-                    AddCharacter(t, f.characterPrefabs[selectedPrefab] as GameObject);
+                    AddCharacter(t, world.characterPrefabs[selectedPrefab] as GameObject);
                 }
                 break;
             case 1:
-                AddTileContent(t, f.tilePrefabs[selectedPrefab] as GameObject);
+                AddTileContent(t, world.tilePrefabs[selectedPrefab] as GameObject);
                 break;
             case 2:
                 if (selectedPrefab == -1)
@@ -164,7 +164,7 @@ public class BuildWindow : EditorWindow {
                     {
                         RemoveContent(t);
                     }
-                    AddContent(t, f.contentPrefabs[selectedPrefab] as GameObject);
+                    AddContent(t, world.contentPrefabs[selectedPrefab] as GameObject);
                 }
                 break;
         }
@@ -175,43 +175,43 @@ public class BuildWindow : EditorWindow {
     {
         int grp = Undo.GetCurrentGroup();
         //weird RegisterObect not enough UiHandler.charuis will not get updated but with RegisterCompleteObjectUndo it works
-        Undo.RegisterCompleteObjectUndo(f.GetComponent<UiHandler>().gameObject, "New Char");
+        Undo.RegisterCompleteObjectUndo(world.GetComponent<UiHandler>().gameObject, "New Char");
         //Same here
         Undo.RegisterCompleteObjectUndo(t.tileContent, "Remove Char");
 
         //save position of Ui
         Undo.RegisterFullObjectHierarchyUndo(GameObject.Find("Canvas"), "Remove Char");
-        CharUIElement cue = f.GetComponent<UiHandler>().Get(t.tileContent.GetCharacter());
+        CharUIElement cue = world.GetComponent<UiHandler>().Get(t.tileContent.GetCharacter());
         Undo.DestroyObjectImmediate(cue.gameObject);
-        f.GetComponent<UiHandler>().ClearNones();
-        f.GetComponent<UiHandler>().OrderUI();
+        world.GetComponent<UiHandler>().ClearNones();
+        world.GetComponent<UiHandler>().OrderUI();
 
         Undo.DestroyObjectImmediate(t.tileContent.GetCharacter().gameObject);
         t.tileContent.character = null;
 
         //has to be done or UiHandler charUis contains None refereces after play
-        EditorUtility.SetDirty(f.GetComponent<UiHandler>());
+        EditorUtility.SetDirty(world.GetComponent<UiHandler>());
         Undo.CollapseUndoOperations(grp);
     }
     private void AddCharacter(Tile t,GameObject prefab)
     {
         int grp = Undo.GetCurrentGroup();
-        Undo.RecordObject(f.GetComponent<UiHandler>(), "New Char");
+        Undo.RecordObject(world.GetComponent<UiHandler>(), "New Char");
         Undo.RecordObject(t.tileContent, "New Char");
 
         GameObject z = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
-        f.AddCharPrefab(z, t, team);
+        world.AddCharPrefab(z, t, team);
         t.tileContent.type = GameHelper.TileType.Gras;
         Undo.RegisterCreatedObjectUndo(z, "New Char");
 
-        CharUIElement cue = Instantiate(f.charuiprefab).GetComponent<CharUIElement>();
+        CharUIElement cue = Instantiate(world.charuiprefab).GetComponent<CharUIElement>();
         cue.character = z.GetComponent<Character>();
         cue.Init();
-        f.GetComponent<UiHandler>().AddUI(cue);
+        world.GetComponent<UiHandler>().AddUI(cue);
         Undo.RegisterCreatedObjectUndo(cue.gameObject, "New Char");
 
         //has to be done or UiHandler charUis contains None refereces after play
-        EditorUtility.SetDirty(f.GetComponent<UiHandler>());
+        EditorUtility.SetDirty(world.GetComponent<UiHandler>());
         Undo.CollapseUndoOperations(grp);
     }
 
@@ -224,7 +224,7 @@ public class BuildWindow : EditorWindow {
     private void AddContent(Tile t, GameObject prefab)
     {
         GameObject z = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
-        f.AddContent(z, t);
+        world.AddContent(z, t);
         Undo.RegisterCreatedObjectUndo(z, "New Content");
         Undo.RegisterCompleteObjectUndo(t.tileContent, "New Content");
     }
@@ -243,7 +243,7 @@ public class BuildWindow : EditorWindow {
             Undo.DestroyObjectImmediate(t.tileContent.gameObject);
         }
         GameObject z = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
-        f.AddTileContent(z, t);
+        world.AddTileContent(z, t);
         t.tileContent.character = character;
         t.tileContent.content = content;
         Undo.RegisterCreatedObjectUndo(z, "New TileContent");

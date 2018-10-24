@@ -41,28 +41,32 @@ public abstract class Character : MonoBehaviour
     }
     public void Heal(int heal)
     {
+        Debug.Log(health);
         health += heal;
-
+        
         if (health > maxhealth)
         {
             heal = heal - health - maxhealth;
             health = maxhealth;
         }
+        Debug.Log(health);
         OnHeal(heal);
     }
     
     public virtual void Effect(int z,GameHelper.AbilityType type)
     {
+     
         switch (type)
         {
             case GameHelper.AbilityType.Normal:
             case GameHelper.AbilityType.Fire:
             case GameHelper.AbilityType.Thunder:
             case GameHelper.AbilityType.Light:
+            case GameHelper.AbilityType.Poison:
                 DealDamage(z);
                 break;
             case GameHelper.AbilityType.Heal:
-                HealChar(z);
+                Heal(z);
                 break;
             default:
 
@@ -79,7 +83,7 @@ public abstract class Character : MonoBehaviour
     //buggy null exception
     public void Kill()
     {
-        Field.Kill(this);
+        Game.world.Kill(this);
     }
 
 

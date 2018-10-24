@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//prototype!
 public class CharacterShaderHelper : MonoBehaviour {
     private SpriteRenderer sr;
     public void OnEnable()
@@ -16,35 +16,41 @@ public class CharacterShaderHelper : MonoBehaviour {
         //GetComponent<SpriteRenderer>().sharedMaterial = temp;
         //GetComponent<Renderer>().sharedMaterial.SetColor("_TeamColorOutline", color);
     }
-    public void Mark()
+    public void Standard()
     {
-        sr.material.SetFloat("_MarkActive", 1f);
+        SetMark(false);
+        SetOutline(false);
     }
-    public void Range()
+    public void Select()
     {
-        sr.material.SetFloat("_Outline", 0.03f);
-        sr.material.SetFloat("_OutlineActive", 1f);
+        SetMark(true);
+        SetOutline(true);
+        SetOutlineColor(Color.white);
+        SetOutlineSize(0.03f);
     }
     public void Hover()
     {
-        sr.material.SetFloat("_Outline", 0.02f);
-        sr.material.SetFloat("_OutlineActive", 1f);
+        SetMark(false);
+        SetOutline(true);
+        SetOutlineColor(new Color(158, 255, 242));
+        SetOutlineSize(0.01f);
     }
-    public void UnMark()
+    //Help methods
+    private void SetMark(bool active)
     {
-        sr.material.SetFloat("_MarkActive", 0f);
+        sr.material.SetFloat("_MarkActive", (active) ? 1f : 0f);
     }
-    public void UnRange()
+    private void SetOutline(bool active)
     {
-        sr.material.SetFloat("_OutlineActive", 0f);
+        sr.material.SetFloat("_OutlineActive", (active) ? 1f : 0f);
     }
-    public void UnHover()
+    private void SetOutlineColor(Color color)
     {
-        sr.material.SetFloat("_OutlineActive", 0f);
+        sr.material.SetColor("_OutlineColor", color);
     }
-    public void ResetAll()
+    private void SetOutlineSize(float size)
     {
-        UnMark();
-        UnRange();
+        sr.material.SetFloat("_Outline", size);
     }
+
 }
