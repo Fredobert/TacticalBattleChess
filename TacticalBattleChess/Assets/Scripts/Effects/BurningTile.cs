@@ -50,6 +50,7 @@ public class BurningTile : A_Effect {
             tile.tileContent.OnWalkOver -= WalkOver;
             EventManager.OnTurnEnd -= TurnEnd;
             tile.tileContent.GetComponent<EffectHandler>().RemoveEffect(this);
+            World.indicator.RemoveEffect(this, tile);
             Destroy(this.gameObject);
         }
     }
@@ -58,6 +59,7 @@ public class BurningTile : A_Effect {
     {
         List<Tile> indicatorTiles = new List<Tile>();
         World.indicator.DrawDamage(tile,damageType, damage);
+        indicatorTiles.Add(tile);
         return indicatorTiles;
     }
 }

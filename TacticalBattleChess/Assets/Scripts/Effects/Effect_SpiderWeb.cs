@@ -58,7 +58,6 @@ public class Effect_SpiderWeb : A_Effect
     //not tested
     public void Kill()
     {
-        Debug.Log(active);
         if (active)
         {
             if (tile.tileContent != null && tile.GetCharacter() != null)

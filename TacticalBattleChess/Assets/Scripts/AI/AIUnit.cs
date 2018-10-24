@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//prototype!
 public abstract class AIUnit : MonoBehaviour
 {
     public Character character;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+//prototype!
 public class CharUIElement : MonoBehaviour {
 
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//prototype!
 public class AI_Spider_Melee : AIUnit
 {
     public enum States { Searching, Moving, ReachableMoving,MultipleMoves};
@@ -26,7 +26,8 @@ public class AI_Spider_Melee : AIUnit
         {
             for (int j = 0; j < enemies[i].standingOn.neighboors.Count; j++)
             {
-                if (enemies[i].standingOn.neighboors[j]!= null && !enemies[i].standingOn.neighboors[j].tilehelper.Dangerous && enemies[i].standingOn.neighboors[j].Walkable())
+                //TODO get rid of this abomination
+                if (enemies[i].standingOn.neighboors[j]!= null && !enemies[i].standingOn.neighboors[j].tilehelper.Dangerous && (enemies[i].standingOn.neighboors[j].Walkable()|| enemies[i].standingOn.neighboors[j].GetCharacter() != null && enemies[i].standingOn.neighboors[j].GetCharacter() == character))
                 {
                     possTiles.Add(enemies[i].standingOn.neighboors[j]);
                 }
@@ -45,16 +46,19 @@ public class AI_Spider_Melee : AIUnit
         List<Tile> path = World.pf.GetPath(possTiles[bestIndex], 2000);
         if (path.Count == 0)
         {
-            Debug.Log("in position"); //cannot happen at the moment
+            Debug.Log("in position");
+            state = States.ReachableMoving;
+            FinishedMoving(); //quick hack
         }
         else if (path.Count > spider.movment)
         {
             Debug.Log("in position");
             state = States.MultipleMoves;
-            aiPlayer.Move(path[spider.movment - 1], spider);
+            aiPlayer.Move(path[path.Count- spider.movment ], spider);
         }
         else
         {
+            Debug.Log("no Move Reachable");
             aiPlayer.Move(possTiles[bestIndex], character);
             state = States.ReachableMoving;
         }
@@ -90,13 +94,21 @@ public class AI_Spider_Melee : AIUnit
     {
         if (state == States.ReachableMoving)
         {
-            if (spider.abilitys[0].IsNotOnCd())
+            if (spider.abilitys[1].IsNotOnCd())
             {
-                DoAbility(spider.abilitys[0], spider.standingOn, 1);
+                DoAbility(spider.abilitys[1], spider.standingOn, 1);
             }
             else
             {
-                DoAbility(spider.abilitys[1], targetTile, 1);
+                for (int i = 0; i < targetTile.neighboors.Count; i++)
+                {
+                    if (targetTile.neighboors[i] != null &&targetTile.neighboors[i].GetCharacter() != null && targetTile.neighboors[i].GetCharacter().team != aiPlayer.teamid)
+                    {
+                        DoAbility(spider.abilitys[0], targetTile.neighboors[i], 1);
+                        break;
+                    }
+                }
+               
             }
         }
         else

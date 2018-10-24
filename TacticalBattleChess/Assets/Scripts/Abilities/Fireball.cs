@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoisonSpit : Ability {
+public class Fireball : Ability {
 
 
     public GameObject prefab;
     public float speed = 0.2f;
     public int damage = 2;
-    public GameHelper.AbilityType type = GameHelper.AbilityType.Poison;
+    public Tile effectTile;
 
 
 
@@ -16,7 +16,7 @@ public class PoisonSpit : Ability {
     Tile from;
     public override void CastAbility(Character character, Tile target)
     {
-        directionOffset = from.neighboors.IndexOf(target);
+     directionOffset =   from.neighboors.IndexOf(target);
         if (directionOffset == -1)
         {
             return;
@@ -36,17 +36,20 @@ public class PoisonSpit : Ability {
         {
             return indicatorTiles;
         }
-        ftile = ftile.neighboors[directionOffset];
+        ftile = ftile.neighboors[directionOffset]; 
         while (ftile != null && ftile.Walkable())
         {
-            World.indicator.DrawIndicator(ftile, type);
+            World.indicator.DrawIndicator(ftile, GameHelper.AbilityType.Fire);
             indicatorTiles.Add(ftile);
             ftile = ftile.neighboors[directionOffset];
         }
         if (ftile != null && ftile.tileContent != null)
         {
-            World.indicator.DrawDamage(ftile, type, damage);
+            World.indicator.DrawDamage(ftile, GameHelper.AbilityType.Fire, damage);
+            World.indicator.DrawEffect(World.effectSpawner.GetEffect(GameHelper.EffectType.Burning), ftile);
             indicatorTiles.Add(ftile);
+            effectTile = ftile;
+
         }
         return indicatorTiles;
     }
@@ -62,7 +65,7 @@ public class PoisonSpit : Ability {
         this.from = from;
         return from.neighboors;
     }
-
+ 
 
     IEnumerator Animation(GameObject g)
     {
@@ -74,16 +77,16 @@ public class PoisonSpit : Ability {
         }
         if (from != null && from.tileContent != null)
         {
-            from.Effect(damage, type);
+            from.Effect(damage,GameHelper.AbilityType.Fire);
+            World.effectSpawner.Spawn(GameHelper.EffectType.Burning, from);
         }
         Destroy(g);
         Finished();
     }
 
     // Use this for initialization
-    void Start()
-    {
+    void Start () {
         base.Init();
     }
-
+	
 }

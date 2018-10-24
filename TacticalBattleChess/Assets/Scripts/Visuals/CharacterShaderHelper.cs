@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//prototype!
 public class CharacterShaderHelper : MonoBehaviour {
     private SpriteRenderer sr;
     public void OnEnable()
@@ -33,7 +33,7 @@ public class CharacterShaderHelper : MonoBehaviour {
         SetMark(false);
         SetOutline(true);
         SetOutlineColor(new Color(158, 255, 242));
-        SetOutlineSize(0.03f);
+        SetOutlineSize(0.01f);
     }
     //Help methods
     private void SetMark(bool active)

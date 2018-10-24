@@ -173,6 +173,7 @@ public class AIPlayer : SimplePlayer {
 
         World.indicator.RemoveAbility(aa.ability, aa.tile);
         units.Remove(character);
+        aiUnits.RemoveAll(x => x.character == character);
         aiUnits.Remove(character.GetComponent<AI_Spider>());
         actions.Remove(aa);
     }

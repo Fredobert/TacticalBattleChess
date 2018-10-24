@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//prototype!
 public class AI_Spider : AIUnit
 {
     public enum States { Searching,Moving,ReachableMoving,MultipleMoves}
@@ -46,7 +46,7 @@ public class AI_Spider : AIUnit
         for (int i = 0; i < enemies.Count; i++)
         {
             Tile t = enemies[i].standingOn.Go(DirectionReverse);
-            while (t != null && t.Walkable()&& !t.tilehelper.Dangerous)
+            while (t != null && (t.Walkable() || (t.GetCharacter() != null && t.GetCharacter() == character))&& !t.tilehelper.Dangerous)
             {
                 possTiles.Add(t);
                 t = t.Go(DirectionReverse);
@@ -59,19 +59,19 @@ public class AI_Spider : AIUnit
             Debug.Log("No Move available");
             //snare enemies if no move is available
             FireSpiderweb();
-            aiPlayer.UnitFinish();
             return;
         }
         List<Tile> path = World.pf.GetPath(possTiles[bestIndex], 2000);
         if (path.Count == 0)
         {
-            Debug.Log("in position"); //cannot happen at the moment
+            Debug.Log("in position");
+            DoAbility(spider.abilitys[0], spider.standingOn.Go(1), 1);
         }
         else if(path.Count > spider.movment)
         {
             Debug.Log("in Multiple moves");
             state = States.MultipleMoves;
-            aiPlayer.Move(path[spider.movment-1],spider);
+            aiPlayer.Move(path[path.Count - spider.movment],spider);
         }
         else
         {

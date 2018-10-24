@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//prototype!
 public class TileContentShaderHelper : MonoBehaviour {
 
     private SpriteRenderer sr;
@@ -79,9 +79,9 @@ public class TileContentShaderHelper : MonoBehaviour {
             return;
         }
         SetMark(true);
-        SetMarkColor(Color.blue);
+        SetMarkColor(Color.black);
         SetOutline(true);
-        SetOutlineColor(Color.blue);
+        SetOutlineColor(Color.black);
         SetSelect(false);
         SetRange(false);
         prev = curr;

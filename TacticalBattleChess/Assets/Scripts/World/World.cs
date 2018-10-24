@@ -105,7 +105,6 @@ public class World : MonoBehaviour
     {
         if (ability.PossibleCasts(character, character.standingOn).Contains(target))
         {
-            EventManager.Ability();
             character.CastAbility(ability, target);
             return true;
         }
@@ -115,6 +114,7 @@ public class World : MonoBehaviour
     public void FinishedAbility()
     {
         game.GetCurrentPlayer().FinishedAbility();
+        EventManager.Ability();
     }
    
 
@@ -147,6 +147,9 @@ public class World : MonoBehaviour
             StartCoroutine(Move(character.gameObject, GetPath(tile, character.movment), moveSpeed));
             return true;
         }
+        Debug.Log("Move not allowed");
+        Debug.Log(character == selectedChar);
+        Debug.Log("from tile: " + character.standingOn + "   to: " + tile);
         return false;
     }
 
@@ -243,8 +246,8 @@ public class World : MonoBehaviour
             yield return null;
         }
         busy = false;
-        EventManager.Move();
         game.GetCurrentPlayer().FinishedMoving();
+        EventManager.Move();
     }
   
 }

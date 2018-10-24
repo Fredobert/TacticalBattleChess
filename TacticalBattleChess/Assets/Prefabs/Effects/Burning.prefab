@@ -53,7 +53,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turns: 4
-  damage: 1
+  damage: 4
+  damageType: 0
 --- !u!212 &212730921550038350
 SpriteRenderer:
   m_ObjectHideFlags: 1

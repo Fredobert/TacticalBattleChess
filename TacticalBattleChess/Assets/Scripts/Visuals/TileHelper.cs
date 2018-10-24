@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
+//prototype!
 public class TileHelper : MonoBehaviour {
 
     public Tile tile;

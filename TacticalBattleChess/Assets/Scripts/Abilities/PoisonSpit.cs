@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fireball : Ability {
+public class PoisonSpit : Ability {
 
 
     public GameObject prefab;
     public float speed = 0.2f;
     public int damage = 2;
-    public Tile effectTile;
+    public GameHelper.AbilityType type = GameHelper.AbilityType.Poison;
 
 
 
@@ -16,14 +16,14 @@ public class Fireball : Ability {
     Tile from;
     public override void CastAbility(Character character, Tile target)
     {
-     directionOffset =   from.neighboors.IndexOf(target);
+        directionOffset = from.neighboors.IndexOf(target);
         if (directionOffset == -1)
         {
             return;
         }
         from = from.neighboors[directionOffset];
         GameObject g = Instantiate(prefab);
-        g.transform.Rotate(0, 0, directionOffset * -90);
+        g.transform.Rotate(0, 0, directionOffset * -90 +90);
         StartCoroutine(Animation(g));
     }
 
@@ -36,19 +36,17 @@ public class Fireball : Ability {
         {
             return indicatorTiles;
         }
-        ftile = ftile.neighboors[directionOffset]; 
+        ftile = ftile.neighboors[directionOffset];
         while (ftile != null && ftile.Walkable())
         {
-            World.indicator.DrawIndicator(ftile, GameHelper.AbilityType.Fire);
+            World.indicator.DrawIndicator(ftile, type);
             indicatorTiles.Add(ftile);
             ftile = ftile.neighboors[directionOffset];
         }
         if (ftile != null && ftile.tileContent != null)
         {
-            World.indicator.DrawDamage(ftile, GameHelper.AbilityType.Fire, damage);
+            World.indicator.DrawDamage(ftile, type, damage);
             indicatorTiles.Add(ftile);
-            effectTile = ftile;
-
         }
         return indicatorTiles;
     }
@@ -64,7 +62,7 @@ public class Fireball : Ability {
         this.from = from;
         return from.neighboors;
     }
- 
+
 
     IEnumerator Animation(GameObject g)
     {
@@ -76,16 +74,16 @@ public class Fireball : Ability {
         }
         if (from != null && from.tileContent != null)
         {
-            from.Effect(damage,GameHelper.AbilityType.Fire);
-            World.effectSpawner.Spawn(GameHelper.EffectType.Burning, from);
+            from.Effect(damage, type);
         }
         Destroy(g);
         Finished();
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         base.Init();
     }
-	
+
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//prototype!
 public class ContentShaderHelper : MonoBehaviour {
 
     private SpriteRenderer sr;

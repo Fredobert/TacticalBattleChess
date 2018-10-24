@@ -12,6 +12,7 @@ public class EffectSpawner : MonoBehaviour {
     {
         GameObject z = Instantiate(GetEffect(type).gameObject, tile.transform);
         z.GetComponent<A_Effect>().Apply(tile);
+        World.indicator.DrawEffect(z.GetComponent<A_Effect>(), tile);
     }
 
     public A_Effect GetEffect(GameHelper.EffectType type)
