@@ -18,4 +18,14 @@ public class EffectHandler : MonoBehaviour {
     {
         effects.Remove(effect);
     }
+
+    public bool ContainsType(GameHelper.EffectType type)
+    {
+        return effects.Exists(x => x.Type() == type);
+    }
+
+    public A_Effect GetFirst(GameHelper.EffectType type)
+    {
+        return effects.Find(x => x.Type() == type);
+    }
 }

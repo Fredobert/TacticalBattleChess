@@ -127,7 +127,7 @@ public class Indicator : MonoBehaviour {
             }
             NoCastEffects = new List<EffectAction>();
             noCastSet = false;
-            World.indicator.Refresh();
+            Refresh();
         }
 
     }
@@ -182,10 +182,25 @@ public class Indicator : MonoBehaviour {
             case GameHelper.AbilityType.Light:
             case GameHelper.AbilityType.Normal:
             case GameHelper.AbilityType.Poison:
-                tile.tilehelper.AbilityDefault(damage, GetColor(type));
+                if (noCast)
+                {
+                    tile.tilehelper.AbilityNoCast(damage, GetColor(type));
+                }
+                else
+                {
+                    tile.tilehelper.AbilityDefault(damage, GetColor(type));
+                }
+               
                 break;
             case GameHelper.AbilityType.Heal:
-                tile.tilehelper.AbilityDefault(-damage, GetColor(type));
+                if (noCast)
+                {
+                    tile.tilehelper.AbilityNoCast(-damage, GetColor(type));
+                }
+                else
+                {
+                    tile.tilehelper.AbilityDefault(-damage, GetColor(type));
+                }
                 break;
 
         }

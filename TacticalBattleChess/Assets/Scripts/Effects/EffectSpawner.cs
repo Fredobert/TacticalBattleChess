@@ -7,12 +7,19 @@ public class EffectSpawner : MonoBehaviour {
     public A_Effect thunder;
     public A_Effect spiderweb;
     public A_Effect poison;
+   
+
+
+
+
 
     public void Spawn(GameHelper.EffectType type , Tile tile)
     {
         GameObject z = Instantiate(GetEffect(type).gameObject, tile.transform);
-        z.GetComponent<A_Effect>().Apply(tile);
-        World.indicator.DrawEffect(z.GetComponent<A_Effect>(), tile);
+        if (z.GetComponent<A_Effect>().Apply(tile))
+        {
+            World.indicator.DrawEffect(z.GetComponent<A_Effect>(), tile);
+        }
     }
 
     public A_Effect GetEffect(GameHelper.EffectType type)

@@ -10,7 +10,7 @@ public class TileHelper : MonoBehaviour {
 
     public int damage;
     public bool textShown;
-
+    public bool noCast = false;
     public bool Dangerous = false;
 
     public void Range()
@@ -47,6 +47,7 @@ public class TileHelper : MonoBehaviour {
     public void Standard()
     {
         Dangerous = false;
+        noCast = false;
         HideText();
         if (tile.tileContent != null)
         {
@@ -113,6 +114,7 @@ public class TileHelper : MonoBehaviour {
     {
         Dangerous = false;
         HideText();
+        noCast = false;
         if (tile.tileContent != null)
         {
             tile.tileContent.GetComponent<TileContentShaderHelper>().Undo();
@@ -130,6 +132,17 @@ public class TileHelper : MonoBehaviour {
 
     public void AbilityDefault(int damage, Color color)
     {
+        tile.tileContent.GetComponent<TileContentShaderHelper>().AbilityIndicator(color, color);
+        SetText(damage, color);
+        Dangerous = true;
+    }
+    public void AbilityNoCast(int damage, Color color)
+    {
+        if (!noCast)
+        {
+            noCast = true;
+            this.damage = 0;
+        }
         tile.tileContent.GetComponent<TileContentShaderHelper>().AbilityIndicator(color, color);
         SetText(damage, color);
         Dangerous = true;

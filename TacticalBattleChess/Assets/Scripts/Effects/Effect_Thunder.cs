@@ -16,7 +16,7 @@ public class Effect_Thunder : A_Effect
     private List<GameObject> thunders;
 
 
-    public override void Apply(Tile tile)
+    public override bool Apply(Tile tile)
     {
         if (tile.tileContent != null && tile.tileContent.type == GameHelper.TileType.Water)
         {
@@ -31,7 +31,9 @@ public class Effect_Thunder : A_Effect
                 thunders.Add(Instantiate(thunderPregab, waterTiles[i].transform));
             }
             StartCoroutine(Effect());
+            return true;
         }
+        return false;
     }
 
 
@@ -69,5 +71,9 @@ public class Effect_Thunder : A_Effect
             World.indicator.DrawDamage(indicatorTiles[i], damageType, damage);
         }
         return indicatorTiles;
+    }
+    public override GameHelper.EffectType Type()
+    {
+        return GameHelper.EffectType.Thunder;
     }
 }

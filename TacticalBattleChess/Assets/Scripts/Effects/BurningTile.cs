@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BurningTile : A_Effect {
 
+    public int maxturns = 2;
     public int turns = 4;
     public int damage = 1;
     public GameHelper.AbilityType damageType = GameHelper.AbilityType.Fire;
@@ -12,9 +13,17 @@ public class BurningTile : A_Effect {
     private Tile tile;
     private bool active = false;
 
-    public override void Apply(Tile tile)
+    public override bool Apply(Tile tile)
     {
-        if (tile.tileContent != null)
+        EffectHandler handler = tile.tileContent.GetComponent<EffectHandler>();
+        A_Effect effect = handler.GetFirst(GameHelper.EffectType.Burning);
+        if (effect != null)
+        {
+            effect.AddDuration(1.0f);
+            Destroy(this.gameObject);
+            return false;
+        }
+        else if (tile.tileContent != null)
         {
             this.tile = tile;
             active = true;
@@ -22,8 +31,14 @@ public class BurningTile : A_Effect {
             EventManager.OnTurnEnd += TurnEnd;
             tile.tileContent.GetComponent<EffectHandler>().AddEffect(this);
         }
+        return true;
     }
-	
+
+    public override void AddDuration(float duration)
+    {
+        turns += (int)(maxturns * duration);
+    }
+
     public void WalkOver(Character character)
     {
         character.Effect(damage, damageType);
@@ -61,5 +76,10 @@ public class BurningTile : A_Effect {
         World.indicator.DrawDamage(tile,damageType, damage);
         indicatorTiles.Add(tile);
         return indicatorTiles;
+    }
+
+    public override GameHelper.EffectType Type()
+    {
+        return GameHelper.EffectType.Burning;
     }
 }
