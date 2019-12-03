@@ -1,5 +1,3 @@
-# Project is temporarily on hold until 2.12.2018 (working on another project)!
-
 The main goal of this project is learning. Working on a "big" project like this helps me to get a better concept of video game development and also improves my programming skills. While also giving me a small dive into other areas like shaders, art and game AI.
 My current focus is building a solid fundament as a base for my game. Therefore I want to create and improve most game-systems before starting to push more content like characters and abilities or improving the sprite quality.
 
